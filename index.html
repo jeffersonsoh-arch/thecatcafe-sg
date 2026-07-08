@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cat Cafe Singapore – Bugis</title>
+<meta name="description" content="Singapore's original cat cafe since 2014. 15 rescued cats, coffee, food and art jamming at Bugis.">
+<style>
+  :root {
+    --cream: #f5efe8;
+    --rust: #D85A30;
+    --rust-dark: #993C1D;
+    --rust-pale: #FAECE7;
+    --indigo: #3C3489;
+    --indigo-pale: #EEEDFE;
+    --green-pale: #EAF3DE;
+    --green-dark: #3B6D11;
+    --text: #1a1a1a;
+    --text-2: #555;
+    --text-3: #999;
+    --border: #e4e0db;
+    --border-light: #f0ede9;
+    --bg: #ffffff;
+    --bg-2: #faf9f7;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); font-size: 15px; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+  input, select, textarea, button { font-family: inherit; font-size: 14px; }
+  input[type=text], input[type=email], input[type=tel], input[type=number], input[type=date] {
+    width: 100%; padding: 9px 12px; border: 0.5px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--text); outline: none; transition: border-color 0.15s;
+  }
+  input:focus { border-color: var(--rust); }
+
+  /* ── NAV ── */
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 0.5px solid var(--border); }
+  .nav-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .nav-logo { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--rust); }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { font-size: 13px; color: var(--text-2); transition: color 0.15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { background: var(--rust); color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
+  .nav-cta:hover { opacity: 0.88; }
+  .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+  .nav-mobile-btn span { display: block; width: 20px; height: 1.5px; background: var(--text); margin: 4px 0; border-radius: 2px; }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 56px 0; border-bottom: 0.5px solid var(--border-light); }
+  section:last-of-type { border-bottom: none; }
+  .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rust); margin-bottom: 8px; }
+  .section-title { font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 8px; letter-spacing: -0.02em; line-height: 1.25; }
+  .section-sub { font-size: 15px; color: var(--text-2); max-width: 560px; line-height: 1.7; margin-bottom: 28px; }
+
+  /* ── HERO ── */
+  .hero { background: var(--cream); border-radius: var(--radius); padding: 56px 40px 44px; text-align: center; margin: 32px 0 0; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 240px; height: 240px; border-radius: 50%; background: rgba(216,90,48,0.07); }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--rust); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+  .hero h1 { font-size: 44px; font-weight: 500; color: var(--text); line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.03em; }
+  .hero h1 em { color: var(--rust); font-style: normal; }
+  .hero p { font-size: 17px; color: var(--text-2); max-width: 440px; margin: 0 auto 28px; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: none; }
+  .btn-rust { background: var(--rust); color: #fff; }
+  .btn-rust:hover { opacity: 0.88; }
+  .btn-outline { background: #fff; color: var(--text); border: 0.5px solid var(--border); }
+  .btn-outline:hover { border-color: var(--text); }
+  .hero-cats { display: flex; justify-content: center; gap: 6px; margin-top: 32px; }
+  .hero-cat-face { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 2px solid var(--cream); display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: var(--shadow); }
+
+  /* ── STATS ── */
+  .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 32px; }
+  .stat { background: #fff; border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 20px 16px; text-align: center; }
+  .stat-n { font-size: 30px; font-weight: 500; color: var(--rust); letter-spacing: -0.02em; }
+  .stat-l { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+  /* ── LOCATION ── */
+  .loc-card { background: var(--cream); border-radius: var(--radius); padding: 28px 32px; }
+  .loc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .loc-name { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
+  .loc-detail { font-size: 14px; color: var(--text-2); line-height: 1.9; }
+  .loc-detail a { color: var(--rust); }
+  .map-btn { background: #fff; border: 0.5px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+  .map-btn:hover { border-color: var(--text); }
+  .hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 0.5px solid rgba(0,0,0,0.08); padding-top: 20px; }
+  .hour-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+  .hour-row:not(:last-child) { border-bottom: 0.5px solid rgba(0,0,0,0.05); }
+  .hour-day { color: var(--text-2); }
+  .hour-time { font-weight: 500; }
+
+  /* ── PRICING ── */
+  .pricing-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .price-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 0.5px solid var(--border-light); }
+  .price-row:last-child { border-bottom: none; }
+  .price-label { font-size: 14px; color: var(--text); }
+  .price-note { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .price-val { font-size: 16px; font-weight: 500; color: var(--rust); }
+
+  /* ── FEATURES ── */
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .feat { display: flex; gap: 14px; padding: 18px; background: var(--bg-2); border: 0.5px solid var(--border-light); border-radius: var(--radius-sm); align-items: flex-start; }
+  .feat-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--rust-pale); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .feat-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .feat-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+
+  /* ── ART BANNER ── */
+  .art-banner { background: var(--indigo); border-radius: var(--radius); padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 24px; }
+  .art-banner h3 { font-size: 18px; font-weight: 500; color: var(--indigo-pale); margin-bottom: 6px; }
+  .art-banner p { font-size: 14px; color: #AFA9EC; line-height: 1.6; max-width: 400px; }
+  .art-btn { background: var(--indigo-pale); color: var(--indigo); border: none; padding: 10px 22px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+
+  /* ── CAT PROFILES ── */
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .fbtn { font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 20px; border: 0.5px solid var(--border); background: var(--bg); color: var(--text-2); cursor: pointer; transition: all 0.15s; }
+  .fbtn:hover, .fbtn.active { background: var(--rust); color: #fff; border-color: var(--rust); }
+  .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .cat-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .cat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .cat-img-wrap { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: var(--cream); }
+  .cat-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; display: block; }
+  .cat-card:hover .cat-img-wrap img { transform: scale(1.06); }
+  .cat-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+  .cat-body { padding: 12px 14px 14px; }
+  .cat-name { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+  .cat-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+  .ctag { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
+  .tsenior { background: var(--indigo-pale); color: var(--indigo); }
+  .tyoung { background: var(--rust-pale); color: var(--rust-dark); }
+  .tog { background: #F5F0E8; color: #5C4A1E; }
+  .tcuddly { background: #FCE8F3; color: #8B1558; }
+  .tplayful { background: #E1F5EE; color: #0F6E56; }
+  .tshy { background: #FEF3E7; color: #8A5200; }
+  .cat-desc-short { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+  .cat-count { font-size: 12px; color: var(--text-3); margin-top: 16px; }
+
+  /* ── CAT MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: var(--bg); border-radius: var(--radius); max-width: 420px; width: 100%; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.25); }
+  .modal-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; background: var(--cream); }
+  .modal-body { padding: 20px 24px 24px; }
+  .modal-name { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+  .modal-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .modal-desc { font-size: 14px; color: var(--text-2); line-height: 1.7; margin-bottom: 16px; }
+  .modal-close-btn { width: 100%; background: var(--bg-2); border: 0.5px solid var(--border); color: var(--text-2); padding: 9px; border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; }
+  .modal-close-btn:hover { background: var(--border-light); }
+
+  /* ── RULES ── */
+  .rules-list { display: flex; flex-direction: column; gap: 10px; }
+  .rule { display: flex; gap: 14px; align-items: flex-start; padding: 14px 18px; background: var(--bg-2); border-radius: var(--radius-sm); border: 0.5px solid var(--border-light); font-size: 14px; color: var(--text-2); line-height: 1.5; }
+  .rule-n { width: 22px; height: 22px; border-radius: 50%; background: var(--rust-pale); color: var(--rust); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── MISSION ── */
+  .mission { background: var(--cream); border-radius: var(--radius); padding: 36px 40px; }
+  .mission p { font-size: 18px; color: var(--text); line-height: 1.8; font-weight: 400; }
+  .mission p strong { color: var(--rust); font-weight: 600; }
+
+  /* ── BOOKING ── */
+  #booking { background: var(--bg-2); }
+  .booking-wrap { max-width: 560px; margin: 0 auto; }
+  .progress-wrap { margin-bottom: 28px; }
+  .steps-labels { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .slbl { font-size: 11px; color: var(--text-3); width: 26px; text-align: center; }
+  .slbl.active { color: var(--rust); font-weight: 600; }
+  .progress { display: flex; align-items: center; }
+  .sdot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; transition: background 0.2s; }
+  .sdot.done { background: var(--rust); color: #fff; }
+  .sdot.active { background: var(--rust); color: #fff; }
+  .sdot.inactive { background: var(--bg-2); color: var(--text-3); border: 0.5px solid var(--border); }
+  .sline { flex: 1; height: 1px; background: var(--border); }
+  .sline.done { background: var(--rust); }
+  .bscreen { display: none; }
+  .bscreen.visible { display: block; }
+  .bs-title { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+  .bs-sub { font-size: 14px; color: var(--text-2); margin-bottom: 20px; line-height: 1.6; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text); }
+  .field .hint { font-size: 11px; color: var(--text-3); margin-top: 5px; }
+  .pax-row { display: flex; align-items: center; gap: 12px; }
+  .pax-btn { width: 36px; height: 36px; border-radius: var(--radius-sm); border: 0.5px solid var(--border); background: var(--bg); font-size: 18px; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .pax-btn:hover { border-color: var(--text); }
+  .pax-val { font-size: 20px; font-weight: 500; min-width: 28px; text-align: center; }
+  .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sopt { border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; cursor: pointer; text-align: center; transition: all 0.15s; }
+  .sopt:hover { border-color: var(--rust); }
+  .sopt.selected { border-color: var(--rust); background: var(--rust-pale); }
+  .sopt-dur { font-size: 15px; font-weight: 500; }
+  .sopt.selected .sopt-dur { color: var(--rust-dark); }
+  .sopt-price { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+  .sopt.selected .sopt-price { color: var(--rust-dark); }
+  .notice { background: var(--rust-pale); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: var(--rust-dark); margin-bottom: 16px; line-height: 1.5; }
+  .cal-wrap { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .cal-nav-btn { background: none; border: none; cursor: pointer; font-size: 20px; color: var(--text-2); padding: 4px 8px; }
+  .cal-nav-btn:hover { color: var(--text); }
+  .cal-month { font-size: 15px; font-weight: 500; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+  .cal-head { font-size: 11px; color: var(--text-3); text-align: center; padding: 4px 0; }
+  .cal-day { height: 34px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; transition: all 0.12s; }
+  .cal-day:hover:not(.cd-past):not(.cd-empty):not(.cd-blocked) { background: var(--rust-pale); color: var(--rust-dark); }
+  .cal-day.cd-sel { background: var(--rust); color: #fff; }
+  .cal-day.cd-today { font-weight: 600; color: var(--rust); }
+  .cal-day.cd-today.cd-sel { color: #fff; }
+  .cal-day.cd-past { color: var(--text-3); cursor: default; }
+  .cal-day.cd-blocked { color: var(--text-3); cursor: default; text-decoration: line-through; }
+  .cal-day.cd-empty { cursor: default; }
+  .time-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .topt { border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 6px; text-align: center; font-size: 13px; cursor: pointer; transition: all 0.12s; }
+  .topt:hover:not(.tunavail) { border-color: var(--rust); color: var(--rust-dark); background: var(--rust-pale); }
+  .topt.selected { border-color: var(--rust); background: var(--rust-pale); color: var(--rust-dark); font-weight: 500; }
+  .topt.tunavail { background: var(--bg-2); color: var(--text-3); cursor: not-allowed; }
+  .topt-spots { font-size: 10px; color: var(--text-3); margin-top: 3px; }
+  .topt.selected .topt-spots, .topt:hover:not(.tunavail) .topt-spots { color: var(--rust-dark); }
+  .addon-card { border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; transition: border-color 0.15s; }
+  .addon-card:hover { border-color: var(--rust); }
+  .addon-card.selected { border-color: var(--rust); background: var(--rust-pale); }
+  .addon-icon-wrap { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--rust-pale); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .addon-name { font-size: 14px; font-weight: 500; }
+  .addon-card.selected .addon-name { color: var(--rust-dark); }
+  .addon-desc { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .addon-price { font-size: 14px; font-weight: 500; color: var(--rust); flex-shrink: 0; }
+  .chk { width: 18px; height: 18px; border-radius: 4px; border: 0.5px solid var(--border); background: var(--bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
+  .chk.checked { background: var(--rust); border-color: var(--rust); }
+  .chk-tick { width: 9px; height: 6px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translateY(-1px); display: none; }
+  .chk.checked .chk-tick { display: block; }
+  .sum-card { background: var(--bg-2); border: 0.5px solid var(--border-light); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px; }
+  .sum-row { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; }
+  .sum-lbl { color: var(--text-2); }
+  .sum-val { font-weight: 500; }
+  .sum-div { height: 0.5px; background: var(--border); margin: 8px 0; }
+  .sum-total .sum-lbl { color: var(--text); font-weight: 500; font-size: 15px; }
+  .sum-total .sum-val { color: var(--rust); font-size: 18px; }
+  .btn-row { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-back { background: transparent; border: 0.5px solid var(--border); color: var(--text); padding: 10px 20px; border-radius: 20px; font-size: 14px; cursor: pointer; }
+  .btn-back:hover { border-color: var(--text); }
+  .btn-next { flex: 1; background: var(--rust); color: #fff; border: none; padding: 11px; border-radius: 20px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
+  .btn-next:hover { opacity: 0.88; }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+  .confirm-wrap { text-align: center; padding: 16px 0 24px; }
+  .confirm-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--green-pale); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 26px; }
+  .confirm-title { font-size: 22px; font-weight: 500; margin-bottom: 8px; }
+  .confirm-sub { font-size: 14px; color: var(--text-2); line-height: 1.7; max-width: 360px; margin: 0 auto 24px; }
+  .terms-row { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; margin-top: 12px; }
+  .terms-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--text); color: #ccc; padding: 40px 0; }
+  .footer-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; gap: 16px; }
+  .footer-logo { font-size: 15px; font-weight: 600; color: #fff; }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 13px; color: #aaa; transition: color 0.15s; }
+  .footer-links a:hover { color: #fff; }
+  .footer-copy { font-size: 12px; color: #666; margin-top: 6px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .hero { padding: 40px 24px 36px; }
+    .hero h1 { font-size: 32px; }
+    .cat-grid { grid-template-columns: repeat(2,1fr); }
+    .features { grid-template-columns: 1fr; }
+    .hours-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(3,1fr); }
+    .nav-links { display: none; }
+    .nav-mobile-btn { display: block; }
+    .art-banner { flex-direction: column; text-align: center; }
+    .art-banner p { max-width: 100%; }
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">The Cat <span>Cafe</span></div>
+    <div class="nav-links">
+      <a href="#cats">Our cats</a>
+      <a href="#visit">Visit</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#booking">Book</a>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Reserve a spot</button>
+    <button class="nav-mobile-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section style="border:none; padding-bottom: 0;">
+    <div class="hero">
+      <div class="hero-badge">🐾 Bugis · Singapore's original cat cafe since 2014</div>
+      <h1>Coffee, cats &amp;<br><em>good company</em></h1>
+      <p>All 15 of our resident cats are rescued strays, living their best lives — and they'd love to meet you.</p>
+      <div class="hero-btns">
+        <button class="btn btn-rust" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Reserve a spot</button>
+        <button class="btn btn-outline" onclick="document.getElementById('cats').scrollIntoView({behavior:'smooth'})">Meet our cats</button>
+      </div>
+      <div class="hero-cats">
+        <div class="hero-cat-face">🐱</div>
+        <div class="hero-cat-face">🐈</div>
+        <div class="hero-cat-face">🐾</div>
+        <div class="hero-cat-face">🐱</div>
+        <div class="hero-cat-face">🐈‍⬛</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n">15</div><div class="stat-l">rescued cats</div></div>
+      <div class="stat"><div class="stat-n">10+</div><div class="stat-l">years open</div></div>
+      <div class="stat"><div class="stat-n">100%</div><div class="stat-l">adopted strays</div></div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section id="visit">
+    <div class="section-eyebrow">Location</div>
+    <div class="section-title">Find us at Bugis</div>
+    <div class="section-sub">We're on the 3rd floor of a shophouse on Victoria Street, a short walk from Bugis MRT.</div>
+    <div class="loc-card">
+      <div class="loc-top">
+        <div>
+          <div class="loc-name">241B Victoria Street, Singapore 188030</div>
+          <div class="loc-detail">
+            Level 3 · No lift access · Near Bugis MRT Exit C (2 min walk)<br>
+            <a href="tel:+6563386815">+65 6338 6815</a> &nbsp;·&nbsp; <a href="mailto:info@thecatcafe.sg">info@thecatcafe.sg</a><br>
+            <a href="https://wa.me/6580808719">WhatsApp us</a>
+          </div>
+        </div>
+        <a href="https://maps.google.com/?q=241B+Victoria+Street+Singapore" target="_blank"><button class="map-btn">Open in maps ↗</button></a>
+      </div>
+      <div class="hours-grid">
+        <div>
+          <div class="hour-row"><span class="hour-day">Monday</span><span class="hour-time">3:00 pm – 9:00 pm</span></div>
+          <div class="hour-row"><span class="hour-day">Tuesday – Friday</span><span class="hour-time">10:00 am – 9:00 pm</span></div>
+        </div>
+        <div>
+          <div class="hour-row"><span class="hour-day">Saturday – Sunday</span><span class="hour-time">10:00 am – 10:00 pm</span></div>
+          <div class="hour-row"><span class="hour-day">Public holidays</span><span class="hour-time">10:00 am – 10:00 pm</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="section-eyebrow">Pricing</div>
+    <div class="section-title">Simple, transparent pricing</div>
+    <div class="section-sub">Entry includes one complimentary soft drink. Extend anytime, subject to availability.</div>
+    <div class="pricing-card">
+      <div class="price-row">
+        <div><div class="price-label">First 2 hours</div><div class="price-note">includes 1 complimentary soft drink</div></div>
+        <div class="price-val">S$22</div>
+      </div>
+      <div class="price-row">
+        <div><div class="price-label">Every additional 30 mins</div></div>
+        <div class="price-val">S$5.50</div>
+      </div>
+      <div class="price-row">
+        <div><div class="price-label">Full day pass</div><div class="price-note">1 free drink of your choice</div></div>
+        <div class="price-val">S$50</div>
+      </div>
+      <div class="price-row">
+        <div><div class="price-label">Children under 1</div></div>
+        <div class="price-val">Free</div>
+      </div>
+    </div>
+    <div class="features" style="margin-top:16px;">
+      <div class="feat"><div class="feat-icon">☕</div><div><div class="feat-title">Coffee &amp; food</div><div class="feat-desc">Lattes, teas, hot meals, pastries &amp; desserts</div></div></div>
+      <div class="feat"><div class="feat-icon">🎨</div><div><div class="feat-title">Art jamming</div><div class="feat-desc">Paint with cats — add-on available, all materials included</div></div></div>
+      <div class="feat"><div class="feat-icon">📶</div><div><div class="feat-title">Free Wi-Fi</div><div class="feat-desc">Work remotely with the best colleagues in Singapore</div></div></div>
+      <div class="feat"><div class="feat-icon">🛡️</div><div><div class="feat-title">Safe &amp; clean</div><div class="feat-desc">All cats vaccinated and regularly health-checked</div></div></div>
+    </div>
+    <div class="art-banner">
+      <div>
+        <h3>Art jamming with cats 🎨</h3>
+        <p>Unguided sessions S$40 · Semi-guided (selected dates) S$55. Includes 1 drink, 1 canvas (30×40), all art tools. WhatsApp us at 8080 8719 to book.</p>
+      </div>
+      <a href="https://wa.me/6580808719" target="_blank"><button class="art-btn">Book via WhatsApp</button></a>
+    </div>
+  </section>
+
+  <!-- CAT PROFILES -->
+  <section id="cats">
+    <div class="section-eyebrow">The crew</div>
+    <div class="section-title">Meet our 13 cats</div>
+    <div class="section-sub">Every single one was a rescued stray. They're permanent residents here — not for sale or adoption, just here to hang out.</div>
+    <div class="filter-bar" id="filter-bar">
+      <button class="fbtn active" onclick="filterCats('all',this)">All</button>
+      <button class="fbtn" onclick="filterCats('og',this)">OG since '14</button>
+      <button class="fbtn" onclick="filterCats('senior',this)">Senior</button>
+      <button class="fbtn" onclick="filterCats('young',this)">Young</button>
+      <button class="fbtn" onclick="filterCats('cuddly',this)">Cuddly</button>
+      <button class="fbtn" onclick="filterCats('playful',this)">Playful</button>
+      <button class="fbtn" onclick="filterCats('shy',this)">Shy</button>
+    </div>
+    <div class="cat-grid" id="cat-grid"></div>
+    <div class="cat-count" id="cat-count"></div>
+  </section>
+
+  <!-- RULES -->
+  <section>
+    <div class="section-eyebrow">House rules</div>
+    <div class="section-title">Before you arrive</div>
+    <div class="section-sub">To keep our cats happy, healthy, and stress-free — and our guests safe.</div>
+    <div class="rules-list">
+      <div class="rule"><div class="rule-n">1</div>Minimum age 4 years old. Children under 12 must be accompanied and strictly supervised by an adult.</div>
+      <div class="rule"><div class="rule-n">2</div>Hand sanitisation is required before entering the cat area. Our staff will assist you.</div>
+      <div class="rule"><div class="rule-n">3</div>Handle cats gently. Do not carry, lift, or chase them without staff assistance.</div>
+      <div class="rule"><div class="rule-n">4</div>No outside food or drinks permitted in the cat area.</div>
+      <div class="rule"><div class="rule-n">5</div>Arrive on time — slots are released to walk-in guests after a 10-minute grace period.</div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section style="border:none;">
+    <div class="mission">
+      <p>Every cat here was once a stray. We believe in <strong>Adopt, Don't Shop</strong> — and hope that spending time with our rescued cats inspires more people to open their homes to ex-strays. Ask our staff about supporting local shelters.</p>
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="page">
+    <div class="section-eyebrow">Reservations</div>
+    <div class="section-title">Book your visit</div>
+    <div class="section-sub">Weekday walk-ins welcome, but a reservation guarantees your spot — especially on weekends.</div>
+    <div class="booking-wrap">
+      <div class="progress-wrap">
+        <div class="steps-labels">
+          <div class="slbl active" id="blbl1">Date</div>
+          <div class="slbl" id="blbl2">Group</div>
+          <div class="slbl" id="blbl3">Time</div>
+          <div class="slbl" id="blbl4">Info</div>
+        </div>
+        <div class="progress">
+          <div class="sdot active" id="bdot1">1</div>
+          <div class="sline" id="bline12"></div>
+          <div class="sdot inactive" id="bdot2">2</div>
+          <div class="sline" id="bline23"></div>
+          <div class="sdot inactive" id="bdot3">3</div>
+          <div class="sline" id="bline34"></div>
+          <div class="sdot inactive" id="bdot4">4</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Date -->
+      <div class="bscreen visible" id="bs1">
+        <div class="bs-title">Pick a date</div>
+        <div class="bs-sub">Reservations are recommended on weekends and public holidays.</div>
+        <div class="cal-wrap">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="bPrevMonth()">&#8249;</button>
+            <span class="cal-month" id="b-cal-label"></span>
+            <button class="cal-nav-btn" onclick="bNextMonth()">&#8250;</button>
+          </div>
+          <div class="cal-grid" id="b-cal-heads"></div>
+          <div class="cal-grid" id="b-cal-body"></div>
+        </div>
+        <div class="btn-row"><button class="btn-next" id="bbn1" onclick="bGoTo(2)" disabled>Next: group size</button></div>
+      </div>
+
+      <!-- Step 2: Group -->
+      <div class="bscreen" id="bs2">
+        <div class="bs-title">Your group</div>
+        <div class="bs-sub">Each guest gets one complimentary soft drink included in entry.</div>
+        <div class="field">
+          <label>Number of guests</label>
+          <div class="pax-row">
+            <button class="pax-btn" onclick="bChangePax(-1)">−</button>
+            <span class="pax-val" id="b-pax">2</span>
+            <button class="pax-btn" onclick="bChangePax(1)">+</button>
+            <span style="font-size:13px;color:var(--text-3);margin-left:6px;">guests (max 10)</span>
+          </div>
+          <div class="hint">Min age 4 · Children under 12 must be accompanied by an adult</div>
+        </div>
+        <div class="field">
+          <label>Session length</label>
+          <div class="session-grid">
+            <div class="sopt selected" data-dur="2hr" data-price="22" onclick="bSelectSession(this)"><div class="sopt-dur">2 hours</div><div class="sopt-price">S$22 / person</div></div>
+            <div class="sopt" data-dur="full" data-price="50" onclick="bSelectSession(this)"><div class="sopt-dur">Full day</div><div class="sopt-price">S$50 / person</div></div>
+          </div>
+          <div class="hint">Extensions available at S$5.50 per 30 mins per person</div>
+        </div>
+        <div class="field">
+          <label>Add-ons <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
+          <div class="addon-card" id="b-addon-art" onclick="bToggleAddon()">
+            <div class="addon-icon-wrap">🎨</div>
+            <div style="flex:1;"><div class="addon-name">Art jamming</div><div class="addon-desc">Unguided · all materials included · no experience needed</div></div>
+            <div class="addon-price">+S$40 / person</div>
+            <div class="chk" id="b-chk-art"><div class="chk-tick"></div></div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="bGoTo(1)">Back</button>
+          <button class="btn-next" onclick="bGoTo(3)">Next: choose a time</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Time -->
+      <div class="bscreen" id="bs3">
+        <div class="bs-title">Choose a time</div>
+        <div class="bs-sub" id="b-time-sub"></div>
+        <div class="time-grid" id="b-time-grid"></div>
+        <div class="btn-row" style="margin-top:16px;">
+          <button class="btn-back" onclick="bGoTo(2)">Back</button>
+          <button class="btn-next" id="bbn3" onclick="bGoTo(4)" disabled>Next: your details</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Details -->
+      <div class="bscreen" id="bs4">
+        <div class="bs-title">Your details</div>
+        <div class="sum-card" id="b-summary"></div>
+        <div class="field"><label>Full name</label><input type="text" id="bf-name" placeholder="e.g. Sarah Tan" oninput="bCheckForm()"></div>
+        <div class="field"><label>Email</label><input type="email" id="bf-email" placeholder="you@example.com" oninput="bCheckForm()"></div>
+        <div class="field"><label>Mobile number</label><input type="tel" id="bf-phone" placeholder="+65 9123 4567" oninput="bCheckForm()"></div>
+        <div class="field"><label>Special requests <span style="font-weight:400;color:var(--text-3);">(optional)</span></label><input type="text" id="bf-special" placeholder="e.g. birthday celebration, accessibility needs"></div>
+        <div class="terms-row" onclick="bToggleTerms()">
+          <div class="chk" id="b-chk-terms"><div class="chk-tick"></div></div>
+          <div class="terms-text">I agree to the house rules: min age 4, children under 12 with adult, no outside food, arrive on time (10 min grace period).</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="bGoTo(3)">Back</button>
+          <button class="btn-next" id="bbn4" onclick="bSubmit()" disabled>Confirm booking</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Confirmed -->
+      <div class="bscreen" id="bs5">
+        <div class="confirm-wrap">
+          <div class="confirm-icon">✓</div>
+          <div class="confirm-title">You're booked!</div>
+          <div class="confirm-sub">A confirmation has been sent to your email. We can't wait to see you — and neither can the cats.</div>
+        </div>
+        <div class="sum-card" id="b-confirm-sum"></div>
+        <div class="notice">Hand sanitisation required on entry. Handle cats gently — do not lift them without staff assistance.</div>
+        <div style="text-align:center;"><button style="background:none;border:none;font-size:13px;color:var(--text-3);cursor:pointer;" onclick="bReset()">Make another booking</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">The Cat Cafe</div>
+      <div class="footer-copy">241B Victoria Street, Level 3, Singapore 188030 · © 2025</div>
+    </div>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/sgcatcafe" target="_blank">Instagram</a>
+      <a href="https://www.facebook.com/sgcatcafe" target="_blank">Facebook</a>
+      <a href="mailto:info@thecatcafe.sg">Email us</a>
+      <a href="https://wa.me/6580808719" target="_blank">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<!-- CAT MODAL -->
+<div class="modal-overlay" id="cat-modal" onclick="closeCatModal(event)">
+  <div class="modal-box">
+    <img class="modal-img" id="modal-img" src="" alt="">
+    <div class="modal-body">
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-tags" id="modal-tags"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <button class="modal-close-btn" onclick="document.getElementById('cat-modal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ──────────────────────────────────────
+   CAT DATA
+────────────────────────────────────── */
+var BASE = 'http://thecatcafe.sg/wp-content/uploads/';
+var CATS = [
+  { name:'Momo',    img:BASE+'2024/11/IMG_2623-495x400.jpeg',                         full:BASE+'2024/11/IMG_2623-1030x1030.jpeg',                       tags:['young'],              desc:'Momo is one of the newer additions to The Cat Cafe family. Full of personality and always ready for a good play session with visitors.' },
+  { name:'Oreo',    img:BASE+'2014/10/113E9WVLSCe7opmD9D5VA_thumb_1f3-495x400.jpg',   full:BASE+'2014/10/113E9WVLSCe7opmD9D5VA_thumb_1f3.jpg',            tags:['senior','og','cuddly'], desc:'One of the original cats from 2014. A true OG, Oreo has charmed thousands of visitors over the years with his laid-back, lovable charm.' },
+  { name:'Tuxedo',  img:BASE+'2014/06/k399jBYHSM6KuXIQrSR5yA_thumb_5b7-495x400.jpg', full:BASE+'2014/06/k399jBYHSM6KuXIQrSR5yA_thumb_5b7.jpg',          tags:['senior','og','shy'],  desc:'Dapper in his black-and-white coat, Tuxedo is a dignified senior who prefers quiet corners and patient, gentle visitors.' },
+  { name:'Elly',    img:BASE+'2014/06/UNADJUSTEDNONRAW_thumb_1a9-495x400.jpg',        full:BASE+'2014/06/UNADJUSTEDNONRAW_thumb_1a9.jpg',                 tags:['senior','og','cuddly'], desc:'Elly has been at the cafe since the early days. Sweet and calm, she loves a good chin scratch and long afternoon naps in the sun.' },
+  { name:'Yoghurt', img:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_207-495x400.jpg',        full:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_207.jpg',                 tags:['senior','og','playful'], desc:'Light and creamy in colour, Yoghurt has a mischievous streak and a love for high perches and surprise ambushes on unsuspecting visitors.' },
+  { name:'Silver',  img:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_578-495x400.jpg',        full:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_578.jpg',                 tags:['senior','og','shy'],  desc:'Silver has a beautiful smoky coat and an independent spirit. Earn her trust and she may reward you with a slow, graceful blink.' },
+  { name:'Jimmy',   img:BASE+'2014/07/VEq9Ej7ySGaRwNf0i7neQ_thumb_431-495x400.jpg',  full:BASE+'2014/07/VEq9Ej7ySGaRwNf0i7neQ_thumb_431.jpg',           tags:['senior','og','playful'], desc:'Jimmy is a lively character who has grown into a dignified senior. He still loves a good play but these days prefers a cosy nap spot.' },
+  { name:'Tommy',   img:BASE+'2014/07/IMAGE-2019-06-08-003533-495x400.jpg',           full:BASE+'2014/07/IMAGE-2019-06-08-003533.jpg',                    tags:['senior','og','cuddly'], desc:'Tommy is a gentle giant with a big heart. A decade-long favourite — always happy to be fussed over by anyone who sits nearby.' },
+  { name:'Butter',  img:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_541-495x400.jpg',        full:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_541.jpg',                 tags:['senior','og','cuddly'], desc:'Smooth and sweet, Butter lives up to her name. One of the most approachable cats in the cafe — a total lap cat at heart.' },
+  { name:'Cookie',  img:BASE+'2014/08/UNADJUSTEDNONRAW_thumb_4f3-495x400.jpg',        full:BASE+'2014/08/UNADJUSTEDNONRAW_thumb_4f3.jpg',                 tags:['senior','og','playful'], desc:'Cookie has been here since 2014. Energetic and curious, she still has plenty of zest for life despite her well-earned senior status.' },
+  { name:'Patches', img:BASE+'2014/08/IMAGE-2019-06-07-234851-495x400.jpg',           full:BASE+'2014/08/IMAGE-2019-06-07-234851.jpg',                    tags:['senior','og','shy'],  desc:'Patches is a stunning patchwork cat who prefers watching from afar. Patient visitors are sometimes rewarded with a gentle head bump.' },
+  { name:'Missy',   img:BASE+'2014/08/IMG_1670-495x400.jpg',                          full:BASE+'2014/08/IMG_1670-1030x1030.jpg',                         tags:['senior','og','cuddly'], desc:'Missy carries herself with quiet grace. A firm favourite among regulars for her calm, affectionate temperament and soft gaze.' },
+  { name:'Shoyu',   img:BASE+'2024/05/IMG_0482-495x400.jpeg',                         full:BASE+'2024/05/IMG_0482-1030x1030.jpeg',                        tags:['young','playful'],    desc:'Shoyu is a newer rescue with a rich dark coat and a curious personality. Always sniffing around and getting into everything.' }
+];
+
+var TAG_LABEL = { senior:'Senior', young:'Young', og:"OG since '14", cuddly:'Cuddly', playful:'Playful', shy:'Shy' };
+var TAG_CLASS = { senior:'tsenior', young:'tyoung', og:'tog', cuddly:'tcuddly', playful:'tplayful', shy:'tshy' };
+
+function makeTags(tags, size) {
+  return tags.map(function(t){
+    return '<span class="ctag '+TAG_CLASS[t]+'" style="font-size:'+(size||10)+'px;">'+TAG_LABEL[t]+'</span>';
+  }).join('');
+}
+
+function filterCats(f, btn) {
+  document.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  var list = f === 'all' ? CATS : CATS.filter(function(c){ return c.tags.indexOf(f) !== -1; });
+  renderCatCards(list);
+}
+
+function renderCatCards(list) {
+  document.getElementById('cat-count').textContent = 'Showing '+list.length+' of '+CATS.length+' cats';
+  document.getElementById('cat-grid').innerHTML = list.map(function(cat){
+    var idx = CATS.indexOf(cat);
+    return '<div class="cat-card" onclick="openCatModal('+idx+')">'
+      +'<div class="cat-img-wrap"><img src="'+cat.img+'" alt="'+cat.name+'" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=cat-fallback>🐱</div>\'"></div>'
+      +'<div class="cat-body">'
+      +'<div class="cat-name">'+cat.name+'</div>'
+      +'<div class="cat-tags">'+makeTags(cat.tags)+'</div>'
+      +'<div class="cat-desc-short">'+cat.desc.slice(0,60)+'…</div>'
+      +'</div></div>';
+  }).join('');
+}
+
+function openCatModal(idx) {
+  var c = CATS[idx];
+  document.getElementById('modal-img').src = c.full;
+  document.getElementById('modal-img').alt = c.name;
+  document.getElementById('modal-name').textContent = c.name;
+  document.getElementById('modal-tags').innerHTML = makeTags(c.tags, 12);
+  document.getElementById('modal-desc').textContent = c.desc;
+  document.getElementById('cat-modal').classList.add('open');
+}
+
+function closeCatModal(e) {
+  if (e.target === document.getElementById('cat-modal')) document.getElementById('cat-modal').classList.remove('open');
+}
+
+renderCatCards(CATS);
+
+/* ──────────────────────────────────────
+   AVAILABILITY DATA (replace with API)
+────────────────────────────────────── */
+var AVAILABILITY = {
+  slotOverrides: {},
+  blockedDates: [],
+  defaultCap: 8
+};
+
+function getSlots(ds) {
+  if (AVAILABILITY.slotOverrides[ds]) return AVAILABILITY.slotOverrides[ds];
+  var d = new Date(ds + 'T12:00:00');
+  var isMon = d.getDay() === 1;
+  var times = isMon
+    ? ['3:00 pm','3:30 pm','4:00 pm','4:30 pm','5:00 pm','5:30 pm','6:00 pm','6:30 pm','7:00 pm','7:30 pm']
+    : ['10:00 am','10:30 am','11:00 am','11:30 am','12:00 pm','12:30 pm','1:00 pm','1:30 pm','2:00 pm','2:30 pm','3:00 pm','3:30 pm','4:00 pm','4:30 pm','5:00 pm','5:30 pm','6:00 pm','6:30 pm','7:00 pm','7:30 pm'];
+  return times.map(function(t){ return { time:t, cap:AVAILABILITY.defaultCap, enabled:true, booked:0 }; });
+}
+
+/* ──────────────────────────────────────
+   BOOKING FLOW
+────────────────────────────────────── */
+var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var DAY_SHORT = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+var TODAY = new Date();
+
+var bs = { step:1, date:null, pax:2, session:{dur:'2hr',price:22}, time:null, art:false, terms:false, calY:0, calM:0 };
+
+function initBooking() {
+  bs.calY = TODAY.getFullYear(); bs.calM = TODAY.getMonth();
+  bRenderCal();
+}
+
+function bRenderCal() {
+  document.getElementById('b-cal-label').textContent = MONTHS[bs.calM] + ' ' + bs.calY;
+  document.getElementById('b-cal-heads').innerHTML = DAY_SHORT.map(function(d){ return '<div class="cal-head">'+d+'</div>'; }).join('');
+  var first = new Date(bs.calY, bs.calM, 1).getDay();
+  var dim = new Date(bs.calY, bs.calM+1, 0).getDate();
+  var html = '';
+  for (var i=0;i<first;i++) html += '<div class="cal-day cd-empty"></div>';
+  for (var d=1;d<=dim;d++) {
+    var ds = bs.calY+'-'+String(bs.calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var dt = new Date(bs.calY, bs.calM, d);
+    var past = dt < new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate());
+    var blocked = AVAILABILITY.blockedDates.indexOf(ds) !== -1;
+    var isToday = dt.toDateString() === TODAY.toDateString();
+    var sel = bs.date === ds;
+    var cls = 'cal-day' + (past||blocked ? (blocked?' cd-blocked':' cd-past') : '') + (isToday&&!sel?' cd-today':'') + (sel?' cd-sel':'');
+    var onclick = (past||blocked) ? '' : 'onclick="bSelectDate(\''+ds+'\')"';
+    html += '<div class="'+cls+'" '+onclick+'>'+d+'</div>';
+  }
+  document.getElementById('b-cal-body').innerHTML = html;
+}
+
+function bSelectDate(ds) {
+  bs.date = ds; bs.time = null;
+  document.getElementById('bbn1').disabled = false;
+  bRenderCal();
+}
+function bPrevMonth(){ if(bs.calM===0){bs.calM=11;bs.calY--;}else bs.calM--; bRenderCal(); }
+function bNextMonth(){ if(bs.calM===11){bs.calM=0;bs.calY++;}else bs.calM++; bRenderCal(); }
+function bChangePax(d){ bs.pax=Math.max(1,Math.min(10,bs.pax+d)); document.getElementById('b-pax').textContent=bs.pax; }
+function bSelectSession(el){ document.querySelectorAll('.sopt').forEach(function(e){e.classList.remove('selected');}); el.classList.add('selected'); bs.session={dur:el.dataset.dur,price:parseInt(el.dataset.price)}; }
+function bToggleAddon(){ bs.art=!bs.art; document.getElementById('b-addon-art').classList.toggle('selected',bs.art); document.getElementById('b-chk-art').classList.toggle('checked',bs.art); }
+function bToggleTerms(){ bs.terms=!bs.terms; document.getElementById('b-chk-terms').classList.toggle('checked',bs.terms); bCheckForm(); }
+function bCheckForm(){ var n=document.getElementById('bf-name').value.trim(),e=document.getElementById('bf-email').value.trim(),p=document.getElementById('bf-phone').value.trim(); document.getElementById('bbn4').disabled=!(n&&e&&p&&bs.terms); }
+
+function bRenderTimes() {
+  var slots = getSlots(bs.date);
+  var d = new Date(bs.date+'T12:00:00').getDay();
+  var hours = d===1 ? 'Mon: 3:00 pm – 9:00 pm' : 'Hours: 10:00 am – 10:00 pm';
+  document.getElementById('b-time-sub').textContent = fmtDate(bs.date) + ' · ' + hours;
+  document.getElementById('b-time-grid').innerHTML = slots.map(function(s){
+    var avail = s.cap - s.booked;
+    var full = !s.enabled || avail <= 0;
+    var sel = bs.time === s.time;
+    var cls = 'topt' + (full?' tunavail':'') + (sel?' selected':'');
+    var spots = full ? 'Full' : (avail + ' spots');
+    var onclick = full ? '' : 'onclick="bSelectTime(\''+s.time+'\')"';
+    return '<div class="'+cls+'" '+onclick+'><div>'+s.time+'</div><div class="topt-spots">'+spots+'</div></div>';
+  }).join('');
+}
+
+function bSelectTime(t){ bs.time=t; document.getElementById('bbn3').disabled=false; bRenderTimes(); }
+
+function bCalcTotal(){ return (bs.session.price + (bs.art?40:0)) * bs.pax; }
+
+function fmtDate(ds) {
+  var d = new Date(ds+'T12:00:00');
+  return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]+', '+d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();
+}
+
+function bBuildSummary() {
+  var artLine = bs.art ? '<div class="sum-row"><span class="sum-lbl">Art jamming ×'+bs.pax+'</span><span class="sum-val">S$'+(40*bs.pax)+'</span></div>' : '';
+  return '<div class="sum-row"><span class="sum-lbl">Date</span><span class="sum-val">'+fmtDate(bs.date)+'</span></div>'
+    +'<div class="sum-row"><span class="sum-lbl">Time</span><span class="sum-val">'+(bs.time||'')+'</span></div>'
+    +'<div class="sum-row"><span class="sum-lbl">Guests</span><span class="sum-val">'+bs.pax+'</span></div>'
+    +'<div class="sum-row"><span class="sum-lbl">Session</span><span class="sum-val">'+(bs.session.dur==='2hr'?'2 hours':'Full day')+'</span></div>'
+    +'<div class="sum-div"></div>'
+    +'<div class="sum-row"><span class="sum-lbl">Entry ×'+bs.pax+'</span><span class="sum-val">S$'+(bs.session.price*bs.pax)+'</span></div>'
+    +artLine
+    +'<div class="sum-div"></div>'
+    +'<div class="sum-row sum-total"><span class="sum-lbl">Total</span><span class="sum-val">S$'+bCalcTotal()+'</span></div>';
+}
+
+function bGoTo(n) {
+  document.getElementById('bs'+bs.step).classList.remove('visible');
+  bs.step = n;
+  document.getElementById('bs'+n).classList.add('visible');
+  bUpdateProgress();
+  if (n===3) bRenderTimes();
+  if (n===4) document.getElementById('b-summary').innerHTML = bBuildSummary();
+  document.getElementById('booking').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function bUpdateProgress() {
+  for (var i=1;i<=4;i++) {
+    var dot = document.getElementById('bdot'+i);
+    var lbl = document.getElementById('blbl'+i);
+    dot.className = 'sdot '+(i<bs.step?'done':i===bs.step?'active':'inactive');
+    dot.textContent = i<bs.step ? '✓' : i;
+    lbl.className = 'slbl'+(i===bs.step?' active':'');
+    if (i<4) { var ln=document.getElementById('bline'+i+(i+1)); if(ln) ln.className='sline'+(i<bs.step?' done':''); }
+  }
+}
+
+function bSubmit() {
+  // TODO: POST to your backend API here
+  // fetch('/api/bookings', { method:'POST', body: JSON.stringify({ date:bs.date, time:bs.time, pax:bs.pax, ... }) })
+  document.getElementById('b-confirm-sum').innerHTML = bBuildSummary();
+  bGoTo(5);
+}
+
+function bReset() {
+  document.getElementById('bs'+bs.step).classList.remove('visible');
+  bs = { step:1, date:null, pax:2, session:{dur:'2hr',price:22}, time:null, art:false, terms:false, calY:TODAY.getFullYear(), calM:TODAY.getMonth() };
+  document.getElementById('bs1').classList.add('visible');
+  bUpdateProgress(); bRenderCal();
+  document.getElementById('bbn1').disabled = true;
+  document.getElementById('b-pax').textContent = '2';
+  document.querySelectorAll('.sopt').forEach(function(e,i){ e.classList.toggle('selected',i===0); });
+  document.getElementById('b-addon-art').classList.remove('selected');
+  document.getElementById('b-chk-art').classList.remove('checked');
+  document.getElementById('b-chk-terms').classList.remove('checked');
+  ['bf-name','bf-email','bf-phone','bf-special'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('bbn4').disabled = true;
+}
+
+initBooking();
+</script>
+</body>
+</html>
