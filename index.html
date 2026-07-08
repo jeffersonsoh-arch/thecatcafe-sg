@@ -13,8 +13,6 @@
     --rust-pale: #FAECE7;
     --indigo: #3C3489;
     --indigo-pale: #EEEDFE;
-    --green-pale: #EAF3DE;
-    --green-dark: #3B6D11;
     --text: #1a1a1a;
     --text-2: #555;
     --text-3: #999;
@@ -30,12 +28,7 @@
   html { scroll-behavior: smooth; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); font-size: 15px; line-height: 1.6; }
   a { color: inherit; text-decoration: none; }
-  input, select, textarea, button { font-family: inherit; font-size: 14px; }
-  input[type=text], input[type=email], input[type=tel], input[type=number], input[type=date] {
-    width: 100%; padding: 9px 12px; border: 0.5px solid var(--border); border-radius: var(--radius-sm);
-    background: var(--bg); color: var(--text); outline: none; transition: border-color 0.15s;
-  }
-  input:focus { border-color: var(--rust); }
+  button { font-family: inherit; font-size: 14px; }
 
   /* ── NAV ── */
   nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 0.5px solid var(--border); }
@@ -66,7 +59,7 @@
   .hero h1 em { color: var(--rust); font-style: normal; }
   .hero p { font-size: 17px; color: var(--text-2); max-width: 440px; margin: 0 auto 28px; line-height: 1.7; }
   .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: none; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 24px; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: none; text-decoration: none; }
   .btn-rust { background: var(--rust); color: #fff; }
   .btn-rust:hover { opacity: 0.88; }
   .btn-outline { background: #fff; color: var(--text); border: 0.5px solid var(--border); }
@@ -162,8 +155,6 @@
   .mission p strong { color: var(--rust); font-weight: 600; }
 
   /* ── BOOKING ── */
-  #booking { background: var(--bg-2); }
-  .booking-wrap { max-width: 560px; margin: 0 auto; }
   .progress-wrap { margin-bottom: 28px; }
   .steps-labels { display: flex; justify-content: space-between; margin-bottom: 6px; }
   .slbl { font-size: 11px; color: var(--text-3); width: 26px; text-align: center; }
@@ -284,9 +275,9 @@
       <a href="#cats">Our cats</a>
       <a href="#visit">Visit</a>
       <a href="#pricing">Pricing</a>
-      <a href="#booking">Book</a>
+      <a href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Book</a>
     </div>
-    <button class="nav-cta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Reserve a spot</button>
+    <a class="nav-cta" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
     <button class="nav-mobile-btn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -300,8 +291,8 @@
       <h1>Coffee, cats &amp;<br><em>good company</em></h1>
       <p>All 15 of our resident cats are rescued strays, living their best lives — and they'd love to meet you.</p>
       <div class="hero-btns">
-        <button class="btn btn-rust" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Reserve a spot</button>
-        <button class="btn btn-outline" onclick="document.getElementById('cats').scrollIntoView({behavior:'smooth'})">Meet our cats</button>
+        <a class="btn btn-rust" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+        <a class="btn btn-outline" href="#cats">Meet our cats</a>
       </div>
       <div class="hero-cats">
         <div class="hero-cat-face">🐱</div>
@@ -427,127 +418,6 @@
 
 </div><!-- /page -->
 
-<!-- BOOKING -->
-<section id="booking">
-  <div class="page">
-    <div class="section-eyebrow">Reservations</div>
-    <div class="section-title">Book your visit</div>
-    <div class="section-sub">Weekday walk-ins welcome, but a reservation guarantees your spot — especially on weekends.</div>
-    <div class="booking-wrap">
-      <div class="progress-wrap">
-        <div class="steps-labels">
-          <div class="slbl active" id="blbl1">Date</div>
-          <div class="slbl" id="blbl2">Group</div>
-          <div class="slbl" id="blbl3">Time</div>
-          <div class="slbl" id="blbl4">Info</div>
-        </div>
-        <div class="progress">
-          <div class="sdot active" id="bdot1">1</div>
-          <div class="sline" id="bline12"></div>
-          <div class="sdot inactive" id="bdot2">2</div>
-          <div class="sline" id="bline23"></div>
-          <div class="sdot inactive" id="bdot3">3</div>
-          <div class="sline" id="bline34"></div>
-          <div class="sdot inactive" id="bdot4">4</div>
-        </div>
-      </div>
-
-      <!-- Step 1: Date -->
-      <div class="bscreen visible" id="bs1">
-        <div class="bs-title">Pick a date</div>
-        <div class="bs-sub">Reservations are recommended on weekends and public holidays.</div>
-        <div class="cal-wrap">
-          <div class="cal-nav">
-            <button class="cal-nav-btn" onclick="bPrevMonth()">&#8249;</button>
-            <span class="cal-month" id="b-cal-label"></span>
-            <button class="cal-nav-btn" onclick="bNextMonth()">&#8250;</button>
-          </div>
-          <div class="cal-grid" id="b-cal-heads"></div>
-          <div class="cal-grid" id="b-cal-body"></div>
-        </div>
-        <div class="btn-row"><button class="btn-next" id="bbn1" onclick="bGoTo(2)" disabled>Next: group size</button></div>
-      </div>
-
-      <!-- Step 2: Group -->
-      <div class="bscreen" id="bs2">
-        <div class="bs-title">Your group</div>
-        <div class="bs-sub">Each guest gets one complimentary soft drink included in entry.</div>
-        <div class="field">
-          <label>Number of guests</label>
-          <div class="pax-row">
-            <button class="pax-btn" onclick="bChangePax(-1)">−</button>
-            <span class="pax-val" id="b-pax">2</span>
-            <button class="pax-btn" onclick="bChangePax(1)">+</button>
-            <span style="font-size:13px;color:var(--text-3);margin-left:6px;">guests (max 10)</span>
-          </div>
-          <div class="hint">Min age 4 · Children under 12 must be accompanied by an adult</div>
-        </div>
-        <div class="field">
-          <label>Session length</label>
-          <div class="session-grid">
-            <div class="sopt selected" data-dur="2hr" data-price="22" onclick="bSelectSession(this)"><div class="sopt-dur">2 hours</div><div class="sopt-price">S$22 / person</div></div>
-            <div class="sopt" data-dur="full" data-price="50" onclick="bSelectSession(this)"><div class="sopt-dur">Full day</div><div class="sopt-price">S$50 / person</div></div>
-          </div>
-          <div class="hint">Extensions available at S$5.50 per 30 mins per person</div>
-        </div>
-        <div class="field">
-          <label>Add-ons <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
-          <div class="addon-card" id="b-addon-art" onclick="bToggleAddon()">
-            <div class="addon-icon-wrap">🎨</div>
-            <div style="flex:1;"><div class="addon-name">Art jamming</div><div class="addon-desc">Unguided · all materials included · no experience needed</div></div>
-            <div class="addon-price">+S$40 / person</div>
-            <div class="chk" id="b-chk-art"><div class="chk-tick"></div></div>
-          </div>
-        </div>
-        <div class="btn-row">
-          <button class="btn-back" onclick="bGoTo(1)">Back</button>
-          <button class="btn-next" onclick="bGoTo(3)">Next: choose a time</button>
-        </div>
-      </div>
-
-      <!-- Step 3: Time -->
-      <div class="bscreen" id="bs3">
-        <div class="bs-title">Choose a time</div>
-        <div class="bs-sub" id="b-time-sub"></div>
-        <div class="time-grid" id="b-time-grid"></div>
-        <div class="btn-row" style="margin-top:16px;">
-          <button class="btn-back" onclick="bGoTo(2)">Back</button>
-          <button class="btn-next" id="bbn3" onclick="bGoTo(4)" disabled>Next: your details</button>
-        </div>
-      </div>
-
-      <!-- Step 4: Details -->
-      <div class="bscreen" id="bs4">
-        <div class="bs-title">Your details</div>
-        <div class="sum-card" id="b-summary"></div>
-        <div class="field"><label>Full name</label><input type="text" id="bf-name" placeholder="e.g. Sarah Tan" oninput="bCheckForm()"></div>
-        <div class="field"><label>Email</label><input type="email" id="bf-email" placeholder="you@example.com" oninput="bCheckForm()"></div>
-        <div class="field"><label>Mobile number</label><input type="tel" id="bf-phone" placeholder="+65 9123 4567" oninput="bCheckForm()"></div>
-        <div class="field"><label>Special requests <span style="font-weight:400;color:var(--text-3);">(optional)</span></label><input type="text" id="bf-special" placeholder="e.g. birthday celebration, accessibility needs"></div>
-        <div class="terms-row" onclick="bToggleTerms()">
-          <div class="chk" id="b-chk-terms"><div class="chk-tick"></div></div>
-          <div class="terms-text">I agree to the house rules: min age 4, children under 12 with adult, no outside food, arrive on time (10 min grace period).</div>
-        </div>
-        <div class="btn-row">
-          <button class="btn-back" onclick="bGoTo(3)">Back</button>
-          <button class="btn-next" id="bbn4" onclick="bSubmit()" disabled>Confirm booking</button>
-        </div>
-      </div>
-
-      <!-- Step 5: Confirmed -->
-      <div class="bscreen" id="bs5">
-        <div class="confirm-wrap">
-          <div class="confirm-icon">✓</div>
-          <div class="confirm-title">You're booked!</div>
-          <div class="confirm-sub">A confirmation has been sent to your email. We can't wait to see you — and neither can the cats.</div>
-        </div>
-        <div class="sum-card" id="b-confirm-sum"></div>
-        <div class="notice">Hand sanitisation required on entry. Handle cats gently — do not lift them without staff assistance.</div>
-        <div style="text-align:center;"><button style="background:none;border:none;font-size:13px;color:var(--text-3);cursor:pointer;" onclick="bReset()">Make another booking</button></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
@@ -645,155 +515,6 @@ function closeCatModal(e) {
 
 renderCatCards(CATS);
 
-/* ──────────────────────────────────────
-   AVAILABILITY DATA (replace with API)
-────────────────────────────────────── */
-var AVAILABILITY = {
-  slotOverrides: {},
-  blockedDates: [],
-  defaultCap: 8
-};
-
-function getSlots(ds) {
-  if (AVAILABILITY.slotOverrides[ds]) return AVAILABILITY.slotOverrides[ds];
-  var d = new Date(ds + 'T12:00:00');
-  var isMon = d.getDay() === 1;
-  var times = isMon
-    ? ['3:00 pm','3:30 pm','4:00 pm','4:30 pm','5:00 pm','5:30 pm','6:00 pm','6:30 pm','7:00 pm','7:30 pm']
-    : ['10:00 am','10:30 am','11:00 am','11:30 am','12:00 pm','12:30 pm','1:00 pm','1:30 pm','2:00 pm','2:30 pm','3:00 pm','3:30 pm','4:00 pm','4:30 pm','5:00 pm','5:30 pm','6:00 pm','6:30 pm','7:00 pm','7:30 pm'];
-  return times.map(function(t){ return { time:t, cap:AVAILABILITY.defaultCap, enabled:true, booked:0 }; });
-}
-
-/* ──────────────────────────────────────
-   BOOKING FLOW
-────────────────────────────────────── */
-var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-var DAY_SHORT = ['Su','Mo','Tu','We','Th','Fr','Sa'];
-var TODAY = new Date();
-
-var bs = { step:1, date:null, pax:2, session:{dur:'2hr',price:22}, time:null, art:false, terms:false, calY:0, calM:0 };
-
-function initBooking() {
-  bs.calY = TODAY.getFullYear(); bs.calM = TODAY.getMonth();
-  bRenderCal();
-}
-
-function bRenderCal() {
-  document.getElementById('b-cal-label').textContent = MONTHS[bs.calM] + ' ' + bs.calY;
-  document.getElementById('b-cal-heads').innerHTML = DAY_SHORT.map(function(d){ return '<div class="cal-head">'+d+'</div>'; }).join('');
-  var first = new Date(bs.calY, bs.calM, 1).getDay();
-  var dim = new Date(bs.calY, bs.calM+1, 0).getDate();
-  var html = '';
-  for (var i=0;i<first;i++) html += '<div class="cal-day cd-empty"></div>';
-  for (var d=1;d<=dim;d++) {
-    var ds = bs.calY+'-'+String(bs.calM+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    var dt = new Date(bs.calY, bs.calM, d);
-    var past = dt < new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate());
-    var blocked = AVAILABILITY.blockedDates.indexOf(ds) !== -1;
-    var isToday = dt.toDateString() === TODAY.toDateString();
-    var sel = bs.date === ds;
-    var cls = 'cal-day' + (past||blocked ? (blocked?' cd-blocked':' cd-past') : '') + (isToday&&!sel?' cd-today':'') + (sel?' cd-sel':'');
-    var onclick = (past||blocked) ? '' : 'onclick="bSelectDate(\''+ds+'\')"';
-    html += '<div class="'+cls+'" '+onclick+'>'+d+'</div>';
-  }
-  document.getElementById('b-cal-body').innerHTML = html;
-}
-
-function bSelectDate(ds) {
-  bs.date = ds; bs.time = null;
-  document.getElementById('bbn1').disabled = false;
-  bRenderCal();
-}
-function bPrevMonth(){ if(bs.calM===0){bs.calM=11;bs.calY--;}else bs.calM--; bRenderCal(); }
-function bNextMonth(){ if(bs.calM===11){bs.calM=0;bs.calY++;}else bs.calM++; bRenderCal(); }
-function bChangePax(d){ bs.pax=Math.max(1,Math.min(10,bs.pax+d)); document.getElementById('b-pax').textContent=bs.pax; }
-function bSelectSession(el){ document.querySelectorAll('.sopt').forEach(function(e){e.classList.remove('selected');}); el.classList.add('selected'); bs.session={dur:el.dataset.dur,price:parseInt(el.dataset.price)}; }
-function bToggleAddon(){ bs.art=!bs.art; document.getElementById('b-addon-art').classList.toggle('selected',bs.art); document.getElementById('b-chk-art').classList.toggle('checked',bs.art); }
-function bToggleTerms(){ bs.terms=!bs.terms; document.getElementById('b-chk-terms').classList.toggle('checked',bs.terms); bCheckForm(); }
-function bCheckForm(){ var n=document.getElementById('bf-name').value.trim(),e=document.getElementById('bf-email').value.trim(),p=document.getElementById('bf-phone').value.trim(); document.getElementById('bbn4').disabled=!(n&&e&&p&&bs.terms); }
-
-function bRenderTimes() {
-  var slots = getSlots(bs.date);
-  var d = new Date(bs.date+'T12:00:00').getDay();
-  var hours = d===1 ? 'Mon: 3:00 pm – 9:00 pm' : 'Hours: 10:00 am – 10:00 pm';
-  document.getElementById('b-time-sub').textContent = fmtDate(bs.date) + ' · ' + hours;
-  document.getElementById('b-time-grid').innerHTML = slots.map(function(s){
-    var avail = s.cap - s.booked;
-    var full = !s.enabled || avail <= 0;
-    var sel = bs.time === s.time;
-    var cls = 'topt' + (full?' tunavail':'') + (sel?' selected':'');
-    var spots = full ? 'Full' : (avail + ' spots');
-    var onclick = full ? '' : 'onclick="bSelectTime(\''+s.time+'\')"';
-    return '<div class="'+cls+'" '+onclick+'><div>'+s.time+'</div><div class="topt-spots">'+spots+'</div></div>';
-  }).join('');
-}
-
-function bSelectTime(t){ bs.time=t; document.getElementById('bbn3').disabled=false; bRenderTimes(); }
-
-function bCalcTotal(){ return (bs.session.price + (bs.art?40:0)) * bs.pax; }
-
-function fmtDate(ds) {
-  var d = new Date(ds+'T12:00:00');
-  return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()]+', '+d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();
-}
-
-function bBuildSummary() {
-  var artLine = bs.art ? '<div class="sum-row"><span class="sum-lbl">Art jamming ×'+bs.pax+'</span><span class="sum-val">S$'+(40*bs.pax)+'</span></div>' : '';
-  return '<div class="sum-row"><span class="sum-lbl">Date</span><span class="sum-val">'+fmtDate(bs.date)+'</span></div>'
-    +'<div class="sum-row"><span class="sum-lbl">Time</span><span class="sum-val">'+(bs.time||'')+'</span></div>'
-    +'<div class="sum-row"><span class="sum-lbl">Guests</span><span class="sum-val">'+bs.pax+'</span></div>'
-    +'<div class="sum-row"><span class="sum-lbl">Session</span><span class="sum-val">'+(bs.session.dur==='2hr'?'2 hours':'Full day')+'</span></div>'
-    +'<div class="sum-div"></div>'
-    +'<div class="sum-row"><span class="sum-lbl">Entry ×'+bs.pax+'</span><span class="sum-val">S$'+(bs.session.price*bs.pax)+'</span></div>'
-    +artLine
-    +'<div class="sum-div"></div>'
-    +'<div class="sum-row sum-total"><span class="sum-lbl">Total</span><span class="sum-val">S$'+bCalcTotal()+'</span></div>';
-}
-
-function bGoTo(n) {
-  document.getElementById('bs'+bs.step).classList.remove('visible');
-  bs.step = n;
-  document.getElementById('bs'+n).classList.add('visible');
-  bUpdateProgress();
-  if (n===3) bRenderTimes();
-  if (n===4) document.getElementById('b-summary').innerHTML = bBuildSummary();
-  document.getElementById('booking').scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-function bUpdateProgress() {
-  for (var i=1;i<=4;i++) {
-    var dot = document.getElementById('bdot'+i);
-    var lbl = document.getElementById('blbl'+i);
-    dot.className = 'sdot '+(i<bs.step?'done':i===bs.step?'active':'inactive');
-    dot.textContent = i<bs.step ? '✓' : i;
-    lbl.className = 'slbl'+(i===bs.step?' active':'');
-    if (i<4) { var ln=document.getElementById('bline'+i+(i+1)); if(ln) ln.className='sline'+(i<bs.step?' done':''); }
-  }
-}
-
-function bSubmit() {
-  // TODO: POST to your backend API here
-  // fetch('/api/bookings', { method:'POST', body: JSON.stringify({ date:bs.date, time:bs.time, pax:bs.pax, ... }) })
-  document.getElementById('b-confirm-sum').innerHTML = bBuildSummary();
-  bGoTo(5);
-}
-
-function bReset() {
-  document.getElementById('bs'+bs.step).classList.remove('visible');
-  bs = { step:1, date:null, pax:2, session:{dur:'2hr',price:22}, time:null, art:false, terms:false, calY:TODAY.getFullYear(), calM:TODAY.getMonth() };
-  document.getElementById('bs1').classList.add('visible');
-  bUpdateProgress(); bRenderCal();
-  document.getElementById('bbn1').disabled = true;
-  document.getElementById('b-pax').textContent = '2';
-  document.querySelectorAll('.sopt').forEach(function(e,i){ e.classList.toggle('selected',i===0); });
-  document.getElementById('b-addon-art').classList.remove('selected');
-  document.getElementById('b-chk-art').classList.remove('checked');
-  document.getElementById('b-chk-terms').classList.remove('checked');
-  ['bf-name','bf-email','bf-phone','bf-special'].forEach(function(id){ document.getElementById(id).value=''; });
-  document.getElementById('bbn4').disabled = true;
-}
-
-initBooking();
 </script>
 </body>
 </html>
