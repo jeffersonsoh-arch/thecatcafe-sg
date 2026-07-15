@@ -3,8 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Cat Cafe Singapore – Bugis</title>
-<meta name="description" content="Singapore's original cat cafe since 2014. 15 rescued cats, coffee, food and art jamming at Bugis.">
+<title>The Cat Cafe Singapore | Cat Café Bugis | Rescued Cats, Coffee &amp; Art Jamming</title>
+<meta name="description" content="Visit Singapore's original cat café since 2014 at Bugis. Meet 13 rescued cats, enjoy coffee, food and art jamming. Book your visit today!">
+<meta name="keywords" content="cat cafe Singapore, cat café Bugis, Singapore cat café, cat cafe Bugis, cat coffee Singapore, rescue cats Singapore, art jamming cat cafe, things to do Bugis, pet cafe Singapore">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="The Cat Cafe Singapore | Bugis">
+<meta property="og:description" content="Singapore's original cat café since 2014. Meet 13 rescued cats, enjoy coffee, food and art jamming sessions at Bugis.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.thecatcafe.sg">
+<meta property="og:image" content="https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/cats/mochi.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Cat Cafe Singapore | Bugis">
+<meta name="twitter:description" content="Singapore's original cat café since 2014. 13 rescued cats, coffee, food and art jamming at Bugis.">
+<link rel="canonical" href="https://www.thecatcafe.sg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CafeOrCoffeeShop",
+  "name": "The Cat Cafe Singapore",
+  "description": "Singapore's original cat café since 2014 at Bugis. 13 rescued cats, coffee, food and art jamming.",
+  "url": "https://www.thecatcafe.sg",
+  "telephone": "+6563386815",
+  "email": "info@thecatcafe.sg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "241B Victoria Street, Level 3",
+    "addressLocality": "Singapore",
+    "postalCode": "188030",
+    "addressCountry": "SG"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 1.2994, "longitude": 103.8554 },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "15:00", "closes": "21:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "21:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday","Sunday"], "opens": "10:00", "closes": "22:00" }
+  ],
+  "priceRange": "S$22–S$50",
+  "servesCuisine": ["Coffee", "Western", "Desserts"],
+  "image": "https://www.thecatcafe.sg"
+}
+</script>
 <style>
   :root {
     --cream: #f5efe8;
@@ -263,7 +301,50 @@
     .art-banner p { max-width: 100%; }
     .footer-inner { flex-direction: column; text-align: center; }
   }
+
+
+  /* ── ART PHOTOS ── */
+  .art-photos { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; }
+  .art-photo-card { border-radius: var(--radius-sm); overflow: hidden; background: var(--bg-2); border: 0.5px solid var(--border-light); }
+  .art-photo-wrap { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: var(--indigo-pale); }
+  .art-photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+  .art-photo-card:hover .art-photo-wrap img { transform: scale(1.04); }
+  .art-photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 36px; background: var(--indigo-pale); }
+  .art-photo-label { font-size: 12px; color: var(--text-2); padding: 8px 12px; text-align: center; }
+
+  /* ── EVENTS ── */
+  .events-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .event-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: transform 0.15s, box-shadow 0.15s; }
+  .event-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .event-img-wrap { width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--cream); }
+  .event-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .event-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 40px; background: var(--cream); }
+  .event-body { padding: 16px 18px 18px; }
+  .event-tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: var(--rust-pale); color: var(--rust-dark); margin-bottom: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .event-name { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+  .event-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; margin-bottom: 14px; }
+  .event-details { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+  .event-detail { font-size: 12px; color: var(--text-3); }
+  .event-detail strong { color: var(--text); }
+  .event-cta { display: inline-flex; align-items: center; background: var(--rust); color: #fff; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; text-decoration: none; border: none; cursor: pointer; }
+  .event-cta:hover { opacity: 0.88; }
+
+  /* ── MENU ── */
+  .menu-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .mtab { font-size: 12px; font-weight: 500; padding: 5px 16px; border-radius: 20px; border: 0.5px solid var(--border); background: var(--bg); color: var(--text-2); cursor: pointer; transition: all 0.15s; }
+  .mtab:hover, .mtab.active { background: var(--rust); color: #fff; border-color: var(--rust); }
+  .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .menu-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--bg); border: 0.5px solid var(--border-light); border-radius: var(--radius-sm); }
+  .menu-item:hover { border-color: var(--border); }
+  .menu-item-left { flex: 1; }
+  .menu-item-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .menu-item-desc { font-size: 12px; color: var(--text-3); line-height: 1.5; }
+  .menu-item-price { font-size: 14px; font-weight: 500; color: var(--rust); flex-shrink: 0; white-space: nowrap; }
+  .menu-note { font-size: 12px; color: var(--text-3); margin-top: 16px; line-height: 1.6; }
+  .menu-cat-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; margin-top: 4px; }
+
 </style>
+<script src="data.js"></script>
 </head>
 <body>
 
@@ -273,9 +354,11 @@
     <div class="nav-logo">The Cat <span>Cafe</span></div>
     <div class="nav-links">
       <a href="#cats">Our cats</a>
+      <a href="#menu">Menu</a>
+      <a href="#artjam">Art jamming</a>
+      <a href="#events">Events</a>
       <a href="#visit">Visit</a>
-      <a href="#pricing">Pricing</a>
-      <a href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Book</a>
+      <a id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Book</a>
     </div>
     <a class="nav-cta" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
     <button class="nav-mobile-btn" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -289,7 +372,7 @@
     <div class="hero">
       <div class="hero-badge">🐾 Bugis · Singapore's original cat cafe since 2014</div>
       <h1>Coffee, cats &amp;<br><em>good company</em></h1>
-      <p>All 15 of our resident cats are rescued strays, living their best lives — and they'd love to meet you.</p>
+      <p>Singapore's original cat café since 2014. Meet 13 rescued cats, enjoy coffee, food and art jamming in the heart of Bugis.</p>
       <div class="hero-btns">
         <a class="btn btn-rust" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
         <a class="btn btn-outline" href="#cats">Meet our cats</a>
@@ -303,7 +386,7 @@
       </div>
     </div>
     <div class="stats">
-      <div class="stat"><div class="stat-n">15</div><div class="stat-l">rescued cats</div></div>
+      <div class="stat"><div class="stat-n">13</div><div class="stat-l">rescued cats</div></div>
       <div class="stat"><div class="stat-n">10+</div><div class="stat-l">years open</div></div>
       <div class="stat"><div class="stat-n">100%</div><div class="stat-l">adopted strays</div></div>
     </div>
@@ -326,16 +409,7 @@
         </div>
         <a href="https://maps.google.com/?q=241B+Victoria+Street+Singapore" target="_blank"><button class="map-btn">Open in maps ↗</button></a>
       </div>
-      <div class="hours-grid">
-        <div>
-          <div class="hour-row"><span class="hour-day">Monday</span><span class="hour-time">3:00 pm – 9:00 pm</span></div>
-          <div class="hour-row"><span class="hour-day">Tuesday – Friday</span><span class="hour-time">10:00 am – 9:00 pm</span></div>
-        </div>
-        <div>
-          <div class="hour-row"><span class="hour-day">Saturday – Sunday</span><span class="hour-time">10:00 am – 10:00 pm</span></div>
-          <div class="hour-row"><span class="hour-day">Public holidays</span><span class="hour-time">10:00 am – 10:00 pm</span></div>
-        </div>
-      </div>
+      <div class="hours-grid" id="hours-display"></div>
     </div>
   </section>
 
@@ -344,24 +418,7 @@
     <div class="section-eyebrow">Pricing</div>
     <div class="section-title">Simple, transparent pricing</div>
     <div class="section-sub">Entry includes one complimentary soft drink. Extend anytime, subject to availability.</div>
-    <div class="pricing-card">
-      <div class="price-row">
-        <div><div class="price-label">First 2 hours</div><div class="price-note">includes 1 complimentary soft drink</div></div>
-        <div class="price-val">S$22</div>
-      </div>
-      <div class="price-row">
-        <div><div class="price-label">Every additional 30 mins</div></div>
-        <div class="price-val">S$5.50</div>
-      </div>
-      <div class="price-row">
-        <div><div class="price-label">Full day pass</div><div class="price-note">1 free drink of your choice</div></div>
-        <div class="price-val">S$50</div>
-      </div>
-      <div class="price-row">
-        <div><div class="price-label">Children under 1</div></div>
-        <div class="price-val">Free</div>
-      </div>
-    </div>
+    <div class="pricing-card" id="pricing-display"></div>
     <div class="features" style="margin-top:16px;">
       <div class="feat"><div class="feat-icon">☕</div><div><div class="feat-title">Coffee &amp; food</div><div class="feat-desc">Lattes, teas, hot meals, pastries &amp; desserts</div></div></div>
       <div class="feat"><div class="feat-icon">🎨</div><div><div class="feat-title">Art jamming</div><div class="feat-desc">Paint with cats — add-on available, all materials included</div></div></div>
@@ -375,13 +432,48 @@
       </div>
       <a href="https://wa.me/6580808719" target="_blank"><button class="art-btn">Book via WhatsApp</button></a>
     </div>
+
+    <div id="artjam" style="scroll-margin-top:64px;"></div>
+    <!-- ART JAMMING PHOTOS -->
+    <div class="art-photos" id="art-photos">
+      <div class="art-photo-card">
+        <div class="art-photo-wrap"><img src="https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/artjam/artjam1.jpg" alt="Art jamming with cats at The Cat Cafe Singapore" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>🎨</div>'"></div>
+        <div class="art-photo-label">Paint while the cats wander by</div>
+      </div>
+      <div class="art-photo-card">
+        <div class="art-photo-wrap"><img src="https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/artjam/artjam2.jpg" alt="Canvas art jamming session cat cafe Bugis" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>🖌️</div>'"></div>
+        <div class="art-photo-label">All materials included, no experience needed</div>
+      </div>
+      <div class="art-photo-card">
+        <div class="art-photo-wrap"><img src="https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/artjam/artjam3.jpg" alt="Friends art jamming together at cat cafe Singapore" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>🐱</div>'"></div>
+        <div class="art-photo-label">Great for groups, dates &amp; team bonding</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="section-eyebrow">Food &amp; drinks</div>
+    <div class="section-title">What's on the menu</div>
+    <div class="section-sub">Order at the counter. Entry includes one complimentary canned drink. Whole day pass includes 2 complimentary drinks of any choice.</div>
+    <div class="menu-tabs">
+      <button class="mtab active" onclick="showMenu('all',this)">All</button>
+      <button class="mtab" onclick="showMenu('topup',this)">Top Up Drinks</button>
+      <button class="mtab" onclick="showMenu('coffee',this)">Coffee</button>
+      <button class="mtab" onclick="showMenu('drinks',this)">Drinks</button>
+      <button class="mtab" onclick="showMenu('mains',this)">Mains</button>
+      <button class="mtab" onclick="showMenu('desserts',this)">Desserts</button>
+    </div>
+    <div class="menu-grid" id="menu-grid"></div>
+    <div class="menu-note">💡 Top Up prices apply when upgrading your included drink. Coffee and other drinks can be ordered separately at the listed prices. · Not halal-certified.</div>
   </section>
 
   <!-- CAT PROFILES -->
   <section id="cats">
     <div class="section-eyebrow">The crew</div>
     <div class="section-title">Meet our 13 cats</div>
-    <div class="section-sub">Every single one was a rescued stray. They're permanent residents here — not for sale or adoption, just here to hang out.</div>
+    <div class="section-sub">Every one of our 13 cats was adopted from a local shelter. They're permanent residents — not for sale, not for adoption, just here to spend time with you.</div>
     <div class="filter-bar" id="filter-bar">
       <button class="fbtn active" onclick="filterCats('all',this)">All</button>
       <button class="fbtn" onclick="filterCats('og',this)">OG since '14</button>
@@ -393,6 +485,85 @@
     </div>
     <div class="cat-grid" id="cat-grid"></div>
     <div class="cat-count" id="cat-count"></div>
+  </section>
+
+
+  <!-- EVENTS -->
+  <section id="events">
+    <div class="section-eyebrow">Private events</div>
+    <div class="section-title">Celebrate with cats</div>
+    <div class="section-sub">From birthday parties to team bonding sessions, our cosy café makes for an unforgettable backdrop — with 13 furry co-hosts included.</div>
+    <div class="events-grid">
+
+      <div class="event-card">
+        <div class="event-img-wrap">
+          <img src="https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/events/birthday.jpg" alt="Birthday party at cat cafe Singapore" onerror="this.parentNode.innerHTML='<div class=event-placeholder>🎂</div>'">
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Birthday parties</div>
+          <div class="event-name">Celebrate your birthday with 13 cats</div>
+          <div class="event-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, with food, drinks and of course, plenty of cats. Great for kids and adults alike.</div>
+          <div class="event-details">
+            <div class="event-detail"><strong>Group size:</strong> Up to 20 pax</div>
+            <div class="event-detail"><strong>Duration:</strong> 2–3 hours</div>
+            <div class="event-detail"><strong>Add-on:</strong> Art jamming available</div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-img-wrap">
+          <img src="https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/events/teambonding.jpg" alt="Team bonding at cat cafe Singapore Bugis" onerror="this.parentNode.innerHTML='<div class=event-placeholder>🤝</div>'">
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Team bonding</div>
+          <div class="event-name">Team bonding with a purr-fect twist</div>
+          <div class="event-desc">Take your team out of the office and into the café. Combine art jamming with cat therapy for a relaxed, creative team session that people actually look forward to.</div>
+          <div class="event-details">
+            <div class="event-detail"><strong>Group size:</strong> Up to 30 pax</div>
+            <div class="event-detail"><strong>Duration:</strong> 2–4 hours</div>
+            <div class="event-detail"><strong>Add-on:</strong> Art jamming + catering</div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20team%20bonding%20event%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-img-wrap">
+          <img src="https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/events/kidsparty.jpg" alt="Kids party cat cafe Singapore" onerror="this.parentNode.innerHTML='<div class=event-placeholder>🎉</div>'">
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Kids parties</div>
+          <div class="event-name">The party every cat-loving kid wants</div>
+          <div class="event-desc">A fun, safe environment for little ones to meet and interact with our gentle cats. We can help coordinate food, a themed cake and art jamming activities for the kids.</div>
+          <div class="event-details">
+            <div class="event-detail"><strong>Min age:</strong> 4 years old</div>
+            <div class="event-detail"><strong>Group size:</strong> Up to 20 pax</div>
+            <div class="event-detail"><strong>Duration:</strong> 2 hours</div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20kids%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-img-wrap">
+          <img src="https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/events/privatehire.jpg" alt="Private cafe hire Singapore cat cafe" onerror="this.parentNode.innerHTML='<div class=event-placeholder>🐱</div>'">
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Private hire</div>
+          <div class="event-name">Hire the whole café just for you</div>
+          <div class="event-desc">Have the entire café to yourselves for a truly exclusive experience. Perfect for product launches, photoshoots, intimate gatherings or any occasion that deserves something special.</div>
+          <div class="event-details">
+            <div class="event-detail"><strong>Capacity:</strong> Up to 40 pax</div>
+            <div class="event-detail"><strong>Duration:</strong> Half or full day</div>
+            <div class="event-detail"><strong>Custom:</strong> Fully customisable</div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
+      </div>
+
+    </div>
   </section>
 
   <!-- RULES -->
@@ -453,21 +624,26 @@
    CAT DATA
 ────────────────────────────────────── */
 var BASE = 'http://thecatcafe.sg/wp-content/uploads/';
-var CATS = [
-  { name:'Momo',    img:BASE+'2024/11/IMG_2623-495x400.jpeg',                         full:BASE+'2024/11/IMG_2623-1030x1030.jpeg',                       tags:['young'],              desc:'Momo is one of the newer additions to The Cat Cafe family. Full of personality and always ready for a good play session with visitors.' },
-  { name:'Oreo',    img:BASE+'2014/10/113E9WVLSCe7opmD9D5VA_thumb_1f3-495x400.jpg',   full:BASE+'2014/10/113E9WVLSCe7opmD9D5VA_thumb_1f3.jpg',            tags:['senior','og','cuddly'], desc:'One of the original cats from 2014. A true OG, Oreo has charmed thousands of visitors over the years with his laid-back, lovable charm.' },
-  { name:'Tuxedo',  img:BASE+'2014/06/k399jBYHSM6KuXIQrSR5yA_thumb_5b7-495x400.jpg', full:BASE+'2014/06/k399jBYHSM6KuXIQrSR5yA_thumb_5b7.jpg',          tags:['senior','og','shy'],  desc:'Dapper in his black-and-white coat, Tuxedo is a dignified senior who prefers quiet corners and patient, gentle visitors.' },
-  { name:'Elly',    img:BASE+'2014/06/UNADJUSTEDNONRAW_thumb_1a9-495x400.jpg',        full:BASE+'2014/06/UNADJUSTEDNONRAW_thumb_1a9.jpg',                 tags:['senior','og','cuddly'], desc:'Elly has been at the cafe since the early days. Sweet and calm, she loves a good chin scratch and long afternoon naps in the sun.' },
-  { name:'Yoghurt', img:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_207-495x400.jpg',        full:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_207.jpg',                 tags:['senior','og','playful'], desc:'Light and creamy in colour, Yoghurt has a mischievous streak and a love for high perches and surprise ambushes on unsuspecting visitors.' },
-  { name:'Silver',  img:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_578-495x400.jpg',        full:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_578.jpg',                 tags:['senior','og','shy'],  desc:'Silver has a beautiful smoky coat and an independent spirit. Earn her trust and she may reward you with a slow, graceful blink.' },
-  { name:'Jimmy',   img:BASE+'2014/07/VEq9Ej7ySGaRwNf0i7neQ_thumb_431-495x400.jpg',  full:BASE+'2014/07/VEq9Ej7ySGaRwNf0i7neQ_thumb_431.jpg',           tags:['senior','og','playful'], desc:'Jimmy is a lively character who has grown into a dignified senior. He still loves a good play but these days prefers a cosy nap spot.' },
-  { name:'Tommy',   img:BASE+'2014/07/IMAGE-2019-06-08-003533-495x400.jpg',           full:BASE+'2014/07/IMAGE-2019-06-08-003533.jpg',                    tags:['senior','og','cuddly'], desc:'Tommy is a gentle giant with a big heart. A decade-long favourite — always happy to be fussed over by anyone who sits nearby.' },
-  { name:'Butter',  img:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_541-495x400.jpg',        full:BASE+'2014/07/UNADJUSTEDNONRAW_thumb_541.jpg',                 tags:['senior','og','cuddly'], desc:'Smooth and sweet, Butter lives up to her name. One of the most approachable cats in the cafe — a total lap cat at heart.' },
-  { name:'Cookie',  img:BASE+'2014/08/UNADJUSTEDNONRAW_thumb_4f3-495x400.jpg',        full:BASE+'2014/08/UNADJUSTEDNONRAW_thumb_4f3.jpg',                 tags:['senior','og','playful'], desc:'Cookie has been here since 2014. Energetic and curious, she still has plenty of zest for life despite her well-earned senior status.' },
-  { name:'Patches', img:BASE+'2014/08/IMAGE-2019-06-07-234851-495x400.jpg',           full:BASE+'2014/08/IMAGE-2019-06-07-234851.jpg',                    tags:['senior','og','shy'],  desc:'Patches is a stunning patchwork cat who prefers watching from afar. Patient visitors are sometimes rewarded with a gentle head bump.' },
-  { name:'Missy',   img:BASE+'2014/08/IMG_1670-495x400.jpg',                          full:BASE+'2014/08/IMG_1670-1030x1030.jpg',                         tags:['senior','og','cuddly'], desc:'Missy carries herself with quiet grace. A firm favourite among regulars for her calm, affectionate temperament and soft gaze.' },
-  { name:'Shoyu',   img:BASE+'2024/05/IMG_0482-495x400.jpeg',                         full:BASE+'2024/05/IMG_0482-1030x1030.jpeg',                        tags:['young','playful'],    desc:'Shoyu is a newer rescue with a rich dark coat and a curious personality. Always sniffing around and getting into everything.' }
+var GITHUB_IMG = 'https://raw.githubusercontent.com/YOURUSERNAME/thecatcafe-sg/main/images/cats/';
+var CATS_DEFAULT = [
+  { id:1,  name:'Missy',       img:GITHUB_IMG+'missy.jpg',       full:GITHUB_IMG+'missy.jpg',       tags:['senior','og','cuddly'], desc:'Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection despite her age. She walks with a slight limp and is partially blind, but her sweet nature makes her a favourite with everyone who meets her.' },
+  { id:2,  name:'Jimmy',       img:GITHUB_IMG+'jimmy.jpg',       full:GITHUB_IMG+'jimmy.jpg',       tags:['senior','og'],          desc:'A domestic long-fur rescued from breeders, Jimmy is around 16 years old and one of our originals. Once wary of humans, he has blossomed in his later years. Catch him most active in the mornings, often spotted on the cat bridge.' },
+  { id:3,  name:'Tommy',       img:GITHUB_IMG+'tommy.jpg',       full:GITHUB_IMG+'tommy.jpg',       tags:['senior','og','cuddly'], desc:'A full black Singapore cat and one of the originals since 2014, Tommy is around 13 years old. He is currently on palliative care for nasal cancer, but still loves a gentle pet and the company of his humans.' },
+  { id:4,  name:'Oreo',        img:GITHUB_IMG+'oreo.jpg',        full:GITHUB_IMG+'oreo.jpg',        tags:['senior','og','playful'],desc:'Named after his black-and-white coat, Oreo is around 12 years old. He is gentle and great with children — and will happily do a high-five for a treat.' },
+  { id:5,  name:'Marshmellow', img:GITHUB_IMG+'marshmellow.jpg', full:GITHUB_IMG+'marshmellow.jpg', tags:['young','cuddly'],       desc:'A fluffy all-white Singapore short-fur of around 7, Marshmellow came to us after the Rail Mall café closed. He is affectionate and is most often found sleeping beside his best friend Marmite.' },
+  { id:6,  name:'Marmite',     img:GITHUB_IMG+'marmite.jpg',     full:GITHUB_IMG+'marmite.jpg',     tags:['young','cuddly'],       desc:'An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and thoroughly enjoys a gentle butt pat.' },
+  { id:7,  name:'Bobo',        img:GITHUB_IMG+'bobo.jpg',        full:GITHUB_IMG+'bobo.jpg',        tags:['young','cuddly'],       desc:'A gentle Siamese of around 7–8 years, Bobo loves the comfort of human company and meows softly for attention. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow.' },
+  { id:8,  name:'Mochi',       img:GITHUB_IMG+'mochi.jpg',       full:GITHUB_IMG+'mochi.jpg',       tags:['young','playful'],      desc:'Our biggest cat at 6–7 kg, Mochi is around 9 years old and is our cafe mascot — he looks just like our logo! He is most active in the mornings and hard to miss.' },
+  { id:9,  name:'Sushi',       img:GITHUB_IMG+'sushi.jpg',       full:GITHUB_IMG+'sushi.jpg',       tags:['young','cuddly'],       desc:'A slightly plump black-and-white cat, Sushi once lived beside a kopitiam and cried at the sight of human food. These days she has traded street life for laps — she loves nothing more than resting on a customer.' },
+  { id:10, name:'Miso',        img:GITHUB_IMG+'miso.jpg',        full:GITHUB_IMG+'miso.jpg',        tags:['young','playful'],      desc:'Sister to Shoyu and around 4 years old, Miso is named for the warm tinge in her undercoat. She loves teaser toys and can often be found in a game of catch with Toby, Shoyu and Momo.' },
+  { id:11, name:'Shoyu',       img:GITHUB_IMG+'shoyu.jpg',       full:GITHUB_IMG+'shoyu.jpg',       tags:['young','playful','shy'],desc:'Miso's sister at around 3 years old, Shoyu was rescued from a Tuas factory and was initially fearful of humans. She has come a long way — she now tolerates light pets and chases the other cats around the café with confidence.' },
+  { id:12, name:'Momo',        img:GITHUB_IMG+'momo.jpg',        full:GITHUB_IMG+'momo.jpg',        tags:['young','playful','cuddly'],desc:'An orange female of around 4, Momo is playful and affectionate. She loves light head pets and can often be found in a game of catch with Toby.' },
+  { id:13, name:'Toby',        img:GITHUB_IMG+'toby.jpg',        full:GITHUB_IMG+'toby.jpg',        tags:['young','playful'],      desc:'The first face you'll likely see — Toby greets visitors at the entrance. Around 3 years old with an unusually dense grey coat, he is gentle with children and endlessly playful.' }
 ];
+
+// Use admin data if available (from data.js)
+var CATS = (typeof CC_DATA !== 'undefined') ? CC_DATA.cats : CATS_DEFAULT; if available (from data.js)
+var CATS = (typeof CC_DATA !== 'undefined') ? CC_DATA.cats : CATS_DEFAULT;
 
 var TAG_LABEL = { senior:'Senior', young:'Young', og:"OG since '14", cuddly:'Cuddly', playful:'Playful', shy:'Shy' };
 var TAG_CLASS = { senior:'tsenior', young:'tyoung', og:'tog', cuddly:'tcuddly', playful:'tplayful', shy:'tshy' };
@@ -514,6 +690,117 @@ function closeCatModal(e) {
 }
 
 renderCatCards(CATS);
+
+/* ── MENU ── */
+var MENU_DEFAULT = [
+  { name:'Gryphon Tea',          desc:'Premium brewed tea',                                price:'S$4',    cat:'topup',    emoji:'🍵' },
+  { name:'Coffee',               desc:'House brewed coffee',                               price:'S$4.50', cat:'topup',    emoji:'☕' },
+  { name:'Flavoured Latte',      desc:'Chocolate, Vanilla, Caramel, Hazelnut, Toffeenut', price:'S$6',    cat:'topup',    emoji:'☕' },
+  { name:'Chocolate',            desc:'Rich and creamy hot chocolate',                     price:'S$5',    cat:'topup',    emoji:'🍫' },
+  { name:'Orange Juice',         desc:'Fresh orange juice',                                price:'S$4.50', cat:'topup',    emoji:'🍊' },
+  { name:'Float',                desc:'Root Beer, Sprite or Coke',                        price:'S$4.50', cat:'topup',    emoji:'🥤' },
+  { name:'Extra Shot',           desc:'Add an extra espresso shot to any drink',           price:'+S$1',   cat:'topup',    emoji:'☕' },
+  { name:'Espresso',             desc:'Classic single or double shot',                     price:'S$5',    cat:'coffee',   emoji:'☕' },
+  { name:'Americano',            desc:'Espresso with hot water',                           price:'S$5.50', cat:'coffee',   emoji:'☕' },
+  { name:'Cappuccino / Latte',   desc:'Espresso with steamed milk',                        price:'S$7',    cat:'coffee',   emoji:'☕' },
+  { name:'Flavoured Latte',      desc:'Chocolate, Vanilla, Caramel, Hazelnut, Toffeenut', price:'S$7.50', cat:'coffee',   emoji:'☕' },
+  { name:'Ice',                  desc:'Add ice to any coffee drink',                       price:'+S$0.50',cat:'coffee',   emoji:'🧊' },
+  { name:'Extra Shot',           desc:'Add an extra espresso shot',                        price:'+S$1',   cat:'coffee',   emoji:'☕' },
+  { name:'Gryphon Tea',          desc:'Premium brewed tea',                                price:'S$5.50', cat:'drinks',   emoji:'🍵' },
+  { name:'Orange Juice',         desc:'Fresh orange juice',                                price:'S$6.50', cat:'drinks',   emoji:'🍊' },
+  { name:'Float',                desc:'Root Beer, Sprite or Coke float',                  price:'S$6.50', cat:'drinks',   emoji:'🥤' },
+  { name:'Chocolate',            desc:'Rich hot or iced chocolate',                        price:'S$7',    cat:'drinks',   emoji:'🍫' },
+  { name:'Soft Drinks',          desc:'Assorted canned soft drinks',                       price:'S$2',    cat:'drinks',   emoji:'🥤' },
+  { name:'Chicken Mushroom Pie', desc:'With chips · Thai / Tandoori',                     price:'S$7',    cat:'mains',    emoji:'🥧' },
+  { name:'Chicken Wrap',         desc:'With chips · Thai / Tandoori',                     price:'S$9',    cat:'mains',    emoji:'🌯' },
+  { name:'Lasagne',              desc:'With chips · Beef / Chicken',                      price:'S$12',   cat:'mains',    emoji:'🍝' },
+  { name:'Baked Macaroni',       desc:'With chips · Mushroom Cheese',                     price:'S$12',   cat:'mains',    emoji:'🧀' },
+  { name:'Baked Chicken Rice',   desc:'With chips',                                       price:'S$12',   cat:'mains',    emoji:'🍱' },
+  { name:'Vanilla Ice Cream',    desc:'Classic scoop of vanilla',                         price:'S$4.50', cat:'desserts', emoji:'🍦' },
+  { name:'Brownie + Ice Cream',  desc:'Warm brownie with vanilla ice cream',              price:'S$8.50', cat:'desserts', emoji:'🍫' },
+  { name:'Affogato',             desc:'Espresso + ice cream',                             price:'S$8',    cat:'desserts', emoji:'🍨' },
+  { name:'Cakes',                desc:"Ask our staff for today's selection",              price:'S$8.50', cat:'desserts', emoji:'🍰' },
+  { name:'Potato Chips',         desc:'Light snack',                                      price:'S$3',    cat:'desserts', emoji:'🥔' },
+];
+
+var MENU = (typeof CC_DATA !== 'undefined') ? CC_DATA.menu : MENU_DEFAULT;
+
+function showMenu(cat, btn) {
+  document.querySelectorAll('.mtab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  var list = cat === 'all' ? MENU : MENU.filter(function(m){ return m.cat === cat; });
+  document.getElementById('menu-grid').innerHTML = list.map(function(item){
+    return '<div class="menu-item">'
+      + '<div class="menu-item-left">'
+      + '<div class="menu-item-name">' + item.emoji + ' ' + item.name + '</div>'
+      + '<div class="menu-item-desc">' + item.desc + '</div>'
+      + '</div>'
+      + '<div class="menu-item-price">' + item.price + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+showMenu('all', document.querySelector('.mtab'));
+
+/* ── DYNAMIC DATA RENDERING ── */
+(function() {
+  var data = (typeof CC_DATA !== 'undefined') ? CC_DATA : null;
+
+  // Update booking links
+  if (data && data.info && data.info.booking_url) {
+    document.querySelectorAll('a[href*="inline.app"], #book-link').forEach(function(a){
+      a.href = data.info.booking_url;
+    });
+  }
+
+  // Render hours
+  function fmt(t) {
+    if (!t) return '';
+    var parts = t.split(':');
+    var h = parseInt(parts[0]);
+    var m = parts[1];
+    var ampm = h >= 12 ? 'pm' : 'am';
+    var h12 = h % 12 || 12;
+    return h12 + (m !== '00' ? ':' + m : '') + ' ' + ampm;
+  }
+
+  var hoursEl = document.getElementById('hours-display');
+  if (hoursEl) {
+    var hours = data ? data.hours : [
+      { day:'Monday',                 open:'15:00', close:'21:00', closed:false },
+      { day:'Tuesday – Friday',       open:'10:00', close:'21:00', closed:false },
+      { day:'Saturday – Sunday',      open:'10:00', close:'22:00', closed:false },
+      { day:'Public holidays',        open:'10:00', close:'22:00', closed:false }
+    ];
+    // Group for display
+    var col1 = hours.slice(0, Math.ceil(hours.length / 2));
+    var col2 = hours.slice(Math.ceil(hours.length / 2));
+    function makeCol(arr) {
+      return '<div>' + arr.map(function(h){
+        var timeStr = h.closed ? 'Closed' : fmt(h.open) + ' – ' + fmt(h.close);
+        return '<div class="hour-row"><span class="hour-day">'+h.day+'</span><span class="hour-time">'+timeStr+'</span></div>';
+      }).join('') + '</div>';
+    }
+    hoursEl.innerHTML = makeCol(col1) + makeCol(col2);
+  }
+
+  // Render pricing
+  var pricingEl = document.getElementById('pricing-display');
+  if (pricingEl) {
+    var pricing = data ? data.pricing : [
+      { label:'First 2 hours', note:'includes 1 complimentary soft drink', price:'S$22' },
+      { label:'Every additional 30 mins', note:'', price:'S$5.50' },
+      { label:'Full day pass', note:'1 free drink of your choice', price:'S$50' },
+      { label:'Children under 1', note:'', price:'Free' }
+    ];
+    pricingEl.innerHTML = pricing.map(function(p){
+      return '<div class="price-row">'
+        + '<div><div class="price-label">'+p.label+'</div>'
+        + (p.note ? '<div class="price-note">'+p.note+'</div>' : '')
+        + '</div><div class="price-val">'+p.price+'</div></div>';
+    }).join('');
+  }
+})();
 
 </script>
 </body>
