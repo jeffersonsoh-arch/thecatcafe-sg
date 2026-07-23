@@ -1,0 +1,25 @@
+{
+  "hours": [
+    {"day": "Monday",          "open": "15:00", "close": "21:00", "closed": false},
+    {"day": "Tuesday – Friday","open": "10:00", "close": "21:00", "closed": false},
+    {"day": "Saturday – Sunday","open": "10:00", "close": "22:00", "closed": false},
+    {"day": "Public holidays", "open": "10:00", "close": "22:00", "closed": false}
+  ],
+  "pricing": [
+    {"label": "First 2 hours",            "note": "includes 1 complimentary canned drink", "price": "S$22"},
+    {"label": "Every additional 30 mins", "note": "",                                        "price": "S$5.50"},
+    {"label": "Full day pass",            "note": "2 complimentary drinks of your choice",  "price": "S$50"},
+    {"label": "Children under 1",         "note": "",                                        "price": "Free"}
+  ],
+  "info": {
+    "name":        "The Cat Cafe",
+    "address":     "241B Victoria Street, Level 3, Singapore 188030",
+    "phone":       "+65 6338 6815",
+    "whatsapp":    "6580808719",
+    "email":       "info@thecatcafe.sg",
+    "instagram":   "https://www.instagram.com/sgcatcafe",
+    "facebook":    "https://www.facebook.com/sgcatcafe",
+    "booking_url": "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4",
+    "maps_url":    "https://maps.google.com/?q=241B+Victoria+Street+Singapore"
+  }
+}

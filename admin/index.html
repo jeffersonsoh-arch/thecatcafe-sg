@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cat Cafe – CMS Admin</title>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<style>
+:root {
+  --rust:#D85A30; --rust-pale:#FAECE7; --rust-dark:#993C1D;
+  --indigo:#3C3489; --indigo-pale:#EEEDFE;
+  --green:#2E7D32; --green-pale:#E8F5E9;
+  --red:#C62828; --red-pale:#FFEBEE;
+  --amber:#E65100; --amber-pale:#FFF3E0;
+  --text:#1a1a1a; --text-2:#555; --text-3:#999;
+  --border:#e0dbd5; --border-light:#f0ede9;
+  --bg:#fff; --bg-2:#faf9f7; --bg-3:#f5f0ec;
+  --radius:10px; --radius-sm:6px;
+  --shadow:0 1px 4px rgba(0,0,0,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-2);color:var(--text);font-size:14px;}
+a{color:inherit;text-decoration:none;}
+input,select,textarea,button{font-family:inherit;font-size:14px;}
+input[type=text],input[type=email],input[type=url],input[type=number],input[type=password],input[type=time],select,textarea{
+  width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--bg);color:var(--text);outline:none;transition:border-color 0.15s;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--rust);}
+textarea{resize:vertical;min-height:80px;line-height:1.5;}
+label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:5px;}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.login-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:40px 32px;width:100%;max-width:360px;text-align:center;box-shadow:var(--shadow);}
+.login-logo{font-size:20px;font-weight:700;margin-bottom:4px;}
+.login-logo span{color:var(--rust);}
+.login-sub{font-size:13px;color:var(--text-3);margin-bottom:28px;}
+.btn-login{background:var(--rust);color:#fff;border:none;padding:11px 24px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;width:100%;}
+.btn-login:hover{opacity:0.88;}
+
+/* ── APP SHELL ── */
+#app{display:none;min-height:100vh;flex-direction:column;}
+.topbar{background:var(--bg);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 20px;gap:16px;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-size:14px;font-weight:700;}
+.topbar-logo span{color:var(--rust);}
+.topbar-badge{font-size:11px;background:var(--indigo-pale);color:var(--indigo);padding:2px 8px;border-radius:10px;font-weight:600;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.topbar-user{font-size:12px;color:var(--text-3);}
+.btn-sm{padding:6px 14px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-weight:500;font-size:12px;transition:opacity 0.15s;}
+.btn-sm:hover{opacity:0.85;}
+.btn-primary{background:var(--rust);color:#fff;}
+.btn-secondary{background:var(--bg-3);color:var(--text);}
+.btn-success{background:var(--green-pale);color:var(--green);}
+.btn-danger{background:var(--red-pale);color:var(--red);}
+.btn-indigo{background:var(--indigo-pale);color:var(--indigo);}
+.btn-preview{background:var(--indigo);color:#fff;padding:6px 14px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-size:12px;font-weight:600;}
+.btn-logout{background:none;border:none;color:var(--text-3);cursor:pointer;font-size:12px;padding:4px 8px;}
+
+.layout{display:flex;flex:1;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:188px;background:var(--bg);border-right:1px solid var(--border);padding:12px 0;flex-shrink:0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
+.sidebar-section{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);padding:14px 16px 6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:13px;color:var(--text-2);cursor:pointer;border-left:2px solid transparent;transition:all 0.12s;}
+.nav-item:hover{background:var(--bg-2);color:var(--text);}
+.nav-item.active{color:var(--rust);border-left-color:var(--rust);background:var(--rust-pale);font-weight:600;}
+.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
+
+/* ── MAIN ── */
+.main{flex:1;padding:24px;overflow-y:auto;max-width:860px;}
+.panel{display:none;}
+.panel.active{display:block;}
+.panel-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.panel-title{font-size:20px;font-weight:600;color:var(--text);}
+.panel-sub{font-size:13px;color:var(--text-3);margin-top:3px;}
+.panel-actions{display:flex;gap:8px;flex-shrink:0;}
+
+/* ── CARDS ── */
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;}
+.card-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
+
+/* ── FORM GRIDS ── */
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.field{margin-bottom:12px;}
+.field:last-child{margin-bottom:0;}
+
+/* ── ITEM LIST ── */
+.item-list{display:flex;flex-direction:column;gap:8px;}
+.item-row{display:flex;align-items:center;gap:10px;background:var(--bg-2);border:1px solid var(--border-light);border-radius:var(--radius-sm);padding:10px 12px;}
+.item-row-thumb{width:42px;height:42px;border-radius:6px;object-fit:cover;background:var(--bg-3);flex-shrink:0;}
+.item-row-thumb-placeholder{width:42px;height:42px;border-radius:6px;background:var(--rust-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.item-row-body{flex:1;min-width:0;}
+.item-row-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.item-row-meta{font-size:11px;color:var(--text-3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.item-row-price{font-size:13px;font-weight:600;color:var(--rust);flex-shrink:0;white-space:nowrap;}
+.item-row-actions{display:flex;gap:5px;flex-shrink:0;}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--bg);border-radius:var(--radius);width:100%;max-width:520px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.2);max-height:90vh;overflow-y:auto;}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:18px;}
+.modal-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:16px;border-top:1px solid var(--border-light);}
+.btn-cancel{background:var(--bg-2);border:1px solid var(--border);color:var(--text-2);padding:8px 18px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;}
+
+/* ── TAGS ── */
+.tags-input-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:6px 8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);min-height:38px;cursor:text;}
+.tags-input-wrap:focus-within{border-color:var(--rust);}
+.tag-chip{display:inline-flex;align-items:center;gap:4px;background:var(--rust-pale);color:var(--rust-dark);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;}
+.tag-chip-remove{background:none;border:none;cursor:pointer;color:var(--rust-dark);font-size:14px;line-height:1;padding:0 2px;}
+.tags-input{border:none;outline:none;font-size:12px;flex:1;min-width:80px;padding:2px;}
+
+/* ── IMAGE UPLOAD ── */
+.img-upload-area{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer;transition:border-color 0.15s;background:var(--bg-2);}
+.img-upload-area:hover{border-color:var(--rust);}
+.img-upload-area.drag-over{border-color:var(--rust);background:var(--rust-pale);}
+.img-preview{width:100%;max-height:160px;object-fit:cover;border-radius:var(--radius-sm);margin-top:10px;display:none;}
+
+/* ── STATUS BAR ── */
+.status-bar{position:fixed;bottom:20px;right:20px;z-index:900;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.status-toast{background:var(--text);color:#fff;padding:10px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;opacity:0;transform:translateY(8px);transition:all 0.2s;pointer-events:none;}
+.status-toast.success{background:var(--green);}
+.status-toast.error{background:var(--red);}
+.status-toast.show{opacity:1;transform:translateY(0);}
+
+/* ── HOURS TABLE ── */
+.hours-table{width:100%;border-collapse:collapse;}
+.hours-table th{font-size:11px;font-weight:700;color:var(--text-3);text-align:left;padding:6px 10px;border-bottom:1px solid var(--border);}
+.hours-table td{padding:8px 10px;border-bottom:1px solid var(--border-light);vertical-align:middle;}
+.hours-table input[type=time]{width:110px;}
+.day-name{font-size:13px;font-weight:600;}
+.toggle-wrap{display:inline-flex;align-items:center;gap:8px;}
+.toggle{position:relative;width:34px;height:18px;display:inline-block;cursor:pointer;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-track{position:absolute;inset:0;border-radius:9px;background:var(--border);transition:background 0.2s;}
+.toggle input:checked+.toggle-track{background:var(--rust);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left 0.2s;}
+.toggle input:checked~.toggle-thumb{left:19px;}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.stat-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;}
+.stat-n{font-size:26px;font-weight:700;color:var(--rust);}
+.stat-l{font-size:11px;color:var(--text-3);margin-top:2px;}
+
+/* ── SAVE BANNER ── */
+.save-banner{background:var(--amber-pale);border:1px solid #FFCC80;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--amber);display:none;align-items:center;justify-content:space-between;gap:12px;}
+.save-banner.show{display:flex;}
+
+@media(max-width:700px){
+  .sidebar{display:none;}
+  .fg2,.fg3{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">The Cat <span>Cafe</span></div>
+    <div class="login-sub">CMS Admin Panel</div>
+    <button class="btn-login" onclick="netlifyIdentity.open()">Sign in with Netlify Identity</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;flex-direction:column;">
+  <div class="topbar">
+    <div class="topbar-logo">The Cat <span>Cafe</span></div>
+    <span class="topbar-badge">CMS</span>
+    <div class="topbar-right">
+      <span class="topbar-user" id="topbar-user"></span>
+      <button class="btn-preview" onclick="window.open('/','_blank')">Preview site ↗</button>
+      <button class="btn-logout" onclick="netlifyIdentity.logout()">Sign out</button>
+    </div>
+  </div>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">Content</div>
+      <div class="nav-item active" onclick="nav('dashboard',this)"><span class="nav-icon">📊</span>Dashboard</div>
+      <div class="nav-item" onclick="nav('cats',this)"><span class="nav-icon">🐱</span>Cats</div>
+      <div class="nav-item" onclick="nav('menu',this)"><span class="nav-icon">🍽️</span>Menu</div>
+      <div class="nav-item" onclick="nav('hours',this)"><span class="nav-icon">🕐</span>Hours</div>
+      <div class="nav-item" onclick="nav('pricing',this)"><span class="nav-icon">💰</span>Pricing</div>
+      <div class="nav-item" onclick="nav('info',this)"><span class="nav-icon">📍</span>Cafe info</div>
+      <div class="nav-item" onclick="nav('images',this)"><span class="nav-icon">🖼️</span>Images</div>
+    </nav>
+
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="panel-header">
+          <div><div class="panel-title">Dashboard</div><div class="panel-sub">Welcome back. Your site is live on Netlify.</div></div>
+        </div>
+        <div class="stats-row" id="dash-stats"></div>
+        <div class="card">
+          <div class="card-title">How the CMS works</div>
+          <div style="font-size:13px;color:var(--text-2);line-height:1.8;">
+            <p>1. Edit content in any section using the sidebar.</p>
+            <p>2. Click <strong>Save</strong> — changes are written directly to your GitHub repo (<code>content/*.json</code>).</p>
+            <p>3. Netlify detects the commit and rebuilds your site automatically — usually live within 30 seconds.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Quick actions</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn-sm btn-primary" onclick="nav('cats',document.querySelector('[onclick*=cats]'))">+ Add cat</button>
+            <button class="btn-sm btn-primary" onclick="nav('menu',document.querySelector('[onclick*=menu]'))">+ Add menu item</button>
+            <button class="btn-sm btn-indigo" onclick="window.open('/','_blank')">View live site ↗</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATS -->
+      <div class="panel" id="panel-cats">
+        <div class="panel-header">
+          <div><div class="panel-title">Cats</div><div class="panel-sub">Manage cat profiles shown on the website.</div></div>
+          <div class="panel-actions"><button class="btn-sm btn-primary" onclick="openCatModal()">+ Add cat</button></div>
+        </div>
+        <div class="save-banner" id="cats-banner">
+          <span>You have unsaved changes.</span>
+          <button class="btn-sm btn-primary" onclick="saveCats()">Save &amp; publish</button>
+        </div>
+        <div class="item-list" id="cats-list"></div>
+      </div>
+
+      <!-- MENU -->
+      <div class="panel" id="panel-menu">
+        <div class="panel-header">
+          <div><div class="panel-title">Menu</div><div class="panel-sub">Add, edit or remove menu items.</div></div>
+          <div class="panel-actions">
+            <select id="menu-cat-filter" onchange="renderMenuList()" style="width:auto;padding:6px 10px;font-size:12px;">
+              <option value="all">All categories</option>
+              <option value="topup">Top Up</option>
+              <option value="coffee">Coffee</option>
+              <option value="drinks">Drinks</option>
+              <option value="mains">Mains</option>
+              <option value="desserts">Desserts</option>
+            </select>
+            <button class="btn-sm btn-primary" onclick="openMenuModal()">+ Add item</button>
+          </div>
+        </div>
+        <div class="save-banner" id="menu-banner">
+          <span>You have unsaved changes.</span>
+          <button class="btn-sm btn-primary" onclick="saveMenu()">Save &amp; publish</button>
+        </div>
+        <div class="item-list" id="menu-list"></div>
+      </div>
+
+      <!-- HOURS -->
+      <div class="panel" id="panel-hours">
+        <div class="panel-header">
+          <div><div class="panel-title">Opening hours</div><div class="panel-sub">Set opening and closing times for each day.</div></div>
+          <div class="panel-actions"><button class="btn-sm btn-primary" onclick="saveHours()">Save &amp; publish</button></div>
+        </div>
+        <div class="card"><table class="hours-table" id="hours-table"></table></div>
+      </div>
+
+      <!-- PRICING -->
+      <div class="panel" id="panel-pricing">
+        <div class="panel-header">
+          <div><div class="panel-title">Pricing</div><div class="panel-sub">Update entry prices and tiers.</div></div>
+          <div class="panel-actions">
+            <button class="btn-sm btn-secondary" onclick="addPricingRow()">+ Add row</button>
+            <button class="btn-sm btn-primary" onclick="savePricing()">Save &amp; publish</button>
+          </div>
+        </div>
+        <div class="card" id="pricing-rows"></div>
+      </div>
+
+      <!-- INFO -->
+      <div class="panel" id="panel-info">
+        <div class="panel-header">
+          <div><div class="panel-title">Cafe info</div><div class="panel-sub">Update contact details and social links.</div></div>
+          <div class="panel-actions"><button class="btn-sm btn-primary" onclick="saveInfo()">Save &amp; publish</button></div>
+        </div>
+        <div class="card" id="info-form"></div>
+      </div>
+
+      <!-- IMAGES -->
+      <div class="panel" id="panel-images">
+        <div class="panel-header">
+          <div><div class="panel-title">Images</div><div class="panel-sub">Upload photos for cats, art jamming and events.</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Upload image</div>
+          <div class="fg2" style="margin-bottom:14px;">
+            <div class="field">
+              <label>Folder</label>
+              <select id="upload-folder">
+                <option value="cats">Cats (images/cats/)</option>
+                <option value="artjam">Art jamming (images/artjam/)</option>
+                <option value="events">Events (images/events/)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Filename (e.g. mochi.jpg)</label>
+              <input type="text" id="upload-filename" placeholder="e.g. mochi.jpg">
+            </div>
+          </div>
+          <div class="img-upload-area" id="upload-area" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
+            <div style="font-size:24px;margin-bottom:8px;">📁</div>
+            <div style="font-size:13px;color:var(--text-2);">Click to browse or drag &amp; drop an image</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:4px;">JPG, PNG, WebP supported</div>
+            <img class="img-preview" id="upload-preview">
+          </div>
+          <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center;">
+            <button class="btn-sm btn-primary" onclick="uploadImage()">Upload to GitHub</button>
+            <span id="upload-status" style="font-size:12px;color:var(--text-3);"></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Filename guide</div>
+          <div style="font-size:13px;color:var(--text-2);line-height:2;">
+            <strong>Cats:</strong> missy.jpg, jimmy.jpg, tommy.jpg, oreo.jpg, marshmellow.jpg, marmite.jpg, bobo.jpg, mochi.jpg, sushi.jpg, miso.jpg, shoyu.jpg, momo.jpg, toby.jpg<br>
+            <strong>Art jamming:</strong> artjam1.jpg, artjam2.jpg, artjam3.jpg<br>
+            <strong>Events:</strong> birthday.jpg, teambonding.jpg, kidsparty.jpg, privatehire.jpg
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- CAT MODAL -->
+<div class="modal-bg" id="modal-cat">
+  <div class="modal">
+    <div class="modal-title" id="modal-cat-title">Add cat</div>
+    <div class="fg2">
+      <div class="field"><label>Name</label><input type="text" id="ci-name" placeholder="e.g. Mochi"></div>
+      <div class="field">
+        <label>Tags</label>
+        <div class="tags-input-wrap" id="tags-wrap" onclick="document.getElementById('tag-input').focus()">
+          <input class="tags-input" id="tag-input" placeholder="type &amp; press enter" onkeydown="handleTagInput(event)">
+        </div>
+      </div>
+    </div>
+    <div class="field"><label>Description</label><textarea id="ci-desc" placeholder="Tell visitors about this cat..."></textarea></div>
+    <div class="field"><label>Photo (upload in Images tab first, then paste URL)</label><input type="url" id="ci-img" placeholder="images/cats/mochi.jpg"></div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modal-cat')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveCatModal()">Save cat</button>
+    </div>
+  </div>
+</div>
+
+<!-- MENU MODAL -->
+<div class="modal-bg" id="modal-menu">
+  <div class="modal">
+    <div class="modal-title" id="modal-menu-title">Add menu item</div>
+    <div class="fg2">
+      <div class="field"><label>Item name</label><input type="text" id="mi-name" placeholder="e.g. Cappuccino"></div>
+      <div class="field"><label>Price</label><input type="text" id="mi-price" placeholder="e.g. S$7"></div>
+    </div>
+    <div class="field"><label>Description</label><input type="text" id="mi-desc" placeholder="e.g. Espresso with steamed milk"></div>
+    <div class="fg2">
+      <div class="field">
+        <label>Category</label>
+        <select id="mi-cat">
+          <option value="topup">Top Up Drinks</option>
+          <option value="coffee">Coffee</option>
+          <option value="drinks">Drinks</option>
+          <option value="mains">Mains</option>
+          <option value="desserts">Desserts</option>
+        </select>
+      </div>
+      <div class="field"><label>Emoji</label><input type="text" id="mi-emoji" placeholder="☕" style="width:80px;"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modal-menu')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveMenuModal()">Save item</button>
+    </div>
+  </div>
+</div>
+
+<div class="status-bar" id="status-bar"></div>
+
+<script>
+/* ════════ AUTH ════════ */
+var currentUser = null;
+var userToken = null;
+
+netlifyIdentity.on("init", user => {
+  if (user) loginSuccess(user);
+});
+netlifyIdentity.on("login", user => {
+  netlifyIdentity.close();
+  loginSuccess(user);
+});
+netlifyIdentity.on("logout", () => {
+  currentUser = null; userToken = null;
+  document.getElementById("app").style.display = "none";
+  document.getElementById("login-screen").style.display = "flex";
+});
+
+function loginSuccess(user) {
+  currentUser = user;
+  user.jwt().then(token => { userToken = token; });
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("app").style.display = "flex";
+  document.getElementById("topbar-user").textContent = user.email;
+  loadAll();
+}
+
+/* ════════ DATA STORE ════════ */
+var DATA = { cats: [], menu: [], settings: { hours: [], pricing: [], info: {} } };
+var editCatIdx = -1;
+var editMenuIdx = -1;
+var catTags = [];
+var uploadFileData = null;
+
+/* ════════ LOAD ALL ════════ */
+async function loadAll() {
+  try {
+    const [cats, menu, settings] = await Promise.all([
+      fetchContent("cats"),
+      fetchContent("menu"),
+      fetchContent("settings")
+    ]);
+    DATA.cats = cats;
+    DATA.menu = menu;
+    DATA.settings = settings;
+    renderDash();
+    renderCatsList();
+    renderMenuList();
+    renderHours();
+    renderPricing();
+    renderInfo();
+  } catch(e) {
+    toast("Failed to load content: " + e.message, "error");
+  }
+}
+
+async function fetchContent(type) {
+  const res = await fetch("/api/content-get?type=" + type);
+  if (!res.ok) throw new Error("Failed to load " + type);
+  return res.json();
+}
+
+async function saveContent(type, data) {
+  const token = await currentUser.jwt();
+  const res = await fetch("/api/content-save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+    body: JSON.stringify({ type, data })
+  });
+  const result = await res.json();
+  if (!result.ok) throw new Error(result.error || "Save failed");
+  return result;
+}
+
+/* ════════ NAV ════════ */
+function nav(id, el) {
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  document.getElementById("panel-" + id).classList.add("active");
+  if (el) el.classList.add("active");
+}
+
+/* ════════ DASHBOARD ════════ */
+function renderDash() {
+  document.getElementById("dash-stats").innerHTML = [
+    [DATA.cats.length, "Cats"],
+    [DATA.menu.length, "Menu items"],
+    [(DATA.settings.hours||[]).filter(h=>!h.closed).length, "Open days/week"],
+    [(DATA.settings.pricing||[]).length, "Pricing tiers"]
+  ].map(([n,l]) => `<div class="stat-card"><div class="stat-n">${n}</div><div class="stat-l">${l}</div></div>`).join("");
+}
+
+/* ════════ CATS ════════ */
+function renderCatsList() {
+  document.getElementById("cats-list").innerHTML = DATA.cats.map((cat, idx) => `
+    <div class="item-row">
+      <img class="item-row-thumb" src="${cat.img}" alt="${cat.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="item-row-thumb-placeholder" style="display:none;">🐱</div>
+      <div class="item-row-body">
+        <div class="item-row-name">${cat.name}</div>
+        <div class="item-row-meta">${cat.tags.join(", ")} · ${cat.desc.slice(0,60)}…</div>
+      </div>
+      <div class="item-row-actions">
+        <button class="btn-sm btn-indigo" onclick="openCatModal(${idx})">Edit</button>
+        <button class="btn-sm btn-danger" onclick="deleteCat(${idx})">Delete</button>
+      </div>
+    </div>`).join("");
+}
+
+function openCatModal(idx) {
+  editCatIdx = idx !== undefined ? idx : -1;
+  const cat = editCatIdx >= 0 ? DATA.cats[editCatIdx] : { name:"", tags:[], desc:"", img:"" };
+  document.getElementById("modal-cat-title").textContent = editCatIdx >= 0 ? "Edit cat" : "Add cat";
+  document.getElementById("ci-name").value = cat.name;
+  document.getElementById("ci-desc").value = cat.desc;
+  document.getElementById("ci-img").value = cat.img;
+  catTags = [...(cat.tags || [])];
+  renderTagChips();
+  document.getElementById("modal-cat").classList.add("open");
+  document.getElementById("ci-name").focus();
+}
+
+function renderTagChips() {
+  const wrap = document.getElementById("tags-wrap");
+  const input = document.getElementById("tag-input");
+  wrap.querySelectorAll(".tag-chip").forEach(c => c.remove());
+  catTags.forEach((tag, i) => {
+    const chip = document.createElement("span");
+    chip.className = "tag-chip";
+    chip.innerHTML = `${tag} <button class="tag-chip-remove" onclick="removeTag(${i})">×</button>`;
+    wrap.insertBefore(chip, input);
+  });
+}
+
+function removeTag(i) { catTags.splice(i, 1); renderTagChips(); }
+
+function handleTagInput(e) {
+  if (e.key === "Enter" || e.key === ",") {
+    e.preventDefault();
+    const val = e.target.value.trim().toLowerCase().replace(/,/g,"");
+    if (val && !catTags.includes(val)) { catTags.push(val); renderTagChips(); }
+    e.target.value = "";
+  }
+}
+
+function saveCatModal() {
+  const name = document.getElementById("ci-name").value.trim();
+  if (!name) { toast("Name is required", "error"); return; }
+  const cat = {
+    id: editCatIdx >= 0 ? DATA.cats[editCatIdx].id : Date.now(),
+    name,
+    tags: catTags,
+    desc: document.getElementById("ci-desc").value.trim(),
+    img:  document.getElementById("ci-img").value.trim(),
+    full: document.getElementById("ci-img").value.trim()
+  };
+  if (editCatIdx >= 0) DATA.cats[editCatIdx] = cat;
+  else DATA.cats.push(cat);
+  closeModal("modal-cat");
+  renderCatsList();
+  document.getElementById("cats-banner").classList.add("show");
+}
+
+function deleteCat(idx) {
+  if (!confirm("Remove " + DATA.cats[idx].name + "?")) return;
+  DATA.cats.splice(idx, 1);
+  renderCatsList();
+  document.getElementById("cats-banner").classList.add("show");
+}
+
+async function saveCats() {
+  try {
+    await saveContent("cats", DATA.cats);
+    document.getElementById("cats-banner").classList.remove("show");
+    toast("Cats saved and published!", "success");
+    renderDash();
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ MENU ════════ */
+function renderMenuList() {
+  const f = document.getElementById("menu-cat-filter").value;
+  const list = f === "all" ? DATA.menu : DATA.menu.filter(m => m.cat === f);
+  const catLabels = { topup:"Top Up", coffee:"Coffee", drinks:"Drinks", mains:"Mains", desserts:"Desserts" };
+  document.getElementById("menu-list").innerHTML = list.map(item => {
+    const idx = DATA.menu.indexOf(item);
+    return `<div class="item-row">
+      <div class="item-row-thumb-placeholder">${item.emoji}</div>
+      <div class="item-row-body">
+        <div class="item-row-name">${item.name}</div>
+        <div class="item-row-meta">${catLabels[item.cat]} · ${item.desc}</div>
+      </div>
+      <div class="item-row-price">${item.price}</div>
+      <div class="item-row-actions">
+        <button class="btn-sm btn-indigo" onclick="openMenuModal(${idx})">Edit</button>
+        <button class="btn-sm btn-danger" onclick="deleteMenuItem(${idx})">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function openMenuModal(idx) {
+  editMenuIdx = idx !== undefined ? idx : -1;
+  const item = editMenuIdx >= 0 ? DATA.menu[editMenuIdx] : { name:"", price:"", desc:"", cat:"mains", emoji:"🍽️" };
+  document.getElementById("modal-menu-title").textContent = editMenuIdx >= 0 ? "Edit item" : "Add item";
+  document.getElementById("mi-name").value = item.name;
+  document.getElementById("mi-price").value = item.price;
+  document.getElementById("mi-desc").value = item.desc;
+  document.getElementById("mi-cat").value = item.cat;
+  document.getElementById("mi-emoji").value = item.emoji;
+  document.getElementById("modal-menu").classList.add("open");
+  document.getElementById("mi-name").focus();
+}
+
+function saveMenuModal() {
+  const name = document.getElementById("mi-name").value.trim();
+  const price = document.getElementById("mi-price").value.trim();
+  if (!name || !price) { toast("Name and price required", "error"); return; }
+  const item = {
+    id: editMenuIdx >= 0 ? DATA.menu[editMenuIdx].id : Date.now(),
+    name, price,
+    desc:  document.getElementById("mi-desc").value.trim(),
+    cat:   document.getElementById("mi-cat").value,
+    emoji: document.getElementById("mi-emoji").value.trim() || "🍽️"
+  };
+  if (editMenuIdx >= 0) DATA.menu[editMenuIdx] = item;
+  else DATA.menu.push(item);
+  closeModal("modal-menu");
+  renderMenuList();
+  document.getElementById("menu-banner").classList.add("show");
+}
+
+function deleteMenuItem(idx) {
+  if (!confirm("Delete " + DATA.menu[idx].name + "?")) return;
+  DATA.menu.splice(idx, 1);
+  renderMenuList();
+  document.getElementById("menu-banner").classList.add("show");
+}
+
+async function saveMenu() {
+  try {
+    await saveContent("menu", DATA.menu);
+    document.getElementById("menu-banner").classList.remove("show");
+    toast("Menu saved and published!", "success");
+    renderDash();
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ HOURS ════════ */
+function renderHours() {
+  document.getElementById("hours-table").innerHTML =
+    `<tr><th>Day</th><th>Opens</th><th>Closes</th><th>Closed</th></tr>` +
+    (DATA.settings.hours||[]).map((h, i) => `
+      <tr>
+        <td><span class="day-name">${h.day}</span></td>
+        <td><input type="time" id="h-open-${i}" value="${h.open}" ${h.closed?"disabled":""}></td>
+        <td><input type="time" id="h-close-${i}" value="${h.close}" ${h.closed?"disabled":""}></td>
+        <td>
+          <label class="toggle">
+            <input type="checkbox" id="h-closed-${i}" ${h.closed?"checked":""} onchange="toggleDay(${i},this.checked)">
+            <div class="toggle-track"></div><div class="toggle-thumb"></div>
+          </label>
+        </td>
+      </tr>`).join("");
+}
+
+function toggleDay(i, closed) {
+  document.getElementById("h-open-"+i).disabled = closed;
+  document.getElementById("h-close-"+i).disabled = closed;
+}
+
+async function saveHours() {
+  DATA.settings.hours = (DATA.settings.hours||[]).map((h, i) => ({
+    day: h.day,
+    open: document.getElementById("h-open-"+i).value || h.open,
+    close: document.getElementById("h-close-"+i).value || h.close,
+    closed: document.getElementById("h-closed-"+i).checked
+  }));
+  try {
+    await saveContent("settings", DATA.settings);
+    toast("Hours saved and published!", "success");
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ PRICING ════════ */
+function renderPricing() {
+  document.getElementById("pricing-rows").innerHTML =
+    (DATA.settings.pricing||[]).map((p, i) => `
+      <div class="item-row" style="margin-bottom:8px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
+          <input type="text" id="p-label-${i}" value="${p.label}" placeholder="Label">
+          <input type="text" id="p-note-${i}" value="${p.note}" placeholder="Note (optional)">
+        </div>
+        <input type="text" id="p-price-${i}" value="${p.price}" placeholder="Price" style="width:90px;flex-shrink:0;">
+        <button class="btn-sm btn-danger" onclick="deletePricingRow(${i})">Delete</button>
+      </div>`).join("");
+}
+
+function addPricingRow() {
+  DATA.settings.pricing.push({ label:"", note:"", price:"" });
+  renderPricing();
+}
+
+function deletePricingRow(i) {
+  DATA.settings.pricing.splice(i, 1);
+  renderPricing();
+}
+
+async function savePricing() {
+  DATA.settings.pricing = DATA.settings.pricing.map((p, i) => ({
+    label: document.getElementById("p-label-"+i).value.trim(),
+    note:  document.getElementById("p-note-"+i).value.trim(),
+    price: document.getElementById("p-price-"+i).value.trim()
+  })).filter(p => p.label && p.price);
+  try {
+    await saveContent("settings", DATA.settings);
+    toast("Pricing saved and published!", "success");
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ INFO ════════ */
+function renderInfo() {
+  const info = DATA.settings.info || {};
+  document.getElementById("info-form").innerHTML = `
+    <div class="fg2">
+      <div class="field"><label>Cafe name</label><input type="text" id="inf-name" value="${info.name||""}"></div>
+      <div class="field"><label>Phone</label><input type="text" id="inf-phone" value="${info.phone||""}"></div>
+    </div>
+    <div class="field"><label>Address</label><input type="text" id="inf-address" value="${info.address||""}"></div>
+    <div class="fg2">
+      <div class="field"><label>Email</label><input type="email" id="inf-email" value="${info.email||""}"></div>
+      <div class="field"><label>WhatsApp number (digits only)</label><input type="text" id="inf-wa" value="${info.whatsapp||""}"></div>
+    </div>
+    <div class="fg2">
+      <div class="field"><label>Instagram URL</label><input type="url" id="inf-ig" value="${info.instagram||""}"></div>
+      <div class="field"><label>Facebook URL</label><input type="url" id="inf-fb" value="${info.facebook||""}"></div>
+    </div>
+    <div class="field"><label>Booking URL</label><input type="url" id="inf-booking" value="${info.booking_url||""}"></div>
+    <div class="field"><label>Google Maps URL</label><input type="url" id="inf-maps" value="${info.maps_url||""}"></div>`;
+}
+
+async function saveInfo() {
+  DATA.settings.info = {
+    name:        document.getElementById("inf-name").value.trim(),
+    address:     document.getElementById("inf-address").value.trim(),
+    phone:       document.getElementById("inf-phone").value.trim(),
+    whatsapp:    document.getElementById("inf-wa").value.trim(),
+    email:       document.getElementById("inf-email").value.trim(),
+    instagram:   document.getElementById("inf-ig").value.trim(),
+    facebook:    document.getElementById("inf-fb").value.trim(),
+    booking_url: document.getElementById("inf-booking").value.trim(),
+    maps_url:    document.getElementById("inf-maps").value.trim()
+  };
+  try {
+    await saveContent("settings", DATA.settings);
+    toast("Cafe info saved and published!", "success");
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ IMAGE UPLOAD ════════ */
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (!document.getElementById("upload-filename").value) {
+    document.getElementById("upload-filename").value = file.name.toLowerCase().replace(/\s+/g,"-");
+  }
+  readFile(file);
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById("upload-area").classList.remove("drag-over");
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  if (!document.getElementById("upload-filename").value) {
+    document.getElementById("upload-filename").value = file.name.toLowerCase().replace(/\s+/g,"-");
+  }
+  readFile(file);
+}
+
+function readFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const b64 = e.target.result.split(",")[1];
+    uploadFileData = b64;
+    const preview = document.getElementById("upload-preview");
+    preview.src = e.target.result;
+    preview.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadImage() {
+  if (!uploadFileData) { toast("Please select an image first", "error"); return; }
+  const filename = document.getElementById("upload-filename").value.trim();
+  const folder   = document.getElementById("upload-folder").value;
+  if (!filename) { toast("Please enter a filename", "error"); return; }
+
+  const status = document.getElementById("upload-status");
+  status.textContent = "Uploading…";
+
+  try {
+    const token = await currentUser.jwt();
+    const res = await fetch("/api/image-upload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+      body: JSON.stringify({ filename, folder, base64: uploadFileData })
+    });
+    const result = await res.json();
+    if (result.ok) {
+      status.textContent = "Uploaded: " + result.url;
+      toast("Image uploaded!", "success");
+      uploadFileData = null;
+      document.getElementById("upload-filename").value = "";
+      document.getElementById("upload-preview").style.display = "none";
+      document.getElementById("file-input").value = "";
+    } else {
+      throw new Error(result.error);
+    }
+  } catch(e) {
+    status.textContent = "Error: " + e.message;
+    toast("Upload failed: " + e.message, "error");
+  }
+}
+
+/* ════════ HELPERS ════════ */
+function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+document.querySelectorAll(".modal-bg").forEach(el => {
+  el.addEventListener("click", e => { if (e.target === el) el.classList.remove("open"); });
+});
+
+function toast(msg, type) {
+  const bar = document.getElementById("status-bar");
+  const t = document.createElement("div");
+  t.className = "status-toast" + (type ? " " + type : "");
+  t.textContent = msg;
+  bar.appendChild(t);
+  requestAnimationFrame(() => { requestAnimationFrame(() => { t.classList.add("show"); }); });
+  setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 300); }, 3000);
+}
+</script>
+</body>
+</html>

@@ -15,7 +15,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"The Cat Cafe Singapore","description":"Singapore's original cat cafe since 2014 at Bugis.","url":"https://www.thecatcafe.sg","telephone":"+6563386815","email":"info@thecatcafe.sg","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street, Level 3","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"},"priceRange":"S$22-S$50"}
 </script>
-<script>if(typeof CC_DATA==="undefined"){window.CC_DATA=undefined;}</script>
+
 <style>
   :root {
     --cream:#f5efe8; --rust:#D85A30; --rust-dark:#993C1D; --rust-pale:#FAECE7;
@@ -595,11 +595,32 @@ function renderPricing() {
   }).join("");
 }
 
-// Script runs at end of <body> so DOM is already ready — call directly
-renderCatCards(CATS);
-renderHours();
-renderPricing();
-showMenu("all", document.querySelector(".mtab"));
+// Fetch live content from JSON files (written by CMS)
+async function loadContent() {
+  try {
+    const [cats, menu, settings] = await Promise.all([
+      fetch("/content/cats.json").then(r => r.json()),
+      fetch("/content/menu.json").then(r => r.json()),
+      fetch("/content/settings.json").then(r => r.json())
+    ]);
+    CATS    = cats;
+    MENU    = menu;
+    if (settings.pricing) PRICING = settings.pricing;
+    if (settings.hours)   HOURS   = settings.hours;
+    if (settings.info && settings.info.booking_url) {
+      document.querySelectorAll("a[href*='inline.app']").forEach(a => {
+        a.href = settings.info.booking_url;
+      });
+    }
+  } catch(e) {
+    console.log("Using default content:", e.message);
+  }
+  renderCatCards(CATS);
+  renderHours();
+  renderPricing();
+  showMenu("all", document.querySelector(".mtab"));
+}
+loadContent();
 </script>
 </body>
 </html>
