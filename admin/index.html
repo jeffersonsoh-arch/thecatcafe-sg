@@ -188,6 +188,7 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
       <div class="nav-item" onclick="nav('pricing',this)"><span class="nav-icon">💰</span>Pricing</div>
       <div class="nav-item" onclick="nav('info',this)"><span class="nav-icon">📍</span>Cafe info</div>
       <div class="nav-item" onclick="nav('images',this)"><span class="nav-icon">🖼️</span>Images</div>
+      <div class="nav-item" onclick="nav('vouchers',this);loadVouchers()"><span class="nav-icon">🎁</span>Vouchers</div>
     </nav>
 
     <div class="main">
@@ -322,6 +323,34 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
             <strong>Art jamming:</strong> artjam1.jpg, artjam2.jpg, artjam3.jpg<br>
             <strong>Events:</strong> birthday.jpg, teambonding.jpg, kidsparty.jpg, privatehire.jpg
           </div>
+        </div>
+      </div>
+
+
+      <!-- VOUCHERS -->
+      <div class="panel" id="panel-vouchers">
+        <div class="panel-header">
+          <div><div class="panel-title">Gift Vouchers</div><div class="panel-sub">Redeem vouchers and view all issued vouchers.</div></div>
+          <div class="panel-actions"><button class="btn-sm btn-secondary" onclick="loadVouchers()">Refresh</button></div>
+        </div>
+
+        <div class="voucher-stats" id="voucher-stats"></div>
+
+        <div class="redeem-box">
+          <div class="card-title" style="margin-bottom:12px;">Redeem a voucher</div>
+          <div class="redeem-row">
+            <div>
+              <label>Enter voucher code</label>
+              <input type="text" id="redeem-input" placeholder="TCC-XXXX-XXXX-XXXX" style="font-family:monospace;letter-spacing:0.08em;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')lookupVoucher()">
+            </div>
+            <button class="btn-sm btn-indigo" onclick="lookupVoucher()">Look up</button>
+          </div>
+          <div class="voucher-result" id="voucher-result"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">All vouchers</div>
+          <div id="vouchers-table-wrap"><div style="color:var(--text-3);font-size:13px;">Loading vouchers…</div></div>
         </div>
       </div>
 
@@ -823,6 +852,135 @@ function toast(msg, type) {
   requestAnimationFrame(() => { requestAnimationFrame(() => { t.classList.add("show"); }); });
   setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 300); }, 3000);
 }
+
+/* ════════ VOUCHERS ════════ */
+var allVouchers = [];
+
+async function loadVouchers() {
+  try {
+    const token = await currentUser.jwt();
+    const res = await fetch("/.netlify/functions/voucher-manage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+      body: JSON.stringify({ action: "list" })
+    });
+    const data = await res.json();
+    allVouchers = data.vouchers || [];
+    renderVoucherStats();
+    renderVouchersTable();
+  } catch(e) {
+    document.getElementById("vouchers-table-wrap").innerHTML = `<div style="color:var(--red);font-size:13px;">Failed to load: ${e.message}</div>`;
+  }
+}
+
+function renderVoucherStats() {
+  const now = new Date();
+  const total = allVouchers.length;
+  const redeemed = allVouchers.filter(v => v.redeemed).length;
+  const active = allVouchers.filter(v => !v.redeemed && new Date(v.expires_at) > now).length;
+  const expired = allVouchers.filter(v => !v.redeemed && new Date(v.expires_at) <= now).length;
+  document.getElementById("voucher-stats").innerHTML = [
+    [total, "Total issued"],
+    [active, "Active"],
+    [redeemed, "Redeemed"],
+    [expired, "Expired"]
+  ].map(([n,l]) => `<div class="stat-card"><div class="stat-n">${n}</div><div class="stat-l">${l}</div></div>`).join("");
+}
+
+function renderVouchersTable() {
+  if (!allVouchers.length) {
+    document.getElementById("vouchers-table-wrap").innerHTML = '<div style="color:var(--text-3);font-size:13px;">No vouchers issued yet.</div>';
+    return;
+  }
+  const now = new Date();
+  const sorted = [...allVouchers].sort((a,b) => new Date(b.issued_at) - new Date(a.issued_at));
+  document.getElementById("vouchers-table-wrap").innerHTML = `
+    <div style="overflow-x:auto;">
+    <table class="voucher-table">
+      <tr><th>Code</th><th>Type</th><th>Buyer</th><th>Issued</th><th>Expires</th><th>Status</th><th></th></tr>
+      ${sorted.map((v,i) => {
+        const expired = !v.redeemed && new Date(v.expires_at) < now;
+        const status = v.redeemed ? "redeemed" : expired ? "expired" : "active";
+        const statusLabel = v.redeemed ? "Redeemed" : expired ? "Expired" : "Active";
+        return `<tr>
+          <td><span class="v-code">${v.code}</span></td>
+          <td>${v.label} <span style="color:var(--rust);font-weight:600;">S$${v.amount}</span></td>
+          <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v.buyer_name}<br><span style="color:var(--text-3);font-size:11px;">${v.buyer_email}</span></td>
+          <td style="white-space:nowrap;font-size:12px;">${new Date(v.issued_at).toLocaleDateString("en-SG")}</td>
+          <td style="white-space:nowrap;font-size:12px;">${new Date(v.expires_at).toLocaleDateString("en-SG")}</td>
+          <td><span class="v-badge ${status}">${statusLabel}${v.redeemed ? "<br><span style='font-size:10px;font-weight:400;'>"+new Date(v.redeemed_at).toLocaleDateString("en-SG")+"</span>" : ""}</span></td>
+          <td>${status === "active" ? `<button class="btn-sm btn-success" onclick="redeemVoucher('${v.code}')">Redeem</button>` : ""}</td>
+        </tr>`;
+      }).join("")}
+    </table></div>`;
+}
+
+async function lookupVoucher() {
+  const code = document.getElementById("redeem-input").value.trim().toUpperCase();
+  const resultEl = document.getElementById("voucher-result");
+  if (!code) return;
+
+  resultEl.style.display = "none";
+  try {
+    const token = await currentUser.jwt();
+    const res = await fetch("/.netlify/functions/voucher-manage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+      body: JSON.stringify({ action: "lookup", code })
+    });
+    const data = await res.json();
+    if (!data.ok) {
+      resultEl.className = "voucher-result err";
+      resultEl.innerHTML = "&#x2717; " + data.error;
+    } else {
+      const v = data.voucher;
+      const expired = data.expired;
+      if (v.redeemed) {
+        resultEl.className = "voucher-result warn";
+        resultEl.innerHTML = `&#x26A0; Already redeemed on ${new Date(v.redeemed_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}`;
+      } else if (expired) {
+        resultEl.className = "voucher-result err";
+        resultEl.innerHTML = `&#x2717; Voucher expired on ${new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}`;
+      } else {
+        resultEl.className = "voucher-result ok";
+        resultEl.innerHTML = `&#x2713; Valid voucher<br>
+          <strong>${v.label} — S$${v.amount}</strong><br>
+          Issued to: ${v.buyer_name} (${v.buyer_email})<br>
+          Expires: ${new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}<br><br>
+          <button class="btn-sm btn-success" onclick="redeemVoucher('${v.code}')">&#x2713; Mark as redeemed</button>`;
+      }
+    }
+    resultEl.style.display = "block";
+  } catch(e) {
+    resultEl.className = "voucher-result err";
+    resultEl.innerHTML = "Error: " + e.message;
+    resultEl.style.display = "block";
+  }
+}
+
+async function redeemVoucher(code) {
+  if (!confirm("Mark voucher " + code + " as redeemed? This cannot be undone.")) return;
+  try {
+    const token = await currentUser.jwt();
+    const res = await fetch("/.netlify/functions/voucher-manage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+      body: JSON.stringify({ action: "redeem", code })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      toast("Voucher redeemed successfully!", "success");
+      document.getElementById("redeem-input").value = "";
+      document.getElementById("voucher-result").style.display = "none";
+      await loadVouchers();
+    } else {
+      toast("Error: " + data.error, "error");
+    }
+  } catch(e) {
+    toast("Error: " + e.message, "error");
+  }
+}
+
 </script>
 </body>
 </html>

@@ -101,3 +101,54 @@ Then update your DNS:
 - Add a CNAME record: `www` → `your-site.netlify.app`
 - Add an ALIAS/ANAME record: `@` → `your-site.netlify.app`
 Netlify handles SSL automatically.
+
+## Voucher system setup
+
+The voucher flow uses **HitPay** for payments, **Resend** for email, and stores voucher records in `content/vouchers.json`.
+
+### Additional environment variables needed
+
+Add these in Netlify → Site configuration → Environment variables:
+
+| Key | Value |
+|-----|-------|
+| `HITPAY_API_KEY` | Your new HitPay API key (from HitPay dashboard → Settings → Payment Gateway) |
+| `HITPAY_SALT` | Your new HitPay webhook salt |
+| `RESEND_API_KEY` | From resend.com (free tier, 3000 emails/month) |
+
+### HitPay webhook setup
+
+In your HitPay dashboard → Settings → Payment Gateway → Webhooks, add:
+```
+https://your-site.netlify.app/.netlify/functions/voucher-webhook
+```
+
+### Resend setup
+
+1. Sign up at resend.com (free)
+2. Add your domain `thecatcafe.sg` and verify DNS
+3. Copy your API key and add to Netlify env vars
+
+### How vouchers work
+
+1. Customer selects voucher on site → clicks Pay
+2. Redirected to HitPay checkout (PayNow, PayLah!, card, NETS)
+3. HitPay sends webhook to Netlify on payment success
+4. Netlify function generates unique code (e.g. `TCC-AB3K-7MNP`)
+5. Voucher record saved to `content/vouchers.json` in GitHub
+6. Branded email sent to customer with voucher code
+7. Notification email sent to `info@thecatcafe.sg`
+8. Customer shows code on arrival → staff redeems in `/admin` → Vouchers tab
+
+### File structure additions
+
+```
+catcafe-cms/
+├── voucher-success.html              ← Post-payment success page
+├── content/
+│   └── vouchers.json                 ← All issued vouchers (auto-managed)
+└── netlify/functions/
+    ├── voucher-create.js             ← Creates HitPay checkout session
+    ├── voucher-webhook.js            ← Receives HitPay webhook, sends email
+    └── voucher-manage.js             ← Lookup/redeem/list vouchers (admin)
+```
