@@ -1,7 +1,7 @@
 const https = require("https");
 
 const HITPAY_API_KEY = process.env.HITPAY_API_KEY;
-const SITE_URL = process.env.URL || "https://thecatcafe-sg.netlify.app";
+const SITE_URL = process.env.SITE_URL || "https://thecatcafe-sg.netlify.app";
 
 const VOUCHERS = {
   "gift-10":  { amount: "10.00", label: "Gift Voucher",  desc: "S$10 gift voucher redeemable at The Cat Cafe Singapore" },
