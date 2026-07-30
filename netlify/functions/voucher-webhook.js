@@ -9,15 +9,6 @@ const GITHUB_BRANCH  = process.env.GITHUB_BRANCH || "main";
 const FROM_EMAIL = process.env.RESEND_FROM || "onboarding@resend.dev";
 const SITE_URL       = process.env.URL || "https://thecatcafe-sg.netlify.app";
 
-// ── Verify HitPay HMAC ──
-function verifyHitPay(params, hmacReceived) {
-  const sorted = Object.keys(params).sort().map(k => `${k}=${params[k]}`).join("&");
-  const computed = crypto.createHmac("sha256", HITPAY_SALT).update(sorted).digest("hex");
-  console.log("HMAC computed:", computed);
-  console.log("HMAC received:", hmacReceived);
-  return computed === hmacReceived;
-}
-
 // ── Generate unique voucher code ──
 function generateCode() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -199,22 +190,35 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method not allowed" };
 
   try {
-    // Parse form-encoded body
-    const params = {};
-    (event.body || "").split("&").forEach(pair => {
-      const [k, v] = pair.split("=");
-      if (k) params[decodeURIComponent(k)] = decodeURIComponent((v || "").replace(/\+/g, " "));
-    });
+    // HitPay sends JSON body + HMAC in header X-HITPAY-SIGNATURE
+    const hmac = event.headers["x-hitpay-signature"] || event.headers["X-HITPAY-SIGNATURE"] || "";
+    let params;
+    try {
+      params = JSON.parse(event.body || "{}");
+    } catch(e) {
+      console.error("Failed to parse JSON body:", event.body);
+      return { statusCode: 400, body: "Invalid JSON" };
+    }
 
     console.log("Parsed params:", JSON.stringify(params));
+    console.log("HMAC from header:", hmac);
 
-    // Extract and verify HMAC
-    const hmac = params.hmac;
-    delete params.hmac;
-
-    if (HITPAY_SALT && !verifyHitPay(params, hmac)) {
-      console.error("HMAC verification failed");
-      return { statusCode: 401, body: "Invalid signature" };
+    // Verify HMAC using JSON body fields
+    if (HITPAY_SALT) {
+      const sorted = Object.keys(params).sort().map(k => {
+        const v = params[k];
+        if (v === null || v === undefined) return null;
+        if (typeof v === "object") return null; // skip nested objects/arrays
+        return `${k}=${v}`;
+      }).filter(Boolean).join("&");
+      console.log("HMAC string:", sorted);
+      const computed = crypto.createHmac("sha256", HITPAY_SALT).update(sorted).digest("hex");
+      console.log("HMAC computed:", computed);
+      console.log("HMAC received:", hmac);
+      if (hmac && computed !== hmac) {
+        console.error("HMAC verification failed");
+        return { statusCode: 401, body: "Invalid signature" };
+      }
     }
 
     // Only process completed payments
@@ -236,8 +240,8 @@ exports.handler = async (event) => {
     expiry.setFullYear(expiry.getFullYear() + 1);
     const expiryStr = expiry.toLocaleDateString("en-SG", { day:"numeric", month:"long", year:"numeric" });
 
-    const buyerEmail    = params.email || "";
-    const buyerName     = params.name  || "Customer";
+    const buyerEmail    = params.email || (params.payments && params.payments[0] && params.payments[0].buyer_email) || "";
+    const buyerName     = params.name  || (params.payments && params.payments[0] && params.payments[0].buyer_name)  || "Customer";
     const recipientName = buyerName;
 
     // 1. Save voucher to GitHub first (most important)
