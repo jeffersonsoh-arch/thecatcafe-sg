@@ -12,7 +12,7 @@ function hitpayPost(params) {
   return new Promise((resolve, reject) => {
     const payload = new URLSearchParams(params).toString();
     const options = {
-      hostname: "api.hit-pay.com",
+      hostname: "api.sandbox.hit-pay.com",
       path: "/v1/payment-requests",
       method: "POST",
       headers: {
