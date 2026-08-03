@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay – The Cat Cafe Singapore</title>
+<style>
+  :root {
+    --rust:#D85A30; --rust-pale:#FAECE7; --rust-dark:#993C1D;
+    --text:#1a1a1a; --text-2:#555; --text-3:#999;
+    --border:#e4e0db; --border-light:#f0ede9;
+    --bg:#fff; --bg-2:#faf9f7;
+    --radius:12px; --radius-sm:8px;
+    --green:#2E7D32; --green-pale:#E8F5E9;
+    --red:#C62828; --red-pale:#FFEBEE;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg-2); color:var(--text); min-height:100vh; }
+  a { color:inherit; text-decoration:none; }
+
+  /* HEADER */
+  .header { background:var(--bg); border-bottom:0.5px solid var(--border); padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; }
+  .header-logo { font-size:15px; font-weight:600; }
+  .header-logo span { color:var(--rust); }
+  .header-back { font-size:13px; color:var(--text-3); display:flex; align-items:center; gap:4px; }
+  .header-back:hover { color:var(--text); }
+
+  /* MAIN */
+  .main { max-width:480px; margin:0 auto; padding:36px 24px 60px; }
+  .page-title { font-size:26px; font-weight:600; color:var(--text); margin-bottom:6px; letter-spacing:-0.02em; }
+  .page-sub { font-size:14px; color:var(--text-2); line-height:1.7; margin-bottom:32px; }
+
+  /* CARD */
+  .card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius); padding:28px; margin-bottom:16px; }
+
+  /* AMOUNT INPUT */
+  .amount-wrap { position:relative; margin-bottom:20px; }
+  .amount-currency { position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:22px; font-weight:600; color:var(--text-3); pointer-events:none; }
+  .amount-input { width:100%; font-size:36px; font-weight:700; color:var(--text); padding:16px 16px 16px 52px; border:2px solid var(--border); border-radius:var(--radius-sm); outline:none; background:var(--bg); transition:border-color 0.15s; font-family:inherit; }
+  .amount-input:focus { border-color:var(--rust); }
+  .amount-input::placeholder { color:var(--border); }
+  .amount-presets { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:20px; }
+  .preset { background:var(--bg-2); border:0.5px solid var(--border); border-radius:var(--radius-sm); padding:8px 4px; text-align:center; font-size:13px; font-weight:500; color:var(--text-2); cursor:pointer; transition:all 0.15s; }
+  .preset:hover { border-color:var(--rust); color:var(--rust); background:var(--rust-pale); }
+  .preset.active { border-color:var(--rust); color:var(--rust-dark); background:var(--rust-pale); font-weight:600; }
+
+  /* FIELDS */
+  .field { margin-bottom:14px; }
+  .field label { display:block; font-size:12px; font-weight:600; color:var(--text-2); margin-bottom:5px; }
+  .field input { width:100%; padding:10px 12px; border:0.5px solid var(--border); border-radius:var(--radius-sm); font-size:14px; color:var(--text); background:var(--bg); outline:none; font-family:inherit; transition:border-color 0.15s; }
+  .field input:focus { border-color:var(--rust); }
+  .field .hint { font-size:11px; color:var(--text-3); margin-top:4px; }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+  /* PURPOSE CHIPS */
+  .purpose-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
+  .purpose-chip { font-size:12px; padding:5px 12px; border-radius:20px; border:0.5px solid var(--border); background:var(--bg-2); color:var(--text-2); cursor:pointer; transition:all 0.15s; }
+  .purpose-chip:hover { border-color:var(--rust); color:var(--rust); }
+  .purpose-chip.active { background:var(--rust-pale); border-color:var(--rust); color:var(--rust-dark); font-weight:500; }
+
+  /* BUTTON */
+  .pay-btn { width:100%; background:var(--rust); color:#fff; border:none; padding:14px; border-radius:var(--radius-sm); font-size:16px; font-weight:600; cursor:pointer; transition:opacity 0.15s; display:flex; align-items:center; justify-content:center; gap:10px; margin-top:4px; font-family:inherit; }
+  .pay-btn:hover { opacity:0.88; }
+  .pay-btn:disabled { opacity:0.45; cursor:not-allowed; }
+
+  /* PAYMENT METHODS */
+  .payment-methods { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:14px; flex-wrap:wrap; }
+  .pm-badge { font-size:11px; font-weight:600; color:var(--text-3); background:var(--bg-2); border:0.5px solid var(--border); padding:4px 10px; border-radius:6px; }
+
+  /* NOTE */
+  .pay-note { font-size:12px; color:var(--text-3); text-align:center; margin-top:10px; line-height:1.6; }
+
+  /* SUCCESS */
+  .success-card { background:var(--green-pale); border:1px solid #A5D6A7; border-radius:var(--radius); padding:32px; text-align:center; display:none; }
+  .success-icon { font-size:40px; margin-bottom:12px; }
+  .success-title { font-size:20px; font-weight:600; color:var(--green); margin-bottom:8px; }
+  .success-sub { font-size:14px; color:#2E7D32; line-height:1.7; }
+
+  /* ERROR */
+  .error-msg { background:var(--red-pale); border:1px solid #EF9A9A; border-radius:var(--radius-sm); padding:12px 16px; font-size:13px; color:var(--red); margin-bottom:14px; display:none; line-height:1.5; }
+
+  /* INFO STRIP */
+  .info-strip { background:var(--rust-pale); border-radius:var(--radius-sm); padding:14px 16px; display:flex; gap:12px; align-items:flex-start; margin-bottom:20px; }
+  .info-strip-icon { font-size:18px; flex-shrink:0; }
+  .info-strip-text { font-size:13px; color:var(--rust-dark); line-height:1.6; }
+
+  /* FOOTER */
+  .page-footer { text-align:center; margin-top:32px; font-size:12px; color:var(--text-3); line-height:2; }
+  .page-footer a { color:var(--rust); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">The Cat <span>Cafe</span></div>
+  <a class="header-back" href="/">&#8592; Back to site</a>
+</div>
+
+<div class="main">
+  <div class="page-title">Pay your bill</div>
+  <div class="page-sub">For overseas visitors and cashless payments. Enter your amount below and pay securely via HitPay — we accept international credit and debit cards.</div>
+
+  <div class="info-strip">
+    <div class="info-strip-icon">💡</div>
+    <div class="info-strip-text">Please check your total with our staff before making payment. Show them this page once payment is confirmed.</div>
+  </div>
+
+  <div class="card" id="payment-card">
+    <div class="error-msg" id="error-msg"></div>
+
+    <!-- AMOUNT -->
+    <div class="field">
+      <label>Amount to pay (SGD)</label>
+      <div class="amount-wrap">
+        <span class="amount-currency">S$</span>
+        <input class="amount-input" type="number" id="amount" placeholder="0.00" min="1" step="0.50" oninput="onAmountInput()">
+      </div>
+      <div class="amount-presets">
+        <div class="preset" onclick="setPreset(22)">S$22</div>
+        <div class="preset" onclick="setPreset(44)">S$44</div>
+        <div class="preset" onclick="setPreset(50)">S$50</div>
+        <div class="preset" onclick="setPreset(100)">S$100</div>
+      </div>
+    </div>
+
+    <!-- PURPOSE -->
+    <div class="field">
+      <label>Payment for</label>
+      <div class="purpose-chips">
+        <div class="purpose-chip active" onclick="setPurpose(this,'Cafe entry')">Cafe entry</div>
+        <div class="purpose-chip" onclick="setPurpose(this,'Food & drinks')">Food &amp; drinks</div>
+        <div class="purpose-chip" onclick="setPurpose(this,'Art jamming')">Art jamming</div>
+        <div class="purpose-chip" onclick="setPurpose(this,'Gift voucher')">Gift voucher</div>
+        <div class="purpose-chip" onclick="setPurpose(this,'Other')">Other</div>
+      </div>
+      <input type="text" id="purpose-other" placeholder="Describe payment..." style="display:none;margin-top:8px;width:100%;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;outline:none;">
+    </div>
+
+    <!-- GUEST DETAILS -->
+    <div class="field-row">
+      <div class="field">
+        <label>Your name *</label>
+        <input type="text" id="pay-name" placeholder="e.g. John Smith">
+      </div>
+      <div class="field">
+        <label>Email *</label>
+        <input type="email" id="pay-email" placeholder="you@example.com">
+        <div class="hint">Receipt will be sent here</div>
+      </div>
+    </div>
+
+    <button class="pay-btn" id="pay-btn" onclick="submitPayment()" disabled>
+      <span id="pay-btn-text">Enter amount to continue</span>
+    </button>
+
+    <div class="payment-methods">
+      <div class="pm-badge">Visa</div>
+      <div class="pm-badge">Mastercard</div>
+      <div class="pm-badge">Amex</div>
+      <div class="pm-badge">PayNow</div>
+      <div class="pm-badge">PayLah!</div>
+      <div class="pm-badge">NETS</div>
+    </div>
+    <div class="pay-note">Secured by HitPay &middot; Your payment details are never stored by us</div>
+  </div>
+
+  <div class="success-card" id="success-card">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Payment confirmed!</div>
+    <div class="success-sub">Thank you — a receipt has been sent to your email.<br>Please show this screen to our staff.</div>
+  </div>
+
+  <div class="page-footer">
+    The Cat Cafe Singapore &middot; 241B Victoria Street, Level 3, Bugis<br>
+    <a href="tel:+6563386815">+65 6338 6815</a> &middot; <a href="https://wa.me/6580808719">WhatsApp</a> &middot; <a href="/">thecatcafe.sg</a>
+  </div>
+</div>
+
+<script>
+var selectedPurpose = "Cafe entry";
+
+function onAmountInput() {
+  var val = parseFloat(document.getElementById("amount").value);
+  var btn = document.getElementById("pay-btn");
+  var btnText = document.getElementById("pay-btn-text");
+  document.querySelectorAll(".preset").forEach(function(p) { p.classList.remove("active"); });
+  if (val && val >= 1) {
+    btn.disabled = false;
+    btnText.textContent = "Pay S$" + val.toFixed(2) + " →";
+  } else {
+    btn.disabled = true;
+    btnText.textContent = "Enter amount to continue";
+  }
+}
+
+function setPreset(val) {
+  document.getElementById("amount").value = val;
+  document.querySelectorAll(".preset").forEach(function(p) { p.classList.remove("active"); });
+  event.target.classList.add("active");
+  onAmountInput();
+}
+
+function setPurpose(el, val) {
+  document.querySelectorAll(".purpose-chip").forEach(function(c) { c.classList.remove("active"); });
+  el.classList.add("active");
+  var otherInput = document.getElementById("purpose-other");
+  if (val === "Other") {
+    otherInput.style.display = "block";
+    selectedPurpose = "Other";
+  } else {
+    otherInput.style.display = "none";
+    selectedPurpose = val;
+  }
+}
+
+async function submitPayment() {
+  var amount  = parseFloat(document.getElementById("amount").value);
+  var name    = document.getElementById("pay-name").value.trim();
+  var email   = document.getElementById("pay-email").value.trim();
+  var otherInput = document.getElementById("purpose-other").value.trim();
+  var purpose = selectedPurpose === "Other" ? (otherInput || "Other") : selectedPurpose;
+  var errorEl = document.getElementById("error-msg");
+
+  errorEl.style.display = "none";
+
+  if (!amount || amount < 1)   { showError("Please enter a valid amount (minimum S$1)."); return; }
+  if (!name)                    { showError("Please enter your name."); return; }
+  if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) { showError("Please enter a valid email address."); return; }
+
+  var btn = document.getElementById("pay-btn");
+  btn.disabled = true;
+  document.getElementById("pay-btn-text").textContent = "Preparing payment…";
+
+  try {
+    var res = await fetch("/.netlify/functions/payment-create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: amount.toFixed(2), name, email, purpose })
+    });
+    var data = await res.json();
+    if (data.ok && data.checkout_url) {
+      window.location.href = data.checkout_url;
+    } else {
+      throw new Error(data.error || "Could not create payment");
+    }
+  } catch(e) {
+    showError("Something went wrong: " + e.message + ". Please ask our staff for help.");
+    btn.disabled = false;
+    document.getElementById("pay-btn-text").textContent = "Pay S$" + amount.toFixed(2) + " →";
+  }
+}
+
+function showError(msg) {
+  var el = document.getElementById("error-msg");
+  el.textContent = msg;
+  el.style.display = "block";
+  el.scrollIntoView({ behavior:"smooth", block:"nearest" });
+}
+
+// Show success if redirected back
+if (window.location.search.includes("status=success") || window.location.hash === "#success") {
+  document.getElementById("payment-card").style.display = "none";
+  document.getElementById("success-card").style.display = "block";
+}
+</script>
+</body>
+</html>
