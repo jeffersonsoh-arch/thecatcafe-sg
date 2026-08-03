@@ -34,10 +34,10 @@
   .card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius); padding:28px; margin-bottom:16px; }
 
   /* AMOUNT INPUT */
-  .amount-wrap { position:relative; margin-bottom:20px; }
-  .amount-currency { position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:22px; font-weight:600; color:var(--text-3); pointer-events:none; }
-  .amount-input { width:100%; font-size:36px; font-weight:700; color:var(--text); padding:16px 16px 16px 52px; border:2px solid var(--border); border-radius:var(--radius-sm); outline:none; background:var(--bg); transition:border-color 0.15s; font-family:inherit; }
-  .amount-input:focus { border-color:var(--rust); }
+  .amount-wrap { display:flex; align-items:stretch; border:2px solid var(--border); border-radius:var(--radius-sm); overflow:hidden; margin-bottom:20px; transition:border-color 0.15s; background:var(--bg); }
+  .amount-wrap:focus-within { border-color:var(--rust); }
+  .amount-currency { display:flex; align-items:center; padding:0 14px; font-size:22px; font-weight:600; color:var(--text-3); background:var(--bg-2); border-right:1px solid var(--border); flex-shrink:0; user-select:none; }
+  .amount-input { flex:1; font-size:36px; font-weight:700; color:var(--text); padding:14px 16px; border:none; outline:none; background:var(--bg); font-family:inherit; min-width:0; }
   .amount-input::placeholder { color:var(--border); }
   .amount-presets { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:20px; }
   .preset { background:var(--bg-2); border:0.5px solid var(--border); border-radius:var(--radius-sm); padding:8px 4px; text-align:center; font-size:13px; font-weight:500; color:var(--text-2); cursor:pointer; transition:all 0.15s; }
