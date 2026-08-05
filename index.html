@@ -228,8 +228,8 @@
   .event-meta-item span { font-size:13px; color:var(--text-2); }
   /* Gallery */
   .event-gallery { position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:4/3; background:var(--cream); }
-  .gallery-track { display:flex; width:100%; height:100%; transition:transform 0.4s ease; }
-  .gallery-slide { min-width:100%; height:100%; flex-shrink:0; }
+  .gallery-track { display:flex; width:300%; height:100%; transition:transform 0.4s ease; will-change:transform; }
+  .gallery-slide { width:33.3333%; height:100%; flex-shrink:0; overflow:hidden; }
   .gallery-slide img { width:100%; height:100%; object-fit:cover; display:block; }
   .gallery-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:48px; background:var(--cream); }
   .gallery-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:36px; height:36px; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,0.15); transition:background 0.15s; z-index:2; }
@@ -834,9 +834,22 @@ function galleryScroll(id, dir) {
   if (!track) return;
   var slides = track.querySelectorAll('.gallery-slide');
   var total = slides.length;
-  if (!galleryState[id]) galleryState[id] = 0;
+  if (galleryState[id] === undefined) galleryState[id] = 0;
   galleryState[id] = (galleryState[id] + dir + total) % total;
-  track.style.transform = 'translateX(-' + (galleryState[id] * 100) + '%)';
+  // Each slide is 1/total of the track width, so offset = index * (100/total)%
+  var pct = galleryState[id] * (100 / total);
+  track.style.transform = 'translateX(-' + pct + '%)';
+  updateDots(id, total);
+}
+
+function galleryGoTo(id, idx) {
+  var track = document.getElementById(id);
+  if (!track) return;
+  var slides = track.querySelectorAll('.gallery-slide');
+  var total = slides.length;
+  galleryState[id] = idx;
+  var pct = idx * (100 / total);
+  track.style.transform = 'translateX(-' + pct + '%)';
   updateDots(id, total);
 }
 
@@ -847,7 +860,7 @@ function updateDots(id, total) {
   for (var i = 0; i < total; i++) {
     var dot = document.createElement('div');
     dot.className = 'gallery-dot' + (i === (galleryState[id]||0) ? ' active' : '');
-    (function(idx){ dot.onclick = function(){ galleryState[id]=idx; galleryScroll(id,0); }; })(i);
+    (function(idx){ dot.onclick = function(){ galleryGoTo(id, idx); }; })(i);
     dotsEl.appendChild(dot);
   }
 }
