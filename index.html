@@ -30,22 +30,21 @@
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg);font-size:15px;line-height:1.6;}
   a{color:inherit;text-decoration:none;}
   button{font-family:inherit;font-size:14px;}
+
   /* NAV */
   nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border);}
   .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
-  .nav-logo{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-link{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
   .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
-  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
   .nav-logo-text span{color:var(--rust);}
-  .nav-logo span{color:var(--rust);}
   .nav-links{display:flex;gap:20px;}
   .nav-links a{font-size:13px;color:var(--text-2);}
   .nav-links a:hover{color:var(--text);}
   .nav-pay-link{color:#1a7a3c !important;font-weight:600;}
   .nav-cta{background:var(--rust);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;}
   .nav-cta:hover{opacity:0.88;}
+
   /* LAYOUT */
   .page{max-width:900px;margin:0 auto;padding:0 24px;}
   section{padding:56px 0;border-bottom:0.5px solid var(--border-light);}
@@ -53,6 +52,7 @@
   .section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:8px;}
   .section-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em;line-height:1.25;}
   .section-sub{font-size:15px;color:var(--text-2);max-width:560px;line-height:1.7;margin-bottom:28px;}
+
   /* HERO */
   .hero{background:var(--cream);border-radius:var(--radius);padding:56px 40px 44px;text-align:center;margin:32px 0 0;position:relative;overflow:hidden;}
   .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--rust);color:#fff;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;}
@@ -67,11 +67,13 @@
   .btn-outline:hover{border-color:var(--text);}
   .hero-cats{display:flex;justify-content:center;gap:6px;margin-top:32px;}
   .hero-cat-face{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+
   /* STATS */
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px;}
   .stat{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:20px 16px;text-align:center;}
   .stat-n{font-size:30px;font-weight:500;color:var(--rust);}
   .stat-l{font-size:12px;color:var(--text-3);margin-top:2px;}
+
   /* LOCATION */
   .loc-card{background:var(--cream);border-radius:var(--radius);padding:28px 32px;}
   .loc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
@@ -83,6 +85,7 @@
   .hour-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;}
   .hour-day{color:var(--text-2);}
   .hour-time{font-weight:500;}
+
   /* PRICING */
   .pricing-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
   .price-row{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:0.5px solid var(--border-light);}
@@ -90,18 +93,19 @@
   .price-label{font-size:14px;color:var(--text);}
   .price-note{font-size:12px;color:var(--text-3);margin-top:2px;}
   .price-val{font-size:16px;font-weight:500;color:var(--rust);}
+
   /* FEATURES */
   .features{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .feat{display:flex;gap:14px;padding:18px;background:var(--bg-2);border:0.5px solid var(--border-light);border-radius:var(--radius-sm);align-items:flex-start;}
   .feat-icon{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--rust-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
   .feat-title{font-size:14px;font-weight:500;margin-bottom:3px;}
   .feat-desc{font-size:13px;color:var(--text-2);line-height:1.5;}
-  /* ART BANNER */
+
+  /* ART BANNER & PHOTOS */
   .art-banner{background:var(--indigo);border-radius:var(--radius);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:24px;}
   .art-banner h3{font-size:18px;font-weight:500;color:var(--indigo-pale);margin-bottom:6px;}
   .art-banner p{font-size:14px;color:#AFA9EC;line-height:1.6;max-width:400px;}
   .art-btn{background:var(--indigo-pale);color:var(--indigo);border:none;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;}
-  /* ART PHOTOS */
   .art-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
   .art-photo-card{border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-2);border:0.5px solid var(--border-light);}
   .art-photo-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--indigo-pale);}
@@ -109,6 +113,7 @@
   .art-photo-card:hover .art-photo-wrap img{transform:scale(1.04);}
   .art-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;background:var(--indigo-pale);}
   .art-photo-label{font-size:12px;color:var(--text-2);padding:8px 12px;text-align:center;}
+
   /* MENU */
   .menu-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
   .mtab{font-size:12px;font-weight:500;padding:5px 16px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg);color:var(--text-2);cursor:pointer;transition:all 0.15s;}
@@ -121,6 +126,7 @@
   .menu-item-desc{font-size:12px;color:var(--text-3);line-height:1.5;}
   .menu-item-price{font-size:14px;font-weight:500;color:var(--rust);flex-shrink:0;white-space:nowrap;}
   .menu-note{font-size:12px;color:var(--text-3);margin-top:16px;line-height:1.6;}
+
   /* CATS */
   .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
   .fbtn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg);color:var(--text-2);cursor:pointer;transition:all 0.15s;}
@@ -144,6 +150,7 @@
   .tshy{background:#FEF3E7;color:#8A5200;}
   .cat-desc-short{font-size:12px;color:var(--text-2);line-height:1.5;}
   .cat-count{font-size:12px;color:var(--text-3);margin-top:16px;}
+
   /* CAT MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
   .modal-overlay.open{display:flex;}
@@ -154,68 +161,12 @@
   .modal-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
   .modal-desc{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:16px;}
   .modal-close-btn{width:100%;background:var(--bg-2);border:0.5px solid var(--border);color:var(--text-2);padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;}
-  /* EVENTS */
-  .events-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .event-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;}
-  .event-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08);}
-  .event-img-wrap{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--cream);}
-  .event-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
-  .event-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--cream);}
-  .event-body{padding:16px 18px 18px;}
-  .event-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--rust-pale);color:var(--rust-dark);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;}
-  .event-name{font-size:16px;font-weight:500;color:var(--text);margin-bottom:6px;line-height:1.3;}
-  .event-desc{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:14px;}
-  .event-details{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
-  .event-detail{font-size:12px;color:var(--text-3);}
-  .event-detail strong{color:var(--text);}
-  .event-cta{display:inline-flex;align-items:center;background:var(--rust);color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;text-decoration:none;}
-  .event-cta:hover{opacity:0.88;}
-  /* RULES */
-  .rules-list{display:flex;flex-direction:column;gap:10px;}
-  .rule{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:var(--bg-2);border-radius:var(--radius-sm);border:0.5px solid var(--border-light);font-size:14px;color:var(--text-2);line-height:1.5;}
-  .rule-n{width:22px;height:22px;border-radius:50%;background:var(--rust-pale);color:var(--rust);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-  /* MISSION */
-  .mission{background:var(--cream);border-radius:var(--radius);padding:36px 40px;}
-  .mission p{font-size:18px;color:var(--text);line-height:1.8;}
-  .mission p strong{color:var(--rust);font-weight:600;}
-  /* FOOTER */
-  footer{background:var(--text);color:#ccc;padding:40px 0;}
-  .footer-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
-  .footer-logo{font-size:15px;font-weight:600;color:#fff;}
-  .footer-links{display:flex;gap:20px;}
-  .footer-links a{font-size:13px;color:#aaa;}
-  .footer-links a:hover{color:#fff;}
-  .footer-copy{font-size:12px;color:#666;margin-top:6px;}
 
-  /* ── ART PHOTOS ── */
-  .art-photos { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
-  .art-photo-card { border-radius:var(--radius-sm); overflow:hidden; background:var(--bg-2); border:0.5px solid var(--border-light); }
-  .art-photo-wrap { width:100%; aspect-ratio:4/3; overflow:hidden; background:var(--indigo-pale); }
-  .art-photo-wrap img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.3s; }
-  .art-photo-card:hover .art-photo-wrap img { transform:scale(1.04); }
-  .art-photo-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:36px; background:var(--indigo-pale); }
-  .art-photo-label { font-size:12px; color:var(--text-2); padding:8px 12px; text-align:center; }
-
-  @media(max-width:700px){
-
-    .event-block { grid-template-columns:1fr; }
-    .event-block-flip .event-gallery { order:-1; }
-
-    .hero{padding:40px 24px 36px;}
-    .hero h1{font-size:32px;}
-    .cat-grid{grid-template-columns:repeat(2,1fr);}
-    .features,.events-grid,.art-photos{grid-template-columns:1fr;}
-    .hours-grid{grid-template-columns:1fr;}
-    .nav-links{display:none;}
-    .art-banner{flex-direction:column;text-align:center;}
-    .footer-inner{flex-direction:column;text-align:center;}
-  }
-
-  /* ── EVENTS ── */
+  /* 3-BLOCK EVENTS & GALLERIES */
   .event-block { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; margin-bottom:60px; padding-bottom:60px; border-bottom:0.5px solid var(--border-light); }
   .event-block:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-  .event-block-flip { }
   .event-block-content { display:flex; flex-direction:column; gap:16px; }
+  .event-tag { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; background:var(--rust-pale); color:var(--rust-dark); margin-bottom:4px; letter-spacing:0.04em; text-transform:uppercase; align-self:flex-start; }
   .event-block-title { font-size:22px; font-weight:600; color:var(--text); line-height:1.3; }
   .event-block-desc { font-size:14px; color:var(--text-2); line-height:1.8; }
   .event-meta-row { display:flex; flex-direction:column; gap:8px; }
@@ -224,8 +175,9 @@
   .event-meta-item div { display:flex; flex-direction:column; }
   .event-meta-item strong { font-size:13px; font-weight:600; color:var(--text); }
   .event-meta-item span { font-size:13px; color:var(--text-2); }
+  .event-cta { display:inline-flex; align-items:center; background:var(--rust); color:#fff; padding:9px 20px; border-radius:20px; font-size:13px; font-weight:500; text-decoration:none; align-self:flex-start; }
+  .event-cta:hover { opacity:0.88; }
 
-  /* Gallery */
   .event-gallery { position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:4/3; background:var(--cream); flex-shrink:0; }
   .gallery-viewport { width:100%; height:100%; overflow:hidden; border-radius:var(--radius); }
   .gallery-track { display:flex; height:100%; transition:transform 0.45s cubic-bezier(0.4,0,0.2,1); }
@@ -240,8 +192,17 @@
   .gallery-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.55); cursor:pointer; transition:background 0.2s; border:none; padding:0; }
   .gallery-dot.active { background:#fff; }
 
+  /* RULES */
+  .rules-list{display:flex;flex-direction:column;gap:10px;}
+  .rule{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:var(--bg-2);border-radius:var(--radius-sm);border:0.5px solid var(--border-light);font-size:14px;color:var(--text-2);line-height:1.5;}
+  .rule-n{width:22px;height:22px;border-radius:50%;background:var(--rust-pale);color:var(--rust);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
 
-  /* ── DONATE ── */
+  /* MISSION */
+  .mission{background:var(--cream);border-radius:var(--radius);padding:36px 40px;}
+  .mission p{font-size:18px;color:var(--text);line-height:1.8;}
+  .mission p strong{color:var(--rust);font-weight:600;}
+
+  /* DONATE */
   .donate-section { background: #1a1a1a; padding: 60px 0; }
   .donate-inner { max-width: 560px; margin: 0 auto; text-align: center; padding: 0 24px; }
   .donate-paw { font-size: 40px; margin-bottom: 16px; }
@@ -249,8 +210,7 @@
   .donate-sub { font-size: 15px; color: #aaa; line-height: 1.8; margin-bottom: 32px; }
   .donate-amounts { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
   .donate-amt { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 10px 22px; border-radius: 24px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: inherit; }
-  .donate-amt:hover { background: var(--rust); border-color: var(--rust); }
-  .donate-amt.selected { background: var(--rust); border-color: var(--rust); }
+  .donate-amt:hover, .donate-amt.selected { background: var(--rust); border-color: var(--rust); }
   .donate-custom-wrap { display: flex; align-items: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); overflow: hidden; max-width: 220px; margin: 0 auto 24px; transition: border-color 0.15s; }
   .donate-custom-wrap:focus-within { border-color: var(--rust); }
   .donate-custom-prefix { color: #aaa; padding: 0 12px; font-size: 16px; font-weight: 600; background: rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.1); white-space: nowrap; display:flex; align-items:center; height:100%; }
@@ -258,10 +218,31 @@
   .donate-custom-input::placeholder { color: rgba(255,255,255,0.25); }
   .donate-btn { background: var(--rust); color: #fff; border: none; padding: 13px 36px; border-radius: 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; font-family: inherit; }
   .donate-btn:hover { opacity: 0.88; }
-  .donate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .donate-note { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 14px; line-height: 1.7; }
   .donate-success { background: rgba(46,125,50,0.2); border: 1px solid rgba(46,125,50,0.4); border-radius: var(--radius-sm); padding: 16px 20px; color: #81C784; font-size: 14px; line-height: 1.7; margin-top: 16px; display: none; }
   .donate-error { background: rgba(198,40,40,0.2); border: 1px solid rgba(198,40,40,0.4); border-radius: var(--radius-sm); padding: 12px 16px; color: #EF9A9A; font-size: 13px; margin-bottom: 16px; display: none; }
+
+  /* FOOTER */
+  footer{background:var(--text);color:#ccc;padding:40px 0;}
+  .footer-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+  .footer-logo{font-size:15px;font-weight:600;color:#fff;}
+  .footer-links{display:flex;gap:20px;}
+  .footer-links a{font-size:13px;color:#aaa;}
+  .footer-links a:hover{color:#fff;}
+  .footer-copy{font-size:12px;color:#666;margin-top:6px;}
+
+  @media(max-width:700px){
+    .event-block { grid-template-columns:1fr; }
+    .event-block-flip .event-gallery { order:-1; }
+    .hero{padding:40px 24px 36px;}
+    .hero h1{font-size:32px;}
+    .cat-grid{grid-template-columns:repeat(2,1fr);}
+    .features, .menu-grid, .art-photos{grid-template-columns:1fr;}
+    .hours-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .art-banner{flex-direction:column;text-align:center;}
+    .footer-inner{flex-direction:column;text-align:center;}
+  }
 </style>
 </head>
 <body>
@@ -270,14 +251,13 @@
   <div class="nav-inner">
     <a class="nav-logo-link" href="/">
       <img src="images/logo.png" alt="The Cat Cafe Singapore" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
-      <span class="nav-logo-text" style="display:none;">The Cat <span style="color:var(--rust)">Cafe</span></span>
+      <span class="nav-logo-text" style="display:none;">The Cat <span>Cafe</span></span>
     </a>
     <div class="nav-links">
       <a href="#cats">Our cats</a>
       <a href="#menu">Menu</a>
       <a href="#artjam">Art jamming</a>
       <a href="#events">Events</a>
-      <a href="#vouchers">Gift vouchers</a>
       <a href="#visit">Visit</a>
       <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
     </div>
@@ -403,100 +383,94 @@
     <div class="cat-count" id="cat-count"></div>
   </section>
 
-  
-
-  
-  <!-- EVENTS -->
+  <!-- EVENTS (3-BLOCK LAYOUT WITH SCROLLABLE GALLERIES) -->
   <section id="events">
-    <div class="page">
-      <div class="section-eyebrow">Private events</div>
-      <div class="section-title">Make it unforgettable</div>
-      <div class="section-sub">From birthday celebrations to intimate proposals, our cosy cafe — with 13 resident cats — makes the perfect backdrop for your most special moments.</div>
+    <div class="section-eyebrow">Private events</div>
+    <div class="section-title">Make it unforgettable</div>
+    <div class="section-sub">From birthday celebrations to intimate proposals, our cosy cafe — with 13 resident cats — makes the perfect backdrop for your most special moments.</div>
 
-      <!-- BIRTHDAY -->
-      <div class="event-block">
-        <div class="event-block-content">
-          <div class="event-tag">Birthday parties</div>
-          <div class="event-block-title">Celebrate your birthday with 13 cats</div>
-          <div class="event-block-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, complete with food, drinks and of course, plenty of cats wandering by. Whether you're 7 or 70, birthdays are always better with cats.</div>
-          <div class="event-meta-row">
-            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Group size</strong><span>Up to 30 pax</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">⏱</span><div><strong>Duration</strong><span>2–3 hours</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-on</strong><span>Art jamming available</span></div></div>
-          </div>
-          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+    <!-- BIRTHDAY -->
+    <div class="event-block">
+      <div class="event-block-content">
+        <div class="event-tag">Birthday parties</div>
+        <div class="event-block-title">Celebrate your birthday with 13 cats</div>
+        <div class="event-block-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, complete with food, drinks and of course, plenty of cats wandering by. Whether you're 7 or 70, birthdays are always better with cats.</div>
+        <div class="event-meta-row">
+          <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Group size</strong><span>Up to 30 pax</span></div></div>
+          <div class="event-meta-item"><span class="event-meta-icon">⏱</span><div><strong>Duration</strong><span>2–3 hours</span></div></div>
+          <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-on</strong><span>Art jamming available</span></div></div>
         </div>
-        <div class="event-gallery">
-          <div class="gallery-viewport">
-            <div class="gallery-track" id="track-birthday">
-              <div class="gallery-slide"><img src="images/events/birthday1.jpg" alt="Birthday party at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F382;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/birthday2.jpg" alt="Birthday celebration with cats" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F431;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/birthday3.jpg" alt="Cat cafe birthday party Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F389;</div>'"></div>
-            </div>
-          </div>
-          <button class="gallery-btn gallery-prev" onclick="gallerySt('birthday',-1)" aria-label="Previous">&#8249;</button>
-          <button class="gallery-btn gallery-next" onclick="gallerySt('birthday',1)" aria-label="Next">&#8250;</button>
-          <div class="gallery-dots" id="dots-birthday"></div>
-        </div>
+        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
       </div>
-
-      <!-- PROPOSAL -->
-      <div class="event-block event-block-flip">
-        <div class="event-gallery">
-          <div class="gallery-viewport">
-            <div class="gallery-track" id="track-proposal">
-              <div class="gallery-slide"><img src="images/events/proposal1.jpg" alt="Proposal at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F48D;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/proposal2.jpg" alt="Solemnisation cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F490;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/proposal3.jpg" alt="Wedding ceremony with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F338;</div>'"></div>
-            </div>
+      <div class="event-gallery">
+        <div class="gallery-viewport">
+          <div class="gallery-track" id="track-birthday">
+            <div class="gallery-slide"><img src="images/events/birthday1.jpg" alt="Birthday party at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F382;</div>'"></div>
+            <div class="gallery-slide"><img src="images/events/birthday2.jpg" alt="Birthday celebration with cats" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F431;</div>'"></div>
+            <div class="gallery-slide"><img src="images/events/birthday3.jpg" alt="Cat cafe birthday party Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F389;</div>'"></div>
           </div>
-          <button class="gallery-btn gallery-prev" onclick="gallerySt('proposal',-1)" aria-label="Previous">&#8249;</button>
-          <button class="gallery-btn gallery-next" onclick="gallerySt('proposal',1)" aria-label="Next">&#8250;</button>
-          <div class="gallery-dots" id="dots-proposal"></div>
         </div>
-        <div class="event-block-content">
-          <div class="event-tag">Proposal &amp; solemnisation</div>
-          <div class="event-block-title">Your special day, made even more special</div>
-          <div class="event-block-desc">Looking for somewhere unique and intimate to pop the question or exchange your vows? Our cats have a way of making every moment feel warmer. Whether it's a surprise proposal or a small solemnisation ceremony, we'll help you create a memory that lasts a lifetime.</div>
-          <div class="event-meta-row">
-            <div class="event-meta-item"><span class="event-meta-icon">💍</span><div><strong>Occasions</strong><span>Proposals, weddings &amp; solemnisations</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-ons</strong><span>Decorations, florals &amp; art jamming</span></div></div>
-          </div>
-          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20proposal%20or%20solemnisation%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
-        </div>
+        <button class="gallery-btn gallery-prev" onclick="gallerySt('birthday',-1)" aria-label="Previous">&#8249;</button>
+        <button class="gallery-btn gallery-next" onclick="gallerySt('birthday',1)" aria-label="Next">&#8250;</button>
+        <div class="gallery-dots" id="dots-birthday"></div>
       </div>
+    </div>
 
-      <!-- PRIVATE HIRE -->
-      <div class="event-block">
-        <div class="event-block-content">
-          <div class="event-tag">Private hire</div>
-          <div class="event-block-title">Have something special in mind?</div>
-          <div class="event-block-desc">From video shoots and commercial productions to intimate gatherings and brand activations — if it involves cats, we're in. Tell us what you're dreaming up and we'll work with you to make it happen. The whole cafe is yours.</div>
-          <div class="event-meta-row">
-            <div class="event-meta-item"><span class="event-meta-icon">🎬</span><div><strong>Use cases</strong><span>Shoots, events &amp; activations</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Capacity</strong><span>Up to 40 pax</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
+    <!-- PROPOSAL -->
+    <div class="event-block event-block-flip">
+      <div class="event-gallery">
+        <div class="gallery-viewport">
+          <div class="gallery-track" id="track-proposal">
+            <div class="gallery-slide"><img src="images/events/proposal1.jpg" alt="Proposal at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F48D;</div>'"></div>
+            <div class="gallery-slide"><img src="images/events/proposal2.jpg" alt="Solemnisation cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F490;</div>'"></div>
+            <div class="gallery-slide"><img src="images/events/proposal3.jpg" alt="Wedding ceremony with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F338;</div>'"></div>
           </div>
-          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <div class="event-gallery">
-          <div class="gallery-viewport">
-            <div class="gallery-track" id="track-private">
-              <div class="gallery-slide"><img src="images/events/private1.jpg" alt="Private hire cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F3AC;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/private2.jpg" alt="Video shoot at cat cafe Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F4F8;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/private3.jpg" alt="Commercial event with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x2728;</div>'"></div>
-            </div>
-          </div>
-          <button class="gallery-btn gallery-prev" onclick="gallerySt('private',-1)" aria-label="Previous">&#8249;</button>
-          <button class="gallery-btn gallery-next" onclick="gallerySt('private',1)" aria-label="Next">&#8250;</button>
-          <div class="gallery-dots" id="dots-private"></div>
-        </div>
+        <button class="gallery-btn gallery-prev" onclick="gallerySt('proposal',-1)" aria-label="Previous">&#8249;</button>
+        <button class="gallery-btn gallery-next" onclick="gallerySt('proposal',1)" aria-label="Next">&#8250;</button>
+        <div class="gallery-dots" id="dots-proposal"></div>
       </div>
+      <div class="event-block-content">
+        <div class="event-tag">Proposal &amp; solemnisation</div>
+        <div class="event-block-title">Your special day, made even more special</div>
+        <div class="event-block-desc">Looking for somewhere unique and intimate to pop the question or exchange your vows? Our cats have a way of making every moment feel warmer. Whether it's a surprise proposal or a small solemnisation ceremony, we'll help you create a memory that lasts a lifetime.</div>
+        <div class="event-meta-row">
+          <div class="event-meta-item"><span class="event-meta-icon">💍</span><div><strong>Occasions</strong><span>Proposals, weddings &amp; solemnisations</span></div></div>
+          <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-ons</strong><span>Decorations, florals &amp; art jamming</span></div></div>
+        </div>
+        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20proposal%20or%20solemnisation%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+      </div>
+    </div>
 
+    <!-- PRIVATE HIRE -->
+    <div class="event-block">
+      <div class="event-block-content">
+        <div class="event-tag">Private hire</div>
+        <div class="event-block-title">Have something special in mind?</div>
+        <div class="event-block-desc">From video shoots and commercial productions to intimate gatherings and brand activations — if it involves cats, we're in. Tell us what you're dreaming up and we'll work with you to make it happen. The whole cafe is yours.</div>
+        <div class="event-meta-row">
+          <div class="event-meta-item"><span class="event-meta-icon">🎬</span><div><strong>Use cases</strong><span>Shoots, events &amp; activations</span></div></div>
+          <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Capacity</strong><span>Up to 40 pax</span></div></div>
+          <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
+        </div>
+        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+      </div>
+      <div class="event-gallery">
+        <div class="gallery-viewport">
+          <div class="gallery-track" id="track-private">
+            <div class="gallery-slide"><img src="images/events/private1.jpg" alt="Private hire cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F3AC;</div>'"></div>
+            <div class="gallery-slide"><img src="images/events/private2.jpg" alt="Video shoot at cat cafe Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F4F8;</div>'"></div>
+            <div class="gallery-slide"><img src="images/events/private3.jpg" alt="Commercial event with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x2728;</div>'"></div>
+          </div>
+        </div>
+        <button class="gallery-btn gallery-prev" onclick="gallerySt('private',-1)" aria-label="Previous">&#8249;</button>
+        <button class="gallery-btn gallery-next" onclick="gallerySt('private',1)" aria-label="Next">&#8250;</button>
+        <div class="gallery-dots" id="dots-private"></div>
+      </div>
     </div>
   </section>
 
-<section>
+  <section>
     <div class="section-eyebrow">House rules</div>
     <div class="section-title">Before you arrive</div>
     <div class="section-sub">To keep our cats happy, healthy and stress-free.</div>
@@ -516,7 +490,6 @@
   </section>
 
 </div>
-
 
 <!-- DONATE -->
 <div class="donate-section" id="donate">
@@ -573,7 +546,6 @@
 var GITHUB = "images/cats/";
 var BOOK_URL = "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4";
 
-var GITHUB = "images/cats/";
 var CATS_DEFAULT = [
   {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","cuddly"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet nature makes her a firm favourite with every visitor."},
   {id:2,  name:"Jimmy",       img:GITHUB+"jimmy.jpg",       full:GITHUB+"jimmy.jpg",       tags:["senior","og"],              desc:"A domestic long-fur rescued from breeders, Jimmy is around 16 years old. Once wary of handling, he has blossomed in his later years — most active in the mornings, often on the cat bridge."},
@@ -588,209 +560,198 @@ var CATS_DEFAULT = [
   {id:11, name:"Shoyu",       img:GITHUB+"shoyu.jpg",       full:GITHUB+"shoyu.jpg",       tags:["young","playful","shy"],    desc:"Miso's sister at around 3, Shoyu was rescued from a Tuas factory. Once timid and fearful, she now tolerates light pets and chases the other cats with confidence."},
   {id:12, name:"Momo",        img:GITHUB+"momo.jpg",        full:GITHUB+"momo.jpg",        tags:["young","playful","cuddly"], desc:"An orange female of around 4, Momo is playful and affectionate. She loves light head pets and games of catch with Toby."},
   {id:13, name:"Toby",        img:GITHUB+"toby.jpg",        full:GITHUB+"toby.jpg",        tags:["young","playful"],          desc:"The first face you will likely see — Toby greets visitors at the entrance. Around 3, dense grey coat, gentle with children and endlessly playful."}
-]!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Cat Cafe Singapore | Cat Cafe Bugis | Rescued Cats, Coffee &amp; Art Jamming</title>
-<meta name="description" content="Visit Singapore's original cat cafe since 2014 at Bugis. Meet 13 rescued cats, enjoy coffee, food and art jamming. Book your visit today!">
-<meta name="keywords" content="cat cafe Singapore, cat cafe Bugis, Singapore cat cafe, rescue cats Singapore, art jamming cat cafe, things to do Bugis, pet cafe Singapore">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="The Cat Cafe Singapore | Bugis">
-<meta property="og:description" content="Singapore's original cat cafe since 2014. Meet 13 rescued cats, enjoy coffee, food and art jamming at Bugis.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.thecatcafe.sg">
-<link rel="canonical" href="https://www.thecatcafe.sg">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"The Cat Cafe Singapore","description":"Singapore's original cat cafe since 2014 at Bugis.","url":"https://www.thecatcafe.sg","telephone":"+6563386815","email":"info@thecatcafe.sg","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street, Level 3","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"},"priceRange":"S$22-S$50"}
+];
+
+var MENU_DEFAULT = [
+  {name:"Gryphon Tea",         desc:"Premium brewed tea",                                price:"S$4",    cat:"topup",    emoji:"&#x1F375;"},
+  {name:"Coffee",              desc:"House brewed coffee",                               price:"S$4.50", cat:"topup",    emoji:"&#x2615;"},
+  {name:"Flavoured Latte",     desc:"Chocolate, Vanilla, Caramel, Hazelnut, Toffeenut", price:"S$6",    cat:"topup",    emoji:"&#x2615;"},
+  {name:"Chocolate",           desc:"Rich and creamy hot chocolate",                     price:"S$5",    cat:"topup",    emoji:"&#x1F36B;"},
+  {name:"Orange Juice",        desc:"Fresh orange juice",                                price:"S$4.50", cat:"topup",    emoji:"&#x1F34A;"},
+  {name:"Float",               desc:"Root Beer, Sprite or Coke",                        price:"S$4.50", cat:"topup",    emoji:"&#x1F964;"},
+  {name:"Extra Shot",          desc:"Add an extra espresso shot to any drink",           price:"+S$1",   cat:"topup",    emoji:"&#x2615;"},
+  {name:"Espresso",            desc:"Classic single or double shot",                     price:"S$5",    cat:"coffee",   emoji:"&#x2615;"},
+  {name:"Americano",           desc:"Espresso with hot water",                           price:"S$5.50", cat:"coffee",   emoji:"&#x2615;"},
+  {name:"Cappuccino / Latte",  desc:"Espresso with steamed milk",                        price:"S$7",    cat:"coffee",   emoji:"&#x2615;"},
+  {name:"Flavoured Latte",     desc:"Chocolate, Vanilla, Caramel, Hazelnut, Toffeenut", price:"S$7.50", cat:"coffee",   emoji:"&#x2615;"},
+  {name:"Ice",                 desc:"Add ice to any coffee drink",                       price:"+S$0.50",cat:"coffee",   emoji:"&#x1F9CA;"},
+  {name:"Extra Shot",          desc:"Add an extra espresso shot",                        price:"+S$1",   cat:"coffee",   emoji:"&#x2615;"},
+  {name:"Gryphon Tea",         desc:"Premium brewed tea",                                price:"S$5.50", cat:"drinks",   emoji:"&#x1F375;"},
+  {name:"Orange Juice",        desc:"Fresh orange juice",                                price:"S$6.50", cat:"drinks",   emoji:"&#x1F34A;"},
+  {name:"Float",               desc:"Root Beer, Sprite or Coke float",                  price:"S$6.50", cat:"drinks",   emoji:"&#x1F964;"},
+  {name:"Chocolate",           desc:"Rich hot or iced chocolate",                        price:"S$7",    cat:"drinks",   emoji:"&#x1F36B;"},
+  {name:"Soft Drinks",         desc:"Assorted canned soft drinks",                       price:"S$2",    cat:"drinks",   emoji:"&#x1F964;"},
+  {name:"Chicken Mushroom Pie",desc:"With chips - Thai / Tandoori",                     price:"S$7",    cat:"mains",    emoji:"&#x1F967;"},
+  {name:"Chicken Wrap",        desc:"With chips - Thai / Tandoori",                     price:"S$9",    cat:"mains",    emoji:"&#x1F32F;"},
+  {name:"Lasagne",             desc:"With chips - Beef / Chicken",                      price:"S$12",   cat:"mains",    emoji:"&#x1F35D;"},
+  {name:"Baked Macaroni",      desc:"With chips - Mushroom Cheese",                     price:"S$12",   cat:"mains",    emoji:"&#x1F9C0;"},
+  {name:"Baked Chicken Rice",  desc:"With chips",                                       price:"S$12",   cat:"mains",    emoji:"&#x1F371;"},
+  {name:"Vanilla Ice Cream",   desc:"Classic scoop of vanilla",                         price:"S$4.50", cat:"desserts", emoji:"&#x1F366;"},
+  {name:"Brownie + Ice Cream", desc:"Warm brownie with vanilla ice cream",              price:"S$8.50", cat:"desserts", emoji:"&#x1F36B;"},
+  {name:"Affogato",            desc:"Espresso poured over ice cream",                   price:"S$8",    cat:"desserts", emoji:"&#x1F368;"},
+  {name:"Cakes",               desc:"Ask our staff for today's selection",              price:"S$8.50", cat:"desserts", emoji:"&#x1F370;"},
+  {name:"Potato Chips",        desc:"Light snack",                                      price:"S$3",    cat:"desserts", emoji:"&#x1F954;"}
+];
+
+var PRICING_DEFAULT = [
+  {label:"First 2 hours",            note:"includes 1 complimentary canned drink", price:"S$22"},
+  {label:"Every additional 30 mins", note:"",                                       price:"S$5.50"},
+  {label:"Full day pass",            note:"2 complimentary drinks of your choice", price:"S$50"},
+  {label:"Children under 1",         note:"",                                       price:"Free"}
+];
+
+var HOURS_DEFAULT = [
+  {day:"Monday",            open:"15:00", close:"21:00", closed:false},
+  {day:"Tuesday - Friday",   open:"10:00", close:"21:00", closed:false},
+  {day:"Saturday - Sunday", open:"10:00", close:"22:00", closed:false},
+  {day:"Public holidays",    open:"10:00", close:"22:00", closed:false}
+];
+
+// Admin data overrides
+var CATS    = (typeof CC_DATA !== "undefined" && CC_DATA.cats)    ? CC_DATA.cats    : CATS_DEFAULT;
+var MENU    = (typeof CC_DATA !== "undefined" && CC_DATA.menu)    ? CC_DATA.menu    : MENU_DEFAULT;
+var PRICING = (typeof CC_DATA !== "undefined" && CC_DATA.pricing) ? CC_DATA.pricing : PRICING_DEFAULT;
+var HOURS   = (typeof CC_DATA !== "undefined" && CC_DATA.hours)   ? CC_DATA.hours   : HOURS_DEFAULT;
+
+var TAG_LABEL = {senior:"Senior", young:"Young", og:"OG since '14", cuddly:"Cuddly", playful:"Playful", shy:"Shy"};
+var TAG_CLASS  = {senior:"tsenior", young:"tyoung", og:"tog", cuddly:"tcuddly", playful:"tplayful", shy:"tshy"};
+
+function makeTags(tags, size) {
+  return tags.map(function(t) {
+    return '<span class="ctag ' + (TAG_CLASS[t]||"") + '" style="font-size:' + (size||10) + 'px;">' + (TAG_LABEL[t]||t) + '</span>';
+  }).join("");
+}
+
+function filterCats(f, btn) {
+  document.querySelectorAll(".fbtn").forEach(function(b){b.classList.remove("active");});
+  btn.classList.add("active");
+  var list = f === "all" ? CATS : CATS.filter(function(c){return c.tags.indexOf(f) !== -1;});
+  renderCatCards(list);
+}
+
+function renderCatCards(list) {
+  document.getElementById("cat-count").textContent = "Showing " + list.length + " of " + CATS.length + " cats";
+  document.getElementById("cat-grid").innerHTML = list.map(function(cat) {
+    var idx = CATS.indexOf(cat);
+    return '<div class="cat-card" onclick="openCatModal(' + idx + ')">'
+      + '<div class="cat-img-wrap"><img src="' + cat.img + '" alt="' + cat.name + ' - cat at The Cat Cafe Singapore Bugis" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=cat-fallback>&#x1F431;</div>\'"></div>'
+      + '<div class="cat-body">'
+      + '<div class="cat-name">' + cat.name + '</div>'
+      + '<div class="cat-tags">' + makeTags(cat.tags) + '</div>'
+      + '<div class="cat-desc-short">' + cat.desc.slice(0,65) + "..." + '</div>'
+      + '</div></div>';
+  }).join("");
+}
+
+function openCatModal(idx) {
+  var c = CATS[idx];
+  document.getElementById("modal-img").src = c.full;
+  document.getElementById("modal-img").alt = c.name;
+  document.getElementById("modal-name").textContent = c.name;
+  document.getElementById("modal-tags").innerHTML = makeTags(c.tags, 12);
+  document.getElementById("modal-desc").textContent = c.desc;
+  document.getElementById("cat-modal").classList.add("open");
+}
+
+function closeCatModal(e) {
+  if (e.target === document.getElementById("cat-modal")) document.getElementById("cat-modal").classList.remove("open");
+}
+
+function showMenu(cat, btn) {
+  document.querySelectorAll(".mtab").forEach(function(b){b.classList.remove("active");});
+  if(btn) btn.classList.add("active");
+  var list = cat === "all" ? MENU : MENU.filter(function(m){return m.cat === cat;});
+  document.getElementById("menu-grid").innerHTML = list.map(function(item) {
+    return '<div class="menu-item">'
+      + '<div class="menu-item-left">'
+      + '<div class="menu-item-name">' + item.emoji + ' ' + item.name + '</div>'
+      + '<div class="menu-item-desc">' + item.desc + '</div>'
+      + '</div>'
+      + '<div class="menu-item-price">' + item.price + '</div>'
+      + '</div>';
+  }).join("");
+}
+
+function renderHours() {
+  var display = document.getElementById("hours-display");
+  if(!display) return;
+  display.innerHTML = HOURS.map(function(h) {
+    return '<div class="hour-row"><span class="hour-day">' + h.day + '</span><span class="hour-time">' + (h.closed ? 'Closed' : h.open + ' - ' + h.close) + '</span></div>';
+  }).join("");
+}
+
+function renderPricing() {
+  var display = document.getElementById("pricing-display");
+  if(!display) return;
+  display.innerHTML = PRICING.map(function(p) {
+    return '<div class="price-row"><div><div class="price-label">' + p.label + '</div>' + (p.note ? '<div class="price-note">' + p.note + '</div>' : '') + '</div><div class="price-val">' + p.price + '</div></div>';
+  }).join("");
+}
+
+/* EVENT GALLERIES SLIDER LOGIC */
+var galleryState = { birthday: 0, proposal: 0, private: 0 };
+
+function gallerySt(name, dir) {
+  var track = document.getElementById("track-" + name);
+  if (!track) return;
+  var totalSlides = track.children.length;
+  galleryState[name] = (galleryState[name] + dir + totalSlides) % totalSlides;
+  track.style.transform = "translateX(-" + (galleryState[name] * 100) + "%)";
+  updateDots(name);
+}
+
+function goToSlide(name, idx) {
+  galleryState[name] = idx;
+  var track = document.getElementById("track-" + name);
+  if (track) track.style.transform = "translateX(-" + (idx * 100) + "%)";
+  updateDots(name);
+}
+
+function updateDots(name) {
+  var dotsContainer = document.getElementById("dots-" + name);
+  var track = document.getElementById("track-" + name);
+  if (!dotsContainer || !track) return;
+  var totalSlides = track.children.length;
+  var html = "";
+  for (var i = 0; i < totalSlides; i++) {
+    html += '<button class="gallery-dot' + (i === galleryState[name] ? ' active' : '') + '" onclick="goToSlide(\'' + name + '\',' + i + ')"></button>';
+  }
+  dotsContainer.innerHTML = html;
+}
+
+/* DONATIONS */
+var donateAmount = 20;
+function setDonate(amt, btn) {
+  donateAmount = amt;
+  document.querySelectorAll('.donate-amt').forEach(function(b){b.classList.remove('selected');});
+  if(btn) btn.classList.add('selected');
+  document.getElementById('donate-amount').value = amt;
+}
+function onDonateInput() {
+  var val = parseFloat(document.getElementById('donate-amount').value);
+  donateAmount = val || 0;
+  document.querySelectorAll('.donate-amt').forEach(function(b){b.classList.remove('selected');});
+}
+function submitDonate() {
+  if(!donateAmount || donateAmount <= 0) {
+    document.getElementById('donate-error').style.display = 'block';
+    document.getElementById('donate-error').textContent = 'Please enter a valid donation amount.';
+    return;
+  }
+  document.getElementById('donate-error').style.display = 'none';
+  document.getElementById('donate-success').style.display = 'block';
+}
+
+/* INITIALIZATION */
+document.addEventListener("DOMContentLoaded", function() {
+  renderCatCards(CATS);
+  showMenu('topup', document.querySelector('.mtab'));
+  renderHours();
+  renderPricing();
+  updateDots("birthday");
+  updateDots("proposal");
+  updateDots("private");
+});
 </script>
-<script>if(typeof CC_DATA==="undefined"){window.CC_DATA=undefined;}</script>
-<style>
-  :root {
-    --cream:#f5efe8; --rust:#D85A30; --rust-dark:#993C1D; --rust-pale:#FAECE7;
-    --indigo:#3C3489; --indigo-pale:#EEEDFE;
-    --text:#1a1a1a; --text-2:#555; --text-3:#999;
-    --border:#e4e0db; --border-light:#f0ede9;
-    --bg:#fff; --bg-2:#faf9f7;
-    --radius:12px; --radius-sm:8px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg);font-size:15px;line-height:1.6;}
-  a{color:inherit;text-decoration:none;}
-  button{font-family:inherit;font-size:14px;}
-  /* NAV */
-  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border);}
-  .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
-  .nav-logo{display:flex;align-items:center;text-decoration:none;}
-  .nav-logo-link{display:flex;align-items:center;text-decoration:none;}
-  .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
-  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
-  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
-  .nav-logo-text span{color:var(--rust);}
-  .nav-logo span{color:var(--rust);}
-  .nav-links{display:flex;gap:20px;}
-  .nav-links a{font-size:13px;color:var(--text-2);}
-  .nav-links a:hover{color:var(--text);}
-  .nav-pay-link{color:#1a7a3c !important;font-weight:600;}
-  .nav-cta{background:var(--rust);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;}
-  .nav-cta:hover{opacity:0.88;}
-  /* LAYOUT */
-  .page{max-width:900px;margin:0 auto;padding:0 24px;}
-  section{padding:56px 0;border-bottom:0.5px solid var(--border-light);}
-  section:last-of-type{border-bottom:none;}
-  .section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:8px;}
-  .section-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em;line-height:1.25;}
-  .section-sub{font-size:15px;color:var(--text-2);max-width:560px;line-height:1.7;margin-bottom:28px;}
-  /* HERO */
-  .hero{background:var(--cream);border-radius:var(--radius);padding:56px 40px 44px;text-align:center;margin:32px 0 0;position:relative;overflow:hidden;}
-  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--rust);color:#fff;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;}
-  .hero h1{font-size:44px;font-weight:500;line-height:1.15;margin-bottom:16px;letter-spacing:-0.03em;}
-  .hero h1 em{color:var(--rust);font-style:normal;}
-  .hero p{font-size:17px;color:var(--text-2);max-width:440px;margin:0 auto 28px;line-height:1.7;}
-  .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-  .btn{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;border-radius:24px;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;text-decoration:none;}
-  .btn-rust{background:var(--rust);color:#fff;}
-  .btn-rust:hover{opacity:0.88;}
-  .btn-outline{background:#fff;color:var(--text);border:0.5px solid var(--border);}
-  .btn-outline:hover{border-color:var(--text);}
-  .hero-cats{display:flex;justify-content:center;gap:6px;margin-top:32px;}
-  .hero-cat-face{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
-  /* STATS */
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px;}
-  .stat{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:20px 16px;text-align:center;}
-  .stat-n{font-size:30px;font-weight:500;color:var(--rust);}
-  .stat-l{font-size:12px;color:var(--text-3);margin-top:2px;}
-  /* LOCATION */
-  .loc-card{background:var(--cream);border-radius:var(--radius);padding:28px 32px;}
-  .loc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
-  .loc-name{font-size:18px;font-weight:500;margin-bottom:6px;}
-  .loc-detail{font-size:14px;color:var(--text-2);line-height:1.9;}
-  .loc-detail a{color:var(--rust);}
-  .map-btn{background:#fff;border:0.5px solid var(--border);color:var(--text);padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;white-space:nowrap;}
-  .hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:0.5px solid rgba(0,0,0,0.08);padding-top:20px;}
-  .hour-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;}
-  .hour-day{color:var(--text-2);}
-  .hour-time{font-weight:500;}
-  /* PRICING */
-  .pricing-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-  .price-row{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:0.5px solid var(--border-light);}
-  .price-row:last-child{border-bottom:none;}
-  .price-label{font-size:14px;color:var(--text);}
-  .price-note{font-size:12px;color:var(--text-3);margin-top:2px;}
-  .price-val{font-size:16px;font-weight:500;color:var(--rust);}
-  /* FEATURES */
-  .features{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .feat{display:flex;gap:14px;padding:18px;background:var(--bg-2);border:0.5px solid var(--border-light);border-radius:var(--radius-sm);align-items:flex-start;}
-  .feat-icon{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--rust-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-  .feat-title{font-size:14px;font-weight:500;margin-bottom:3px;}
-  .feat-desc{font-size:13px;color:var(--text-2);line-height:1.5;}
-  /* ART BANNER */
-  .art-banner{background:var(--indigo);border-radius:var(--radius);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:24px;}
-  .art-banner h3{font-size:18px;font-weight:500;color:var(--indigo-pale);margin-bottom:6px;}
-  .art-banner p{font-size:14px;color:#AFA9EC;line-height:1.6;max-width:400px;}
-  .art-btn{background:var(--indigo-pale);color:var(--indigo);border:none;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;}
-  /* ART PHOTOS */
-  .art-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
-  .art-photo-card{border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-2);border:0.5px solid var(--border-light);}
-  .art-photo-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--indigo-pale);}
-  .art-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.3s;}
-  .art-photo-card:hover .art-photo-wrap img{transform:scale(1.04);}
-  .art-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;background:var(--indigo-pale);}
-  .art-photo-label{font-size:12px;color:var(--text-2);padding:8px 12px;text-align:center;}
-  /* MENU */
-  .menu-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
-  .mtab{font-size:12px;font-weight:500;padding:5px 16px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg);color:var(--text-2);cursor:pointer;transition:all 0.15s;}
-  .mtab:hover,.mtab.active{background:var(--rust);color:#fff;border-color:var(--rust);}
-  .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .menu-item{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--bg);border:0.5px solid var(--border-light);border-radius:var(--radius-sm);}
-  .menu-item:hover{border-color:var(--border);}
-  .menu-item-left{flex:1;}
-  .menu-item-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:3px;}
-  .menu-item-desc{font-size:12px;color:var(--text-3);line-height:1.5;}
-  .menu-item-price{font-size:14px;font-weight:500;color:var(--rust);flex-shrink:0;white-space:nowrap;}
-  .menu-note{font-size:12px;color:var(--text-3);margin-top:16px;line-height:1.6;}
-  /* CATS */
-  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
-  .fbtn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg);color:var(--text-2);cursor:pointer;transition:all 0.15s;}
-  .fbtn:hover,.fbtn.active{background:var(--rust);color:#fff;border-color:var(--rust);}
-  .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
-  .cat-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;}
-  .cat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1);}
-  .cat-img-wrap{width:100%;aspect-ratio:1/1;overflow:hidden;background:var(--cream);}
-  .cat-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;display:block;}
-  .cat-card:hover .cat-img-wrap img{transform:scale(1.06);}
-  .cat-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--cream);}
-  .cat-body{padding:12px 14px 14px;}
-  .cat-name{font-size:14px;font-weight:600;margin-bottom:5px;}
-  .cat-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;}
-  .ctag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;}
-  .tsenior{background:var(--indigo-pale);color:var(--indigo);}
-  .tyoung{background:var(--rust-pale);color:var(--rust-dark);}
-  .tog{background:#F5F0E8;color:#5C4A1E;}
-  .tcuddly{background:#FCE8F3;color:#8B1558;}
-  .tplayful{background:#E1F5EE;color:#0F6E56;}
-  .tshy{background:#FEF3E7;color:#8A5200;}
-  .cat-desc-short{font-size:12px;color:var(--text-2);line-height:1.5;}
-  .cat-count{font-size:12px;color:var(--text-3);margin-top:16px;}
-  /* CAT MODAL */
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
-  .modal-overlay.open{display:flex;}
-  .modal-box{background:var(--bg);border-radius:var(--radius);max-width:420px;width:100%;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.25);}
-  .modal-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--cream);}
-  .modal-body{padding:20px 24px 24px;}
-  .modal-name{font-size:22px;font-weight:600;margin-bottom:10px;}
-  .modal-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
-  .modal-desc{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:16px;}
-  .modal-close-btn{width:100%;background:var(--bg-2);border:0.5px solid var(--border);color:var(--text-2);padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;}
-  /* EVENTS */
-  .events-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .event-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;}
-  .event-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08);}
-  .event-img-wrap{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--cream);}
-  .event-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
-  .event-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--cream);}
-  .event-body{padding:16px 18px 18px;}
-  .event-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--rust-pale);color:var(--rust-dark);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;}
-  .event-name{font-size:16px;font-weight:500;color:var(--text);margin-bottom:6px;line-height:1.3;}
-  .event-desc{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:14px;}
-  .event-details{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
-  .event-detail{font-size:12px;color:var(--text-3);}
-  .event-detail strong{color:var(--text);}
-  .event-cta{display:inline-flex;align-items:center;background:var(--rust);color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;text-decoration:none;}
-  .event-cta:hover{opacity:0.88;}
-  /* RULES */
-  .rules-list{display:flex;flex-direction:column;gap:10px;}
-  .rule{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:var(--bg-2);border-radius:var(--radius-sm);border:0.5px solid var(--border-light);font-size:14px;color:var(--text-2);line-height:1.5;}
-  .rule-n{width:22px;height:22px;border-radius:50%;background:var(--rust-pale);color:var(--rust);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-  /* MISSION */
-  .mission{background:var(--cream);border-radius:var(--radius);padding:36px 40px;}
-  .mission p{font-size:18px;color:var(--text);line-height:1.8;}
-  .mission p strong{color:var(--rust);font-weight:600;}
-  /* FOOTER */
-  footer{background:var(--text);color:#ccc;padding:40px 0;}
-  .footer-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
-  .footer-logo{font-size:15px;font-weight:600;color:#fff;}
-  .footer-links{display:flex;gap:20px;}
-  .footer-links a{font-size:13px;color:#aaa;}
-  .footer-links a:hover{color:#fff;}
-  .footer-copy{font-size:12px;color:#666;margin-top:6px;}
-  @media(max-width:700px){
-
-    .event-block { grid-template-columns:1fr; }
-    .event-block-flip .event-gallery { order:-1; }
-
-    .hero{padding:40px 24px 36px;}
-    .hero h1{font-size:32px;}
-    .cat-grid{grid-template-columns:repeat(2,1fr);}
-    .features,.events-grid,.art-photos{grid-template-columns:1fr;}
-    .hours-grid{grid-template-columns:1fr;}
-    .nav-links{display:none;}
-    .art-banner{flex-direction:column;text-align:center;}
-    .footer-inner{flex-direction:column;text-align:center;}
-  }
-</style>
-</head>
-
+</body>
 </html>
