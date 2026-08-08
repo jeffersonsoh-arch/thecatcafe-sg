@@ -15,7 +15,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"The Cat Cafe Singapore","description":"Singapore's original cat cafe since 2014 at Bugis.","url":"https://www.thecatcafe.sg","telephone":"+6563386815","email":"info@thecatcafe.sg","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street, Level 3","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"},"priceRange":"S$22-S$50"}
 </script>
-
+<script>if(typeof CC_DATA==="undefined"){window.CC_DATA=undefined;}</script>
 <style>
   :root {
     --cream:#f5efe8; --rust:#D85A30; --rust-dark:#993C1D; --rust-pale:#FAECE7;
@@ -33,11 +33,17 @@
   /* NAV */
   nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border);}
   .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
-  .nav-logo{display:flex;align-items:center;line-height:1;}
-  .nav-logo img{height:42px;width:42px;display:block;object-fit:contain;border-radius:8px;}
+  .nav-logo{display:flex;align-items:center;text-decoration:none;}
+  .nav-logo-link{display:flex;align-items:center;text-decoration:none;}
+  .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
+  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
+  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
+  .nav-logo-text span{color:var(--rust);}
+  .nav-logo span{color:var(--rust);}
   .nav-links{display:flex;gap:20px;}
   .nav-links a{font-size:13px;color:var(--text-2);}
   .nav-links a:hover{color:var(--text);}
+  .nav-pay-link{color:#1a7a3c !important;font-weight:600;}
   .nav-cta{background:var(--rust);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;}
   .nav-cta:hover{opacity:0.88;}
   /* LAYOUT */
@@ -84,30 +90,6 @@
   .price-label{font-size:14px;color:var(--text);}
   .price-note{font-size:12px;color:var(--text-3);margin-top:2px;}
   .price-val{font-size:16px;font-weight:500;color:var(--rust);}
-  /* WELFARE */
-  .welfare-callout{display:flex;gap:16px;align-items:flex-start;background:var(--rust-pale);border:1px solid #f0cfc2;border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;}
-  .welfare-icon{width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-  .welfare-title{font-size:15px;font-weight:600;color:var(--rust-dark);margin-bottom:4px;}
-  .welfare-text{font-size:13px;color:var(--text-2);line-height:1.65;}
-  /* DONATE */
-  .donate-section{background:var(--cream);border-radius:var(--radius);padding:40px;}
-  .donate-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;}
-  .donate-copy h3{font-size:25px;font-weight:600;line-height:1.25;margin-bottom:10px;}
-  .donate-copy p{font-size:14px;color:var(--text-2);line-height:1.75;margin-bottom:16px;}
-  .donate-points{display:flex;flex-direction:column;gap:8px;}
-  .donate-point{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--text-2);}
-  .donate-point strong{color:var(--text);}
-  .donate-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;}
-  .donate-card-title{font-size:15px;font-weight:600;margin-bottom:12px;}
-  .donate-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
-  .donate-amount{border:1px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:9px 6px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text);}
-  .donate-amount:hover,.donate-amount.active{border-color:var(--rust);background:var(--rust-pale);color:var(--rust-dark);}
-  .donate-custom{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;margin-bottom:10px;outline:none;}
-  .donate-custom:focus{border-color:var(--rust);}
-  .donate-btn{width:100%;background:var(--rust);color:#fff;border:none;padding:12px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;}
-  .donate-btn:hover{opacity:.88;}
-  .donate-note{font-size:11px;color:var(--text-3);line-height:1.5;text-align:center;margin-top:9px;}
-  .hitpay-badge{display:inline-flex;align-items:center;gap:5px;font-weight:600;color:var(--text-2);}
   /* FEATURES */
   .features{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .feat{display:flex;gap:14px;padding:18px;background:var(--bg-2);border:0.5px solid var(--border-light);border-radius:var(--radius-sm);align-items:flex-start;}
@@ -205,70 +187,20 @@
   .footer-links a:hover{color:#fff;}
   .footer-copy{font-size:12px;color:#666;margin-top:6px;}
 
-  /* ── VOUCHERS ── */
-  .voucher-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
-  .voucher-card { border: 2px solid var(--border); border-radius: var(--radius); padding: 28px 24px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
-  .voucher-card:hover { border-color: var(--rust); box-shadow: 0 4px 20px rgba(216,90,48,0.12); }
-  .voucher-card.selected { border-color: var(--rust); background: var(--rust-pale); }
-  .voucher-card.selected .voucher-price { color: var(--rust-dark); }
-  .voucher-popular { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--rust); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; white-space: nowrap; letter-spacing: 0.06em; text-transform: uppercase; }
-  .voucher-emoji { font-size: 32px; margin-bottom: 10px; }
-  .voucher-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .voucher-desc { font-size: 12px; color: var(--text-2); line-height: 1.5; margin-bottom: 14px; }
-  .voucher-price { font-size: 32px; font-weight: 700; color: var(--text); }
-  .voucher-price span { font-size: 16px; font-weight: 500; }
-  .voucher-form { background: var(--bg-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 24px 28px; }
-  .voucher-form h3 { font-size: 16px; font-weight: 600; margin-bottom: 18px; color: var(--text); }
-  .vf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .vf-field { display: flex; flex-direction: column; gap: 5px; }
-  .vf-field label { font-size: 12px; font-weight: 600; color: var(--text-2); }
-  .vf-field input, .vf-field textarea { padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; background: var(--bg); color: var(--text); outline: none; font-family: inherit; transition: border-color 0.15s; }
-  .vf-field input:focus, .vf-field textarea:focus { border-color: var(--rust); }
-  .vf-field textarea { resize: none; height: 72px; line-height: 1.5; }
-  .vf-field.full { grid-column: 1 / -1; }
-  .voucher-submit { width: 100%; background: var(--rust); color: #fff; border: none; padding: 13px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 14px; transition: opacity 0.15s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .voucher-submit:hover { opacity: 0.88; }
-  .voucher-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-  .voucher-note { font-size: 12px; color: var(--text-3); text-align: center; margin-top: 10px; line-height: 1.6; }
-  .voucher-success { background: #EAF3DE; border: 1px solid #B5D98A; border-radius: var(--radius); padding: 24px; text-align: center; display: none; }
-  .voucher-success h3 { font-size: 18px; font-weight: 600; color: #2E6B0E; margin-bottom: 8px; }
-  .voucher-success p { font-size: 14px; color: #3B6D11; line-height: 1.7; }
-  @media (max-width: 700px) { .voucher-grid { grid-template-columns: 1fr; } .vf-grid { grid-template-columns: 1fr; } }
-
-
-  /* ── EVENT BLOCKS ── */
-  .event-block { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:center; margin-bottom:56px; padding-bottom:56px; border-bottom:0.5px solid var(--border-light); }
-  .event-block:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-  .event-block-reverse { direction:rtl; }
-  .event-block-reverse > * { direction:ltr; }
-  .event-block-content { display:flex; flex-direction:column; gap:14px; }
-  .event-block-title { font-size:22px; font-weight:600; color:var(--text); line-height:1.3; }
-  .event-block-desc { font-size:14px; color:var(--text-2); line-height:1.8; }
-  .event-meta-row { display:flex; flex-direction:column; gap:10px; }
-  .event-meta-item { display:flex; align-items:flex-start; gap:12px; }
-  .event-meta-icon { font-size:18px; width:24px; flex-shrink:0; margin-top:1px; }
-  .event-meta-item div { display:flex; flex-direction:column; }
-  .event-meta-item strong { font-size:13px; font-weight:600; color:var(--text); }
-  .event-meta-item span { font-size:13px; color:var(--text-2); }
-  /* Gallery */
-  .event-gallery { position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:4/3; background:var(--cream); }
-  .gallery-track { display:flex; width:300%; height:100%; transition:transform 0.4s ease; will-change:transform; }
-  .gallery-slide { width:33.3333%; height:100%; flex-shrink:0; overflow:hidden; }
-  .gallery-slide img { width:100%; height:100%; object-fit:cover; display:block; }
-  .gallery-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:48px; background:var(--cream); }
-  .gallery-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:36px; height:36px; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,0.15); transition:background 0.15s; z-index:2; }
-  .gallery-btn:hover { background:#fff; }
-  .gallery-prev { left:10px; }
-  .gallery-next { right:10px; }
-  .gallery-dots { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:6px; }
-  .gallery-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.6); cursor:pointer; transition:background 0.2s; }
-  .gallery-dot.active { background:#fff; }
-  @media(max-width:700px) {
-    .event-block { grid-template-columns:1fr; direction:ltr; }
-    .event-block-reverse { direction:ltr; }
-  }
+  /* ── ART PHOTOS ── */
+  .art-photos { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+  .art-photo-card { border-radius:var(--radius-sm); overflow:hidden; background:var(--bg-2); border:0.5px solid var(--border-light); }
+  .art-photo-wrap { width:100%; aspect-ratio:4/3; overflow:hidden; background:var(--indigo-pale); }
+  .art-photo-wrap img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.3s; }
+  .art-photo-card:hover .art-photo-wrap img { transform:scale(1.04); }
+  .art-photo-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:36px; background:var(--indigo-pale); }
+  .art-photo-label { font-size:12px; color:var(--text-2); padding:8px 12px; text-align:center; }
 
   @media(max-width:700px){
+
+    .event-block { grid-template-columns:1fr; }
+    .event-block-flip .event-gallery { order:-1; }
+
     .hero{padding:40px 24px 36px;}
     .hero h1{font-size:32px;}
     .cat-grid{grid-template-columns:repeat(2,1fr);}
@@ -277,10 +209,586 @@
     .nav-links{display:none;}
     .art-banner{flex-direction:column;text-align:center;}
     .footer-inner{flex-direction:column;text-align:center;}
-    .donate-section{padding:28px 22px;}
-    .donate-layout{grid-template-columns:1fr;}
-    .welfare-callout{padding:17px;}
-    .nav-logo img{height:38px;}
+  }
+
+  /* ── EVENTS ── */
+  .event-block { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; margin-bottom:60px; padding-bottom:60px; border-bottom:0.5px solid var(--border-light); }
+  .event-block:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .event-block-flip { }
+  .event-block-content { display:flex; flex-direction:column; gap:16px; }
+  .event-block-title { font-size:22px; font-weight:600; color:var(--text); line-height:1.3; }
+  .event-block-desc { font-size:14px; color:var(--text-2); line-height:1.8; }
+  .event-meta-row { display:flex; flex-direction:column; gap:8px; }
+  .event-meta-item { display:flex; align-items:flex-start; gap:10px; }
+  .event-meta-icon { font-size:16px; width:22px; flex-shrink:0; margin-top:1px; }
+  .event-meta-item div { display:flex; flex-direction:column; }
+  .event-meta-item strong { font-size:13px; font-weight:600; color:var(--text); }
+  .event-meta-item span { font-size:13px; color:var(--text-2); }
+
+  /* Gallery */
+  .event-gallery { position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:4/3; background:var(--cream); flex-shrink:0; }
+  .gallery-viewport { width:100%; height:100%; overflow:hidden; border-radius:var(--radius); }
+  .gallery-track { display:flex; height:100%; transition:transform 0.45s cubic-bezier(0.4,0,0.2,1); }
+  .gallery-slide { min-width:100%; height:100%; flex-shrink:0; }
+  .gallery-slide img { width:100%; height:100%; object-fit:cover; display:block; }
+  .gallery-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:48px; background:var(--cream); }
+  .gallery-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.92); border:none; border-radius:50%; width:36px; height:36px; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text); box-shadow:0 2px 10px rgba(0,0,0,0.15); z-index:2; line-height:1; transition:background 0.15s; }
+  .gallery-btn:hover { background:#fff; }
+  .gallery-prev { left:10px; }
+  .gallery-next { right:10px; }
+  .gallery-dots { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:2; }
+  .gallery-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.55); cursor:pointer; transition:background 0.2s; border:none; padding:0; }
+  .gallery-dot.active { background:#fff; }
+
+
+  /* ── DONATE ── */
+  .donate-section { background: #1a1a1a; padding: 60px 0; }
+  .donate-inner { max-width: 560px; margin: 0 auto; text-align: center; padding: 0 24px; }
+  .donate-paw { font-size: 40px; margin-bottom: 16px; }
+  .donate-title { font-size: 26px; font-weight: 600; color: #fff; margin-bottom: 10px; letter-spacing: -0.02em; }
+  .donate-sub { font-size: 15px; color: #aaa; line-height: 1.8; margin-bottom: 32px; }
+  .donate-amounts { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+  .donate-amt { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 10px 22px; border-radius: 24px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+  .donate-amt:hover { background: var(--rust); border-color: var(--rust); }
+  .donate-amt.selected { background: var(--rust); border-color: var(--rust); }
+  .donate-custom-wrap { display: flex; align-items: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); overflow: hidden; max-width: 220px; margin: 0 auto 24px; transition: border-color 0.15s; }
+  .donate-custom-wrap:focus-within { border-color: var(--rust); }
+  .donate-custom-prefix { color: #aaa; padding: 0 12px; font-size: 16px; font-weight: 600; background: rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.1); white-space: nowrap; display:flex; align-items:center; height:100%; }
+  .donate-custom-input { background: transparent; border: none; color: #fff; font-size: 20px; font-weight: 600; padding: 10px 12px; outline: none; width: 100%; font-family: inherit; }
+  .donate-custom-input::placeholder { color: rgba(255,255,255,0.25); }
+  .donate-btn { background: var(--rust); color: #fff; border: none; padding: 13px 36px; border-radius: 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; font-family: inherit; }
+  .donate-btn:hover { opacity: 0.88; }
+  .donate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .donate-note { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 14px; line-height: 1.7; }
+  .donate-success { background: rgba(46,125,50,0.2); border: 1px solid rgba(46,125,50,0.4); border-radius: var(--radius-sm); padding: 16px 20px; color: #81C784; font-size: 14px; line-height: 1.7; margin-top: 16px; display: none; }
+  .donate-error { background: rgba(198,40,40,0.2); border: 1px solid rgba(198,40,40,0.4); border-radius: var(--radius-sm); padding: 12px 16px; color: #EF9A9A; font-size: 13px; margin-bottom: 16px; display: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo-link" href="/">
+      <img src="images/logo.png" alt="The Cat Cafe Singapore" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+      <span class="nav-logo-text" style="display:none;">The Cat <span style="color:var(--rust)">Cafe</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#cats">Our cats</a>
+      <a href="#menu">Menu</a>
+      <a href="#artjam">Art jamming</a>
+      <a href="#events">Events</a>
+      <a href="#vouchers">Gift vouchers</a>
+      <a href="#visit">Visit</a>
+      <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
+    </div>
+    <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <section style="border:none;padding-bottom:0;">
+    <div class="hero">
+      <div class="hero-badge">&#x1F43E; Bugis &middot; Singapore's original cat cafe since 2014</div>
+      <h1>Coffee, cats &amp;<br><em>good company</em></h1>
+      <p>Singapore's original cat cafe since 2014. Meet 13 rescued cats, enjoy coffee, food and art jamming in the heart of Bugis.</p>
+      <div class="hero-btns">
+        <a class="btn btn-rust" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+        <a class="btn btn-outline" href="#cats">Meet our cats</a>
+      </div>
+      <div class="hero-cats">
+        <div class="hero-cat-face">&#x1F431;</div>
+        <div class="hero-cat-face">&#x1F408;</div>
+        <div class="hero-cat-face">&#x1F43E;</div>
+        <div class="hero-cat-face">&#x1F431;</div>
+        <div class="hero-cat-face">&#x1F408;&#x200D;&#x2B1B;</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n">13</div><div class="stat-l">rescued cats</div></div>
+      <div class="stat"><div class="stat-n">10+</div><div class="stat-l">years open</div></div>
+      <div class="stat"><div class="stat-n">100%</div><div class="stat-l">adopted strays</div></div>
+    </div>
+  </section>
+
+  <section id="visit">
+    <div class="section-eyebrow">Location</div>
+    <div class="section-title">Find us at Bugis</div>
+    <div class="section-sub">We're on the 3rd floor of a shophouse on Victoria Street, a short walk from Bugis MRT.</div>
+    <div class="loc-card">
+      <div class="loc-top">
+        <div>
+          <div class="loc-name">241B Victoria Street, Singapore 188030</div>
+          <div class="loc-detail">
+            Level 3 &middot; No lift access &middot; Near Bugis MRT Exit C (2 min walk)<br>
+            <a href="tel:+6563386815">+65 6338 6815</a> &nbsp;&middot;&nbsp; <a href="mailto:info@thecatcafe.sg">info@thecatcafe.sg</a><br>
+            <a href="https://wa.me/6580808719">WhatsApp us</a>
+          </div>
+        </div>
+        <a href="https://maps.google.com/?q=241B+Victoria+Street+Singapore" target="_blank"><button class="map-btn">Open in maps &#x2197;</button></a>
+      </div>
+      <div class="hours-grid" id="hours-display"></div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="section-eyebrow">Pricing</div>
+    <div class="section-title">Every visit supports our cats</div>
+    <div class="section-sub">Your entry fee goes directly towards the daily care, veterinary needs and welfare of all 13 rescued cats. Thank you for making their lives better, one visit at a time.</div>
+    <div class="pricing-card" id="pricing-display"></div>
+    <div class="features" style="margin-top:16px;">
+      <div class="feat"><div class="feat-icon">&#x2615;</div><div><div class="feat-title">Coffee &amp; food</div><div class="feat-desc">Lattes, teas, hot meals, pastries &amp; desserts</div></div></div>
+      <div class="feat"><div class="feat-icon">&#x1F3A8;</div><div><div class="feat-title">Art jamming</div><div class="feat-desc">Paint with cats &mdash; all materials included</div></div></div>
+      <div class="feat"><div class="feat-icon">&#x1F4F6;</div><div><div class="feat-title">Free Wi-Fi</div><div class="feat-desc">Work remotely with the best colleagues in Singapore</div></div></div>
+      <div class="feat"><div class="feat-icon">&#x1F6E1;&#xFE0F;</div><div><div class="feat-title">Safe &amp; clean</div><div class="feat-desc">All cats vaccinated and regularly health-checked</div></div></div>
+    </div>
+  </section>
+
+  <section id="artjam">
+    <div class="section-eyebrow">Art jamming</div>
+    <div class="section-title">Paint with cats</div>
+    <div class="section-sub">A uniquely relaxing creative session alongside our resident cats. No experience needed.</div>
+    <div class="art-banner">
+      <div>
+        <h3>Art jamming with cats &#x1F3A8;</h3>
+        <p>Unguided sessions S$40 &middot; Semi-guided (selected dates) S$55. Includes 1 drink, 1 canvas (30x40cm), all art tools. WhatsApp us at 8080 8719 to book.</p>
+      </div>
+      <a href="https://wa.me/6580808719" target="_blank"><button class="art-btn">Book via WhatsApp</button></a>
+    </div>
+    <div class="art-photos">
+      <div class="art-photo-card">
+        <div class="art-photo-wrap"><img src="images/artjam/artjam1.jpg" alt="Art jamming with cats at The Cat Cafe Singapore Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F3A8;</div>'"></div>
+        <div class="art-photo-label">Paint while the cats wander by</div>
+      </div>
+      <div class="art-photo-card">
+        <div class="art-photo-wrap"><img src="images/artjam/artjam2.jpg" alt="Canvas art jamming session cat cafe Bugis Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F58C;&#xFE0F;</div>'"></div>
+        <div class="art-photo-label">All materials included, no experience needed</div>
+      </div>
+      <div class="art-photo-card">
+        <div class="art-photo-wrap"><img src="images/artjam/artjam3.jpg" alt="Group art jamming at cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F431;</div>'"></div>
+        <div class="art-photo-label">Great for groups, dates &amp; team bonding</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <div class="section-eyebrow">Food &amp; drinks</div>
+    <div class="section-title">What's on the menu</div>
+    <div class="section-sub">Order at the counter. Entry includes one complimentary canned drink.</div>
+    <div class="menu-tabs">
+      <button class="mtab active" onclick="showMenu('topup',this)">Top Up Drinks</button>
+      <button class="mtab" onclick="showMenu('coffee',this)">Coffee</button>
+      <button class="mtab" onclick="showMenu('drinks',this)">Drinks</button>
+      <button class="mtab" onclick="showMenu('mains',this)">Mains</button>
+      <button class="mtab" onclick="showMenu('desserts',this)">Desserts</button>
+    </div>
+    <div class="menu-grid" id="menu-grid"></div>
+    <div class="menu-note">&#x1F4A1; Top Up prices apply when upgrading your included drink. &middot; Not halal-certified.</div>
+  </section>
+
+  <section id="cats">
+    <div class="section-eyebrow">The crew</div>
+    <div class="section-title">Meet our 13 cats</div>
+    <div class="section-sub">Every one of our 13 cats was adopted from a local shelter. They are permanent residents &mdash; not for sale, not for adoption, just here to spend time with you.</div>
+    <div class="filter-bar">
+      <button class="fbtn active" onclick="filterCats('all',this)">All</button>
+      <button class="fbtn" onclick="filterCats('og',this)">OG since '14</button>
+      <button class="fbtn" onclick="filterCats('senior',this)">Senior</button>
+      <button class="fbtn" onclick="filterCats('young',this)">Young</button>
+      <button class="fbtn" onclick="filterCats('cuddly',this)">Cuddly</button>
+      <button class="fbtn" onclick="filterCats('playful',this)">Playful</button>
+      <button class="fbtn" onclick="filterCats('shy',this)">Shy</button>
+    </div>
+    <div class="cat-grid" id="cat-grid"></div>
+    <div class="cat-count" id="cat-count"></div>
+  </section>
+
+  
+
+  
+  <!-- EVENTS -->
+  <section id="events">
+    <div class="page">
+      <div class="section-eyebrow">Private events</div>
+      <div class="section-title">Make it unforgettable</div>
+      <div class="section-sub">From birthday celebrations to intimate proposals, our cosy cafe — with 13 resident cats — makes the perfect backdrop for your most special moments.</div>
+
+      <!-- BIRTHDAY -->
+      <div class="event-block">
+        <div class="event-block-content">
+          <div class="event-tag">Birthday parties</div>
+          <div class="event-block-title">Celebrate your birthday with 13 cats</div>
+          <div class="event-block-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, complete with food, drinks and of course, plenty of cats wandering by. Whether you're 7 or 70, birthdays are always better with cats.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Group size</strong><span>Up to 30 pax</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">⏱</span><div><strong>Duration</strong><span>2–3 hours</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-on</strong><span>Art jamming available</span></div></div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
+        <div class="event-gallery">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="track-birthday">
+              <div class="gallery-slide"><img src="images/events/birthday1.jpg" alt="Birthday party at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F382;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/birthday2.jpg" alt="Birthday celebration with cats" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F431;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/birthday3.jpg" alt="Cat cafe birthday party Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F389;</div>'"></div>
+            </div>
+          </div>
+          <button class="gallery-btn gallery-prev" onclick="gallerySt('birthday',-1)" aria-label="Previous">&#8249;</button>
+          <button class="gallery-btn gallery-next" onclick="gallerySt('birthday',1)" aria-label="Next">&#8250;</button>
+          <div class="gallery-dots" id="dots-birthday"></div>
+        </div>
+      </div>
+
+      <!-- PROPOSAL -->
+      <div class="event-block event-block-flip">
+        <div class="event-gallery">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="track-proposal">
+              <div class="gallery-slide"><img src="images/events/proposal1.jpg" alt="Proposal at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F48D;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/proposal2.jpg" alt="Solemnisation cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F490;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/proposal3.jpg" alt="Wedding ceremony with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F338;</div>'"></div>
+            </div>
+          </div>
+          <button class="gallery-btn gallery-prev" onclick="gallerySt('proposal',-1)" aria-label="Previous">&#8249;</button>
+          <button class="gallery-btn gallery-next" onclick="gallerySt('proposal',1)" aria-label="Next">&#8250;</button>
+          <div class="gallery-dots" id="dots-proposal"></div>
+        </div>
+        <div class="event-block-content">
+          <div class="event-tag">Proposal &amp; solemnisation</div>
+          <div class="event-block-title">Your special day, made even more special</div>
+          <div class="event-block-desc">Looking for somewhere unique and intimate to pop the question or exchange your vows? Our cats have a way of making every moment feel warmer. Whether it's a surprise proposal or a small solemnisation ceremony, we'll help you create a memory that lasts a lifetime.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">💍</span><div><strong>Occasions</strong><span>Proposals, weddings &amp; solemnisations</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-ons</strong><span>Decorations, florals &amp; art jamming</span></div></div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20proposal%20or%20solemnisation%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
+      </div>
+
+      <!-- PRIVATE HIRE -->
+      <div class="event-block">
+        <div class="event-block-content">
+          <div class="event-tag">Private hire</div>
+          <div class="event-block-title">Have something special in mind?</div>
+          <div class="event-block-desc">From video shoots and commercial productions to intimate gatherings and brand activations — if it involves cats, we're in. Tell us what you're dreaming up and we'll work with you to make it happen. The whole cafe is yours.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">🎬</span><div><strong>Use cases</strong><span>Shoots, events &amp; activations</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Capacity</strong><span>Up to 40 pax</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
+        <div class="event-gallery">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="track-private">
+              <div class="gallery-slide"><img src="images/events/private1.jpg" alt="Private hire cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F3AC;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/private2.jpg" alt="Video shoot at cat cafe Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F4F8;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/private3.jpg" alt="Commercial event with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x2728;</div>'"></div>
+            </div>
+          </div>
+          <button class="gallery-btn gallery-prev" onclick="gallerySt('private',-1)" aria-label="Previous">&#8249;</button>
+          <button class="gallery-btn gallery-next" onclick="gallerySt('private',1)" aria-label="Next">&#8250;</button>
+          <div class="gallery-dots" id="dots-private"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<section>
+    <div class="section-eyebrow">House rules</div>
+    <div class="section-title">Before you arrive</div>
+    <div class="section-sub">To keep our cats happy, healthy and stress-free.</div>
+    <div class="rules-list">
+      <div class="rule"><div class="rule-n">1</div>We welcome guests of all ages! Children under 12 must be accompanied and supervised by an adult at all times.</div>
+      <div class="rule"><div class="rule-n">2</div>Hand sanitisation is required before entering the cat area. Our staff will assist you.</div>
+      <div class="rule"><div class="rule-n">3</div>Handle cats gently. Do not carry, lift or chase them without staff assistance.</div>
+      <div class="rule"><div class="rule-n">4</div>No outside food or drinks permitted in the cat area.</div>
+      <div class="rule"><div class="rule-n">5</div>Arrive on time &mdash; slots are released to walk-in guests after a 10-minute grace period.</div>
+    </div>
+  </section>
+
+  <section style="border:none;">
+    <div class="mission">
+      <p>Every cat here was once a stray. We believe in <strong>Adopt, Don't Shop</strong> &mdash; and hope that spending time with our rescued cats inspires more people to open their homes to ex-strays. Ask our staff about supporting local shelters.</p>
+    </div>
+  </section>
+
+</div>
+
+
+<!-- DONATE -->
+<div class="donate-section" id="donate">
+  <div class="donate-inner">
+    <div class="donate-paw">🐾</div>
+    <div class="donate-title">Support our cats</div>
+    <div class="donate-sub">All 13 of our cats are rescued strays who now call The Cat Cafe home. Your donation goes directly towards their vet bills, food, medicine and daily care. Every dollar makes a difference.</div>
+    <div class="donate-error" id="donate-error"></div>
+    <div class="donate-amounts">
+      <button class="donate-amt" onclick="setDonate(5, this)">S$5</button>
+      <button class="donate-amt" onclick="setDonate(10, this)">S$10</button>
+      <button class="donate-amt selected" onclick="setDonate(20, this)">S$20</button>
+      <button class="donate-amt" onclick="setDonate(50, this)">S$50</button>
+    </div>
+    <div class="donate-custom-wrap">
+      <span class="donate-custom-prefix">S$</span>
+      <input class="donate-custom-input" type="number" id="donate-amount" value="20" min="1" placeholder="Other" oninput="onDonateInput()">
+    </div>
+    <button class="donate-btn" id="donate-btn" onclick="submitDonate()">Donate now &#x2192;</button>
+    <div class="donate-note">Secured by HitPay &middot; Accepts PayNow, PayLah!, credit &amp; debit cards &middot; You will receive an email confirmation</div>
+    <div class="donate-success" id="donate-success">&#x2764;&#xFE0F; Thank you for your generous donation! A confirmation has been sent to your email. Our cats thank you.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">The Cat Cafe</div>
+      <div class="footer-copy">241B Victoria Street, Level 3, Singapore 188030 &middot; &copy; 2025</div>
+    </div>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/sgcatcafe" target="_blank">Instagram</a>
+      <a href="https://www.facebook.com/sgcatcafe" target="_blank">Facebook</a>
+      <a href="mailto:info@thecatcafe.sg">Email us</a>
+      <a href="#donate" onclick="window.scrollTo({top:document.getElementById('donate').offsetTop,behavior:'smooth'});return false;">Donate</a>
+      <a href="https://wa.me/6580808719" target="_blank">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="cat-modal" onclick="closeCatModal(event)">
+  <div class="modal-box">
+    <img class="modal-img" id="modal-img" src="" alt="">
+    <div class="modal-body">
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-tags" id="modal-tags"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <button class="modal-close-btn" onclick="document.getElementById('cat-modal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var GITHUB = "images/cats/";
+var BOOK_URL = "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4";
+
+var GITHUB = "images/cats/";
+var CATS_DEFAULT = [
+  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","cuddly"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet nature makes her a firm favourite with every visitor."},
+  {id:2,  name:"Jimmy",       img:GITHUB+"jimmy.jpg",       full:GITHUB+"jimmy.jpg",       tags:["senior","og"],              desc:"A domestic long-fur rescued from breeders, Jimmy is around 16 years old. Once wary of handling, he has blossomed in his later years — most active in the mornings, often on the cat bridge."},
+  {id:3,  name:"Tommy",       img:GITHUB+"tommy.jpg",       full:GITHUB+"tommy.jpg",       tags:["senior","og","cuddly"],     desc:"A full black Singapore cat and an original since 2014, Tommy is around 13 years old. On palliative care for nasal cancer, he still enjoys a gentle pet and the company of his humans."},
+  {id:4,  name:"Oreo",        img:GITHUB+"oreo.jpg",        full:GITHUB+"oreo.jpg",        tags:["senior","og","playful"],    desc:"Named after his black-and-white coat, Oreo is around 12 years old. Gentle and great with children — he will happily do a high-five for a treat."},
+  {id:5,  name:"Marshmellow", img:GITHUB+"marshmellow.jpg", full:GITHUB+"marshmellow.jpg", tags:["young","cuddly"],           desc:"A fluffy all-white Singapore short-fur of around 7, Marshmellow joined us after the Rail Mall cafe closed. Most often found sleeping beside his best friend Marmite."},
+  {id:6,  name:"Marmite",     img:GITHUB+"marmite.jpg",     full:GITHUB+"marmite.jpg",     tags:["young","cuddly"],           desc:"An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and loves a gentle butt pat."},
+  {id:7,  name:"Bobo",        img:GITHUB+"bobo.jpg",        full:GITHUB+"bobo.jpg",        tags:["young","cuddly"],           desc:"A gentle Siamese of around 7-8 years, Bobo meows softly and loves human company. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow."},
+  {id:8,  name:"Mochi",       img:GITHUB+"mochi.jpg",       full:GITHUB+"mochi.jpg",       tags:["young","playful"],          desc:"Our biggest cat at 6-7 kg, Mochi is around 9 years old and our cafe mascot — he looks just like our logo. Most active in the mornings and very hard to miss."},
+  {id:9,  name:"Sushi",       img:GITHUB+"sushi.jpg",       full:GITHUB+"sushi.jpg",       tags:["young","cuddly"],           desc:"A slightly plump black-and-white cat, Sushi once lived beside a kopitiam. These days she loves nothing more than resting on a customer's lap."},
+  {id:10, name:"Miso",        img:GITHUB+"miso.jpg",        full:GITHUB+"miso.jpg",        tags:["young","playful"],          desc:"Sister to Shoyu and around 4 years old, Miso is named for the warm tinge in her undercoat. She loves teaser toys and games of catch with Toby, Shoyu and Momo."},
+  {id:11, name:"Shoyu",       img:GITHUB+"shoyu.jpg",       full:GITHUB+"shoyu.jpg",       tags:["young","playful","shy"],    desc:"Miso's sister at around 3, Shoyu was rescued from a Tuas factory. Once timid and fearful, she now tolerates light pets and chases the other cats with confidence."},
+  {id:12, name:"Momo",        img:GITHUB+"momo.jpg",        full:GITHUB+"momo.jpg",        tags:["young","playful","cuddly"], desc:"An orange female of around 4, Momo is playful and affectionate. She loves light head pets and games of catch with Toby."},
+  {id:13, name:"Toby",        img:GITHUB+"toby.jpg",        full:GITHUB+"toby.jpg",        tags:["young","playful"],          desc:"The first face you will likely see — Toby greets visitors at the entrance. Around 3, dense grey coat, gentle with children and endlessly playful."}
+]!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cat Cafe Singapore | Cat Cafe Bugis | Rescued Cats, Coffee &amp; Art Jamming</title>
+<meta name="description" content="Visit Singapore's original cat cafe since 2014 at Bugis. Meet 13 rescued cats, enjoy coffee, food and art jamming. Book your visit today!">
+<meta name="keywords" content="cat cafe Singapore, cat cafe Bugis, Singapore cat cafe, rescue cats Singapore, art jamming cat cafe, things to do Bugis, pet cafe Singapore">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="The Cat Cafe Singapore | Bugis">
+<meta property="og:description" content="Singapore's original cat cafe since 2014. Meet 13 rescued cats, enjoy coffee, food and art jamming at Bugis.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.thecatcafe.sg">
+<link rel="canonical" href="https://www.thecatcafe.sg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"The Cat Cafe Singapore","description":"Singapore's original cat cafe since 2014 at Bugis.","url":"https://www.thecatcafe.sg","telephone":"+6563386815","email":"info@thecatcafe.sg","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street, Level 3","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"},"priceRange":"S$22-S$50"}
+</script>
+<script>if(typeof CC_DATA==="undefined"){window.CC_DATA=undefined;}</script>
+<style>
+  :root {
+    --cream:#f5efe8; --rust:#D85A30; --rust-dark:#993C1D; --rust-pale:#FAECE7;
+    --indigo:#3C3489; --indigo-pale:#EEEDFE;
+    --text:#1a1a1a; --text-2:#555; --text-3:#999;
+    --border:#e4e0db; --border-light:#f0ede9;
+    --bg:#fff; --bg-2:#faf9f7;
+    --radius:12px; --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg);font-size:15px;line-height:1.6;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;font-size:14px;}
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border);}
+  .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav-logo{display:flex;align-items:center;text-decoration:none;}
+  .nav-logo-link{display:flex;align-items:center;text-decoration:none;}
+  .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
+  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
+  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
+  .nav-logo-text span{color:var(--rust);}
+  .nav-logo span{color:var(--rust);}
+  .nav-links{display:flex;gap:20px;}
+  .nav-links a{font-size:13px;color:var(--text-2);}
+  .nav-links a:hover{color:var(--text);}
+  .nav-pay-link{color:#1a7a3c !important;font-weight:600;}
+  .nav-cta{background:var(--rust);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;}
+  .nav-cta:hover{opacity:0.88;}
+  /* LAYOUT */
+  .page{max-width:900px;margin:0 auto;padding:0 24px;}
+  section{padding:56px 0;border-bottom:0.5px solid var(--border-light);}
+  section:last-of-type{border-bottom:none;}
+  .section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:8px;}
+  .section-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em;line-height:1.25;}
+  .section-sub{font-size:15px;color:var(--text-2);max-width:560px;line-height:1.7;margin-bottom:28px;}
+  /* HERO */
+  .hero{background:var(--cream);border-radius:var(--radius);padding:56px 40px 44px;text-align:center;margin:32px 0 0;position:relative;overflow:hidden;}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--rust);color:#fff;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;}
+  .hero h1{font-size:44px;font-weight:500;line-height:1.15;margin-bottom:16px;letter-spacing:-0.03em;}
+  .hero h1 em{color:var(--rust);font-style:normal;}
+  .hero p{font-size:17px;color:var(--text-2);max-width:440px;margin:0 auto 28px;line-height:1.7;}
+  .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;border-radius:24px;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.15s;border:none;text-decoration:none;}
+  .btn-rust{background:var(--rust);color:#fff;}
+  .btn-rust:hover{opacity:0.88;}
+  .btn-outline{background:#fff;color:var(--text);border:0.5px solid var(--border);}
+  .btn-outline:hover{border-color:var(--text);}
+  .hero-cats{display:flex;justify-content:center;gap:6px;margin-top:32px;}
+  .hero-cat-face{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px;}
+  .stat{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:20px 16px;text-align:center;}
+  .stat-n{font-size:30px;font-weight:500;color:var(--rust);}
+  .stat-l{font-size:12px;color:var(--text-3);margin-top:2px;}
+  /* LOCATION */
+  .loc-card{background:var(--cream);border-radius:var(--radius);padding:28px 32px;}
+  .loc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+  .loc-name{font-size:18px;font-weight:500;margin-bottom:6px;}
+  .loc-detail{font-size:14px;color:var(--text-2);line-height:1.9;}
+  .loc-detail a{color:var(--rust);}
+  .map-btn{background:#fff;border:0.5px solid var(--border);color:var(--text);padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;white-space:nowrap;}
+  .hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:0.5px solid rgba(0,0,0,0.08);padding-top:20px;}
+  .hour-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;}
+  .hour-day{color:var(--text-2);}
+  .hour-time{font-weight:500;}
+  /* PRICING */
+  .pricing-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .price-row{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:0.5px solid var(--border-light);}
+  .price-row:last-child{border-bottom:none;}
+  .price-label{font-size:14px;color:var(--text);}
+  .price-note{font-size:12px;color:var(--text-3);margin-top:2px;}
+  .price-val{font-size:16px;font-weight:500;color:var(--rust);}
+  /* FEATURES */
+  .features{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .feat{display:flex;gap:14px;padding:18px;background:var(--bg-2);border:0.5px solid var(--border-light);border-radius:var(--radius-sm);align-items:flex-start;}
+  .feat-icon{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--rust-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .feat-title{font-size:14px;font-weight:500;margin-bottom:3px;}
+  .feat-desc{font-size:13px;color:var(--text-2);line-height:1.5;}
+  /* ART BANNER */
+  .art-banner{background:var(--indigo);border-radius:var(--radius);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:24px;}
+  .art-banner h3{font-size:18px;font-weight:500;color:var(--indigo-pale);margin-bottom:6px;}
+  .art-banner p{font-size:14px;color:#AFA9EC;line-height:1.6;max-width:400px;}
+  .art-btn{background:var(--indigo-pale);color:var(--indigo);border:none;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;}
+  /* ART PHOTOS */
+  .art-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
+  .art-photo-card{border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-2);border:0.5px solid var(--border-light);}
+  .art-photo-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--indigo-pale);}
+  .art-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.3s;}
+  .art-photo-card:hover .art-photo-wrap img{transform:scale(1.04);}
+  .art-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;background:var(--indigo-pale);}
+  .art-photo-label{font-size:12px;color:var(--text-2);padding:8px 12px;text-align:center;}
+  /* MENU */
+  .menu-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .mtab{font-size:12px;font-weight:500;padding:5px 16px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg);color:var(--text-2);cursor:pointer;transition:all 0.15s;}
+  .mtab:hover,.mtab.active{background:var(--rust);color:#fff;border-color:var(--rust);}
+  .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .menu-item{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--bg);border:0.5px solid var(--border-light);border-radius:var(--radius-sm);}
+  .menu-item:hover{border-color:var(--border);}
+  .menu-item-left{flex:1;}
+  .menu-item-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:3px;}
+  .menu-item-desc{font-size:12px;color:var(--text-3);line-height:1.5;}
+  .menu-item-price{font-size:14px;font-weight:500;color:var(--rust);flex-shrink:0;white-space:nowrap;}
+  .menu-note{font-size:12px;color:var(--text-3);margin-top:16px;line-height:1.6;}
+  /* CATS */
+  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+  .fbtn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg);color:var(--text-2);cursor:pointer;transition:all 0.15s;}
+  .fbtn:hover,.fbtn.active{background:var(--rust);color:#fff;border-color:var(--rust);}
+  .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .cat-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;}
+  .cat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1);}
+  .cat-img-wrap{width:100%;aspect-ratio:1/1;overflow:hidden;background:var(--cream);}
+  .cat-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;display:block;}
+  .cat-card:hover .cat-img-wrap img{transform:scale(1.06);}
+  .cat-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--cream);}
+  .cat-body{padding:12px 14px 14px;}
+  .cat-name{font-size:14px;font-weight:600;margin-bottom:5px;}
+  .cat-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;}
+  .ctag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;}
+  .tsenior{background:var(--indigo-pale);color:var(--indigo);}
+  .tyoung{background:var(--rust-pale);color:var(--rust-dark);}
+  .tog{background:#F5F0E8;color:#5C4A1E;}
+  .tcuddly{background:#FCE8F3;color:#8B1558;}
+  .tplayful{background:#E1F5EE;color:#0F6E56;}
+  .tshy{background:#FEF3E7;color:#8A5200;}
+  .cat-desc-short{font-size:12px;color:var(--text-2);line-height:1.5;}
+  .cat-count{font-size:12px;color:var(--text-3);margin-top:16px;}
+  /* CAT MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal-box{background:var(--bg);border-radius:var(--radius);max-width:420px;width:100%;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.25);}
+  .modal-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--cream);}
+  .modal-body{padding:20px 24px 24px;}
+  .modal-name{font-size:22px;font-weight:600;margin-bottom:10px;}
+  .modal-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+  .modal-desc{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:16px;}
+  .modal-close-btn{width:100%;background:var(--bg-2);border:0.5px solid var(--border);color:var(--text-2);padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;}
+  /* EVENTS */
+  .events-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .event-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;}
+  .event-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+  .event-img-wrap{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--cream);}
+  .event-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+  .event-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--cream);}
+  .event-body{padding:16px 18px 18px;}
+  .event-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--rust-pale);color:var(--rust-dark);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;}
+  .event-name{font-size:16px;font-weight:500;color:var(--text);margin-bottom:6px;line-height:1.3;}
+  .event-desc{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:14px;}
+  .event-details{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
+  .event-detail{font-size:12px;color:var(--text-3);}
+  .event-detail strong{color:var(--text);}
+  .event-cta{display:inline-flex;align-items:center;background:var(--rust);color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;text-decoration:none;}
+  .event-cta:hover{opacity:0.88;}
+  /* RULES */
+  .rules-list{display:flex;flex-direction:column;gap:10px;}
+  .rule{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:var(--bg-2);border-radius:var(--radius-sm);border:0.5px solid var(--border-light);font-size:14px;color:var(--text-2);line-height:1.5;}
+  .rule-n{width:22px;height:22px;border-radius:50%;background:var(--rust-pale);color:var(--rust);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  /* MISSION */
+  .mission{background:var(--cream);border-radius:var(--radius);padding:36px 40px;}
+  .mission p{font-size:18px;color:var(--text);line-height:1.8;}
+  .mission p strong{color:var(--rust);font-weight:600;}
+  /* FOOTER */
+  footer{background:var(--text);color:#ccc;padding:40px 0;}
+  .footer-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+  .footer-logo{font-size:15px;font-weight:600;color:#fff;}
+  .footer-links{display:flex;gap:20px;}
+  .footer-links a{font-size:13px;color:#aaa;}
+  .footer-links a:hover{color:#fff;}
+  .footer-copy{font-size:12px;color:#666;margin-top:6px;}
+  @media(max-width:700px){
+
+    .event-block { grid-template-columns:1fr; }
+    .event-block-flip .event-gallery { order:-1; }
+
+    .hero{padding:40px 24px 36px;}
+    .hero h1{font-size:32px;}
+    .cat-grid{grid-template-columns:repeat(2,1fr);}
+    .features,.events-grid,.art-photos{grid-template-columns:1fr;}
+    .hours-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .art-banner{flex-direction:column;text-align:center;}
+    .footer-inner{flex-direction:column;text-align:center;}
   }
 </style>
 </head>
@@ -288,7 +796,10 @@
 
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="#" aria-label="The Cat Cafe Singapore"><img src="https://thecatcafe.sg/wp-content/uploads/2013/04/favicon.png" alt="The Cat Cafe Singapore logo"></a>
+    <a class="nav-logo" href="/">
+      <img src="images/logo.png" alt="The Cat Cafe Singapore" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="nav-logo-text" style="display:none;">The Cat <span>Cafe</span></span>
+    </a>
     <div class="nav-links">
       <a href="#cats">Our cats</a>
       <a href="#menu">Menu</a>
@@ -350,8 +861,8 @@
 
   <section id="pricing">
     <div class="section-eyebrow">Pricing</div>
-    <div class="section-title">Simple, transparent pricing</div>
-    <div class="section-sub">Entry includes one complimentary canned drink. Whole day pass includes 2 complimentary drinks.</div>
+    <div class="section-title">Every visit supports our cats</div>
+    <div class="section-sub">Your entry fee goes directly towards the daily care, veterinary needs and welfare of all 13 rescued cats. Thank you for making their lives better, one visit at a time.</div>
     <div class="pricing-card" id="pricing-display"></div>
     <div class="features" style="margin-top:16px;">
       <div class="feat"><div class="feat-icon">&#x2615;</div><div><div class="feat-title">Coffee &amp; food</div><div class="feat-desc">Lattes, teas, hot meals, pastries &amp; desserts</div></div></div>
@@ -374,15 +885,15 @@
     </div>
     <div class="art-photos">
       <div class="art-photo-card">
-        <div class="art-photo-wrap"><img src="https://raw.githubusercontent.com/jeffersonsoh-arch/thecatcafe-sg/main/images/artjam/artjam1.jpg" alt="Art jamming with cats at The Cat Cafe Singapore Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F3A8;</div>'"></div>
+        <div class="art-photo-wrap"><img src="images/artjam/artjam1.jpg" alt="Art jamming with cats at The Cat Cafe Singapore Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F3A8;</div>'"></div>
         <div class="art-photo-label">Paint while the cats wander by</div>
       </div>
       <div class="art-photo-card">
-        <div class="art-photo-wrap"><img src="https://raw.githubusercontent.com/jeffersonsoh-arch/thecatcafe-sg/main/images/artjam/artjam2.jpg" alt="Canvas art jamming session cat cafe Bugis Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F58C;&#xFE0F;</div>'"></div>
+        <div class="art-photo-wrap"><img src="images/artjam/artjam2.jpg" alt="Canvas art jamming session cat cafe Bugis Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F58C;&#xFE0F;</div>'"></div>
         <div class="art-photo-label">All materials included, no experience needed</div>
       </div>
       <div class="art-photo-card">
-        <div class="art-photo-wrap"><img src="https://raw.githubusercontent.com/jeffersonsoh-arch/thecatcafe-sg/main/images/artjam/artjam3.jpg" alt="Group art jamming at cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F431;</div>'"></div>
+        <div class="art-photo-wrap"><img src="images/artjam/artjam3.jpg" alt="Group art jamming at cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F431;</div>'"></div>
         <div class="art-photo-label">Great for groups, dates &amp; team bonding</div>
       </div>
     </div>
@@ -421,97 +932,79 @@
   </section>
 
   <section id="events">
-    <div class="page">
     <div class="section-eyebrow">Private events</div>
-    <div class="section-title">Make it unforgettable</div>
-    <div class="section-sub">From birthday celebrations to intimate proposals, our cosy cafe — with 13 resident cats — makes the perfect backdrop for your most special moments.</div>
-
-    <!-- BIRTHDAY -->
-    <div class="event-block" id="ev-birthday">
-      <div class="event-block-content">
-        <div class="event-tag">Birthday parties</div>
-        <div class="event-block-title">Celebrate your birthday with 13 cats</div>
-        <div class="event-block-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, complete with food, drinks and of course, plenty of cats wandering by. Whether you're 7 or 70, birthdays are always better with cats.</div>
-        <div class="event-meta-row">
-          <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Group size</strong><span>Up to 30 pax</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">⏱</span><div><strong>Duration</strong><span>2–3 hours</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-on</strong><span>Art jamming available</span></div></div>
+    <div class="section-title">Celebrate with cats</div>
+    <div class="section-sub">From birthday parties to team bonding, our cosy cafe makes for an unforgettable backdrop &mdash; with 13 furry co-hosts included.</div>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-img-wrap"><img src="images/events/birthday.jpg" alt="Birthday party at cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=event-placeholder>&#x1F382;</div>'"></div>
+        <div class="event-body">
+          <div class="event-tag">Birthday parties</div>
+          <div class="event-name">Celebrate your birthday with 13 cats</div>
+          <div class="event-desc">Make your birthday one to remember. We will set aside a dedicated space for your group, with food, drinks and of course, plenty of cats. Great for kids and adults alike.</div>
+          <div class="event-details">
+            <div class="event-detail"><strong>Group size:</strong> Up to 20 pax</div>
+            <div class="event-detail"><strong>Duration:</strong> 2&ndash;3 hours</div>
+            <div class="event-detail"><strong>Add-on:</strong> Art jamming available</div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
       </div>
-      <div class="event-gallery">
-        <div class="gallery-track" id="gallery-birthday">
-          <div class="gallery-slide"><img src="images/events/birthday1.jpg" alt="Birthday party at The Cat Cafe Singapore" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>🎂</div>'"></div>
-          <div class="gallery-slide"><img src="images/events/birthday2.jpg" alt="Birthday celebration with cats Singapore" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>🐱</div>'"></div>
-          <div class="gallery-slide"><img src="images/events/birthday3.jpg" alt="Kids birthday party cat cafe Bugis" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>🎉</div>'"></div>
+      <div class="event-card">
+        <div class="event-img-wrap"><img src="images/events/teambonding.jpg" alt="Team bonding at cat cafe Singapore Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=event-placeholder>&#x1F91D;</div>'"></div>
+        <div class="event-body">
+          <div class="event-tag">Team bonding</div>
+          <div class="event-name">Team bonding with a purrfect twist</div>
+          <div class="event-desc">Take your team out of the office and into the cafe. Combine art jamming with cat therapy for a relaxed, creative session that people actually look forward to.</div>
+          <div class="event-details">
+            <div class="event-detail"><strong>Group size:</strong> Up to 30 pax</div>
+            <div class="event-detail"><strong>Duration:</strong> 2&ndash;4 hours</div>
+            <div class="event-detail"><strong>Add-on:</strong> Art jamming + catering</div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20team%20bonding%20event%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <button class="gallery-btn gallery-prev" onclick="galleryScroll('gallery-birthday',-1)">&#8249;</button>
-        <button class="gallery-btn gallery-next" onclick="galleryScroll('gallery-birthday',1)">&#8250;</button>
-        <div class="gallery-dots" id="dots-birthday"></div>
       </div>
-    </div>
-
-    <!-- PROPOSAL -->
-    <div class="event-block event-block-reverse" id="ev-proposal">
-      <div class="event-block-content">
-        <div class="event-tag">Proposal &amp; solemnisation</div>
-        <div class="event-block-title">Your special day, made even more special</div>
-        <div class="event-block-desc">Looking for somewhere unique and intimate to pop the question or exchange your vows? Our cats have a way of making every moment feel warmer. Whether it's a surprise proposal or a small solemnisation ceremony, we'll help you create a memory that lasts a lifetime.</div>
-        <div class="event-meta-row">
-          <div class="event-meta-item"><span class="event-meta-icon">💍</span><div><strong>Occasions</strong><span>Proposals, weddings &amp; solemnisations</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-ons</strong><span>Decorations, florals &amp; art jamming</span></div></div>
+      <div class="event-card">
+        <div class="event-img-wrap"><img src="images/events/kidsparty.jpg" alt="Kids party cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=event-placeholder>&#x1F389;</div>'"></div>
+        <div class="event-body">
+          <div class="event-tag">Kids parties</div>
+          <div class="event-name">The party every cat-loving kid wants</div>
+          <div class="event-desc">A fun, safe environment for little ones to meet and interact with our gentle cats. We can help coordinate food, a themed cake and art jamming activities for the kids.</div>
+          <div class="event-details">
+            <div class="event-detail"><strong>Min age:</strong> 4 years old</div>
+            <div class="event-detail"><strong>Group size:</strong> Up to 20 pax</div>
+            <div class="event-detail"><strong>Duration:</strong> 2 hours</div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20kids%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20proposal%20or%20solemnisation%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
       </div>
-      <div class="event-gallery">
-        <div class="gallery-track" id="gallery-proposal">
-          <div class="gallery-slide"><img src="images/events/proposal1.jpg" alt="Proposal at The Cat Cafe Singapore" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>💍</div>'"></div>
-          <div class="gallery-slide"><img src="images/events/proposal2.jpg" alt="Solemnisation cat cafe Singapore" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>💐</div>'"></div>
-          <div class="gallery-slide"><img src="images/events/proposal3.jpg" alt="Wedding ceremony with cats Singapore" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>🌸</div>'"></div>
+      <div class="event-card">
+        <div class="event-img-wrap"><img src="images/events/privatehire.jpg" alt="Private cafe hire Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=event-placeholder>&#x1F431;</div>'"></div>
+        <div class="event-body">
+          <div class="event-tag">Private hire</div>
+          <div class="event-name">Hire the whole cafe just for you</div>
+          <div class="event-desc">Have the entire cafe to yourselves for a truly exclusive experience. Perfect for product launches, photoshoots, intimate gatherings or any special occasion.</div>
+          <div class="event-details">
+            <div class="event-detail"><strong>Capacity:</strong> Up to 40 pax</div>
+            <div class="event-detail"><strong>Duration:</strong> Half or full day</div>
+            <div class="event-detail"><strong>Custom:</strong> Fully customisable</div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <button class="gallery-btn gallery-prev" onclick="galleryScroll('gallery-proposal',-1)">&#8249;</button>
-        <button class="gallery-btn gallery-next" onclick="galleryScroll('gallery-proposal',1)">&#8250;</button>
-        <div class="gallery-dots" id="dots-proposal"></div>
       </div>
-    </div>
-
-    <!-- PRIVATE HIRE -->
-    <div class="event-block" id="ev-private">
-      <div class="event-block-content">
-        <div class="event-tag">Private hire</div>
-        <div class="event-block-title">Have something special in mind?</div>
-        <div class="event-block-desc">From video shoots and commercial productions to intimate gatherings and brand activations — if it involves cats, we're in. Tell us what you're dreaming up and we'll work with you to make it happen. The whole cafe is yours.</div>
-        <div class="event-meta-row">
-          <div class="event-meta-item"><span class="event-meta-icon">🎬</span><div><strong>Use cases</strong><span>Shoots, events &amp; activations</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Capacity</strong><span>Up to 40 pax</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
-        </div>
-        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
-      </div>
-      <div class="event-gallery">
-        <div class="gallery-track" id="gallery-private">
-          <div class="gallery-slide"><img src="images/events/private1.jpg" alt="Private hire cat cafe Singapore" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>🎬</div>'"></div>
-          <div class="gallery-slide"><img src="images/events/private2.jpg" alt="Video shoot at cat cafe Bugis" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>📸</div>'"></div>
-          <div class="gallery-slide"><img src="images/events/private3.jpg" alt="Commercial event with cats Singapore" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>✨</div>'"></div>
-        </div>
-        <button class="gallery-btn gallery-prev" onclick="galleryScroll('gallery-private',-1)">&#8249;</button>
-        <button class="gallery-btn gallery-next" onclick="galleryScroll('gallery-private',1)">&#8250;</button>
-        <div class="gallery-dots" id="dots-private"></div>
-      </div>
-    </div>
     </div>
   </section>
 
   <section>
     <div class="section-eyebrow">House rules</div>
     <div class="section-title">Before you arrive</div>
-    <div class="section-sub">To keep our cats happy, healthy and stress-free — and to make sure everyone has a great time.</div>
+    <div class="section-sub">To keep our cats happy, healthy and stress-free.</div>
     <div class="rules-list">
       <div class="rule"><div class="rule-n">1</div>We welcome guests of all ages! Children under 12 must be accompanied and supervised by an adult at all times.</div>
-      <div class="rule"><div class="rule-n">2</div>Hand sanitisation is required before entering the cat area. Our staff will assist you on arrival.</div>
-      <div class="rule"><div class="rule-n">3</div>Handle cats gently. Do not carry, lift or chase them without staff assistance — let the cats come to you.</div>
+      <div class="rule"><div class="rule-n">2</div>Hand sanitisation is required before entering the cat area. Our staff will assist you.</div>
+      <div class="rule"><div class="rule-n">3</div>Handle cats gently. Do not carry, lift or chase them without staff assistance.</div>
       <div class="rule"><div class="rule-n">4</div>No outside food or drinks permitted in the cat area.</div>
-      <div class="rule"><div class="rule-n">5</div>Please arrive on time — slots are released to walk-in guests after a 10-minute grace period.</div>
+      <div class="rule"><div class="rule-n">5</div>Arrive on time &mdash; slots are released to walk-in guests after a 10-minute grace period.</div>
     </div>
   </section>
 
@@ -523,98 +1016,29 @@
 
 </div>
 
-<section id="vouchers" style="background:var(--bg-2);">
-  <div class="page">
-    <div class="section-eyebrow">Gift vouchers</div>
-    <div class="section-title">Give the gift of cats</div>
-    <div class="section-sub">Purchase a gift voucher or entry ticket online. A beautifully designed voucher with a unique code will be emailed instantly after payment.</div>
 
-    <div class="voucher-grid">
-      <div class="voucher-card" id="vc-gift-10" onclick="selectVoucher('gift-10')">
-        <div class="voucher-emoji">🎁</div>
-        <div class="voucher-name">Gift Voucher</div>
-        <div class="voucher-desc">S$10 credit redeemable on any visit. Perfect as a gift for cat lovers.</div>
-        <div class="voucher-price"><span>S$</span>10</div>
-      </div>
-      <div class="voucher-card" id="vc-entry-22" onclick="selectVoucher('entry-22')">
-        <div class="voucher-popular">Most popular</div>
-        <div class="voucher-emoji">🐱</div>
-        <div class="voucher-name">Entry Ticket</div>
-        <div class="voucher-desc">Full 2-hour entry with 1 complimentary drink. Skip the queue, book ahead.</div>
-        <div class="voucher-price"><span>S$</span>22</div>
-      </div>
+<!-- DONATE -->
+<div class="donate-section" id="donate">
+  <div class="donate-inner">
+    <div class="donate-paw">🐾</div>
+    <div class="donate-title">Support our cats</div>
+    <div class="donate-sub">All 13 of our cats are rescued strays who now call The Cat Cafe home. Your donation goes directly towards their vet bills, food, medicine and daily care. Every dollar makes a difference.</div>
+    <div class="donate-error" id="donate-error"></div>
+    <div class="donate-amounts">
+      <button class="donate-amt" onclick="setDonate(5, this)">S$5</button>
+      <button class="donate-amt" onclick="setDonate(10, this)">S$10</button>
+      <button class="donate-amt selected" onclick="setDonate(20, this)">S$20</button>
+      <button class="donate-amt" onclick="setDonate(50, this)">S$50</button>
     </div>
-
-    <div class="voucher-form" id="voucher-form">
-      <h3 id="voucher-form-title">Select a voucher above to continue</h3>
-      <div id="voucher-form-fields" style="display:none;">
-        <div class="vf-grid">
-          <div class="vf-field">
-            <label>Your name *</label>
-            <input type="text" id="vf-buyer-name" placeholder="e.g. Sarah Tan">
-          </div>
-          <div class="vf-field">
-            <label>Your email *</label>
-            <input type="email" id="vf-buyer-email" placeholder="you@example.com">
-          </div>
-          <div class="vf-field">
-            <label>Recipient name <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
-            <input type="text" id="vf-recipient" placeholder="Leave blank if for yourself">
-          </div>
-          <div class="vf-field full">
-            <label>Personal message <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
-            <textarea id="vf-message" placeholder="Add a personal note to the voucher..."></textarea>
-          </div>
-        </div>
-        <button class="voucher-submit" id="voucher-submit-btn" onclick="purchaseVoucher()">
-          <span id="voucher-btn-text">Pay with HitPay →</span>
-        </button>
-        <div class="voucher-note">
-          Accepts PayNow, PayLah!, credit/debit cards &amp; NETS &middot; Secure payment by HitPay &middot; Valid 12 months
-        </div>
-      </div>
+    <div class="donate-custom-wrap">
+      <span class="donate-custom-prefix">S$</span>
+      <input class="donate-custom-input" type="number" id="donate-amount" value="20" min="1" placeholder="Other" oninput="onDonateInput()">
     </div>
-
-    <div class="voucher-success" id="voucher-success">
-      <h3>&#x2713; Payment received!</h3>
-      <p>Your voucher is on its way. Check your email for the unique code and full details.<br>
-      Questions? WhatsApp us at <a href="https://wa.me/6580808719" style="color:var(--green);">8080 8719</a>.</p>
-    </div>
+    <button class="donate-btn" id="donate-btn" onclick="submitDonate()">Donate now &#x2192;</button>
+    <div class="donate-note">Secured by HitPay &middot; Accepts PayNow, PayLah!, credit &amp; debit cards &middot; You will receive an email confirmation</div>
+    <div class="donate-success" id="donate-success">&#x2764;&#xFE0F; Thank you for your generous donation! A confirmation has been sent to your email. Our cats thank you.</div>
   </div>
-</section>
-
-
-
-<section id="donate" style="border:none;">
-  <div class="page">
-    <div class="donate-section">
-      <div class="donate-layout">
-        <div class="donate-copy">
-          <div class="section-eyebrow">Support our cats</div>
-          <h3>Help us give our rescued cats the care they deserve &#x1F43E;</h3>
-          <p>Want to do a little more? Your donation helps us continue providing food, litter, veterinary care, enrichment and a safe, loving home for the cats who depend on us.</p>
-          <div class="donate-points">
-            <div class="donate-point"><span>✓</span><span><strong>Food &amp; daily essentials</strong> — keeping every tummy happy.</span></div>
-            <div class="donate-point"><span>✓</span><span><strong>Veterinary care</strong> — check-ups, treatment and medication when needed.</span></div>
-            <div class="donate-point"><span>✓</span><span><strong>Comfort &amp; enrichment</strong> — a safe, clean and stimulating home.</span></div>
-          </div>
-        </div>
-
-        <div class="donate-card">
-          <div class="donate-card-title">Choose an amount to donate</div>
-          <div class="donate-amounts">
-            <button type="button" class="donate-amount active" onclick="setDonationAmount(10,this)">S$10</button>
-            <button type="button" class="donate-amount" onclick="setDonationAmount(25,this)">S$25</button>
-            <button type="button" class="donate-amount" onclick="setDonationAmount(50,this)">S$50</button>
-          </div>
-          <input class="donate-custom" id="donation-amount" type="number" min="1" step="1" value="10" placeholder="Other amount (S$)">
-          <button type="button" class="donate-btn" onclick="donateViaHitPay()">Donate S$<span id="donation-btn-amount">10</span> via HitPay &#x2192;</button>
-          <div class="donate-note"><span class="hitpay-badge">Secure payment by HitPay</span><br>Pay securely using the payment methods available at checkout.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
 
 <footer>
   <div class="footer-inner">
@@ -623,10 +1047,10 @@
       <div class="footer-copy">241B Victoria Street, Level 3, Singapore 188030 &middot; &copy; 2025</div>
     </div>
     <div class="footer-links">
-      <a href="#donate">Donate</a>
       <a href="https://www.instagram.com/sgcatcafe" target="_blank">Instagram</a>
       <a href="https://www.facebook.com/sgcatcafe" target="_blank">Facebook</a>
       <a href="mailto:info@thecatcafe.sg">Email us</a>
+      <a href="#donate" onclick="window.scrollTo({top:document.getElementById('donate').offsetTop,behavior:'smooth'});return false;">Donate</a>
       <a href="https://wa.me/6580808719" target="_blank">WhatsApp</a>
     </div>
   </div>
@@ -645,49 +1069,8 @@
 </div>
 
 <script>
-var GITHUB = "https://raw.githubusercontent.com/jeffersonsoh-arch/thecatcafe-sg/main/images/cats/";
+var GITHUB = "images/cats/";
 var BOOK_URL = "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4";
-var HITPAY_DONATION_URL = "PASTE_YOUR_HITPAY_DONATION_LINK_HERE";
-
-function setDonationAmount(amount, button) {
-  var input = document.getElementById("donation-amount");
-  var display = document.getElementById("donation-btn-amount");
-  if (input) input.value = amount;
-  if (display) display.textContent = Number(amount).toFixed(0);
-  document.querySelectorAll(".donate-amount").forEach(function(b){ b.classList.remove("active"); });
-  if (button) button.classList.add("active");
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  var input = document.getElementById("donation-amount");
-  if (input) {
-    input.addEventListener("input", function() {
-      var amount = Math.max(1, Number(this.value) || 0);
-      var display = document.getElementById("donation-btn-amount");
-      if (display) display.textContent = amount.toFixed(0);
-      document.querySelectorAll(".donate-amount").forEach(function(b){ b.classList.remove("active"); });
-    });
-  }
-});
-
-function donateViaHitPay() {
-  var input = document.getElementById("donation-amount");
-  var amount = Number(input && input.value);
-  if (!amount || amount < 1) {
-    alert("Please enter a donation amount of at least S$1.");
-    return;
-  }
-
-  if (HITPAY_DONATION_URL === "PASTE_YOUR_HITPAY_DONATION_LINK_HERE") {
-    alert("Please add your HitPay donation link to HITPAY_DONATION_URL in this HTML file first.");
-    return;
-  }
-
-  // If your HitPay setup accepts an amount parameter, append it to the hosted payment URL.
-  var separator = HITPAY_DONATION_URL.indexOf("?") >= 0 ? "&" : "?";
-  window.location.href = HITPAY_DONATION_URL + separator + "amount=" + encodeURIComponent(amount.toFixed(2));
-}
-
 
 var CATS_DEFAULT = [
   {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","cuddly"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
@@ -737,8 +1120,8 @@ var MENU_DEFAULT = [
 ];
 
 var PRICING_DEFAULT = [
-  {label:"2-hour cat visit",          note:"includes 1 complimentary canned drink · supports our cats' daily care", price:"S$22"},
-  {label:"Extra time with our cats",  note:"each additional 30 mins helps support their ongoing care", price:"S$5.50"},
+  {label:"First 2 hours",            note:"includes 1 complimentary canned drink", price:"S$22"},
+  {label:"Every additional 30 mins", note:"",                                       price:"S$5.50"},
   {label:"Full day pass",            note:"2 complimentary drinks of your choice", price:"S$50"},
   {label:"Children under 1",         note:"",                                       price:"Free"}
 ];
@@ -840,7 +1223,6 @@ function renderPricing() {
   }).join("");
 }
 
-// Fetch live content from JSON files (written by CMS)
 async function loadContent() {
   try {
     const [cats, menu, settings] = await Promise.all([
@@ -848,131 +1230,139 @@ async function loadContent() {
       fetch("/content/menu.json").then(r => r.json()),
       fetch("/content/settings.json").then(r => r.json())
     ]);
-    CATS    = cats;
-    MENU    = menu;
+    CATS = cats;
+    MENU = menu;
     if (settings.pricing) PRICING = settings.pricing;
     if (settings.hours)   HOURS   = settings.hours;
     if (settings.info && settings.info.booking_url) {
-      document.querySelectorAll("a[href*='inline.app']").forEach(a => {
-        a.href = settings.info.booking_url;
-      });
+      document.querySelectorAll("a[href*='inline.app']").forEach(a => { a.href = settings.info.booking_url; });
     }
-  } catch(e) {
-    console.log("Using default content:", e.message);
-  }
+  } catch(e) { console.log("Using default content:", e.message); }
   renderCatCards(CATS);
   renderHours();
   renderPricing();
   showMenu("topup", document.querySelector(".mtab"));
 }
 loadContent().then(function(){ initGalleries(); });
+/* ── GALLERY ── */
+var G = {}; // gallery state: { name: currentIndex }
 
-/* ── VOUCHERS ── */
-var selectedVoucher = null;
-
-function selectVoucher(type) {
-  selectedVoucher = type;
-  document.querySelectorAll(".voucher-card").forEach(function(c) { c.classList.remove("selected"); });
-  document.getElementById("vc-" + type).classList.add("selected");
-  var labels = { "gift-10": "Gift Voucher — S$10", "entry-22": "Entry Ticket — S$22" };
-  document.getElementById("voucher-form-title").textContent = "Purchase: " + labels[type];
-  document.getElementById("voucher-form-fields").style.display = "block";
-  document.getElementById("voucher-form").scrollIntoView({ behavior: "smooth", block: "nearest" });
+function gallerySt(name, dir) {
+  var track = document.getElementById('track-' + name);
+  if (!track) return;
+  var slides = track.children;
+  var total = slides.length;
+  if (G[name] === undefined) G[name] = 0;
+  G[name] = (G[name] + dir + total) % total;
+  applyGallery(name, track, total);
 }
 
-async function purchaseVoucher() {
-  if (!selectedVoucher) { alert("Please select a voucher first."); return; }
-  var buyerName  = document.getElementById("vf-buyer-name").value.trim();
-  var buyerEmail = document.getElementById("vf-buyer-email").value.trim();
-  if (!buyerName || !buyerEmail) { alert("Please enter your name and email."); return; }
-  if (!/^[^@]+@[^@]+\.[^@]+$/.test(buyerEmail)) { alert("Please enter a valid email address."); return; }
+function galleryGo(name, idx) {
+  var track = document.getElementById('track-' + name);
+  if (!track) return;
+  var total = track.children.length;
+  G[name] = idx;
+  applyGallery(name, track, total);
+}
 
-  var btn = document.getElementById("voucher-submit-btn");
+function applyGallery(name, track, total) {
+  // Shift track by exactly one slide width per step
+  track.style.transform = 'translateX(-' + (G[name] * 100) + '%)';
+  // Update dots
+  var dotsEl = document.getElementById('dots-' + name);
+  if (!dotsEl) return;
+  Array.from(dotsEl.children).forEach(function(d, i) {
+    d.classList.toggle('active', i === G[name]);
+  });
+}
+
+function initGalleries() {
+  ['birthday', 'proposal', 'private'].forEach(function(name) {
+    G[name] = 0;
+    var track = document.getElementById('track-' + name);
+    if (!track) return;
+    var total = track.children.length;
+    // Set each slide to exactly 100% width of viewport
+    Array.from(track.children).forEach(function(slide) {
+      slide.style.minWidth = '100%';
+    });
+    // Build dots
+    var dotsEl = document.getElementById('dots-' + name);
+    if (!dotsEl) return;
+    dotsEl.innerHTML = '';
+    for (var i = 0; i < total; i++) {
+      var dot = document.createElement('button');
+      dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+      (function(idx, n) {
+        dot.onclick = function(e) { e.stopPropagation(); galleryGo(n, idx); };
+      })(i, name);
+      dotsEl.appendChild(dot);
+    }
+  });
+}
+
+
+/* ── DONATE ── */
+var donateAmt = 20;
+
+function setDonate(val, btn) {
+  donateAmt = val;
+  document.getElementById('donate-amount').value = val;
+  document.querySelectorAll('.donate-amt').forEach(function(b) { b.classList.remove('selected'); });
+  if (btn) btn.classList.add('selected');
+  document.getElementById('donate-error').style.display = 'none';
+}
+
+function onDonateInput() {
+  var val = parseFloat(document.getElementById('donate-amount').value);
+  donateAmt = val || 0;
+  document.querySelectorAll('.donate-amt').forEach(function(b) { b.classList.remove('selected'); });
+}
+
+async function submitDonate() {
+  var amount = parseFloat(document.getElementById('donate-amount').value);
+  var errorEl = document.getElementById('donate-error');
+  errorEl.style.display = 'none';
+
+  if (!amount || amount < 1) {
+    errorEl.textContent = 'Please enter a valid donation amount (minimum S$1).';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  var btn = document.getElementById('donate-btn');
   btn.disabled = true;
-  document.getElementById("voucher-btn-text").textContent = "Preparing payment…";
+  btn.textContent = 'Processing…';
 
   try {
-    var res = await fetch("/.netlify/functions/voucher-create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        voucher_type:   selectedVoucher,
-        buyer_name:     buyerName,
-        buyer_email:    buyerEmail,
-        recipient_name: document.getElementById("vf-recipient").value.trim() || buyerName,
-        message:        document.getElementById("vf-message").value.trim()
-      })
+    var res = await fetch('/.netlify/functions/donate-create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: amount.toFixed(2) })
     });
     var data = await res.json();
     if (data.ok && data.checkout_url) {
       window.location.href = data.checkout_url;
     } else {
-      throw new Error(data.error || "Could not create payment");
+      throw new Error(data.error || 'Could not process donation');
     }
   } catch(e) {
-    alert("Something went wrong: " + e.message + "\nPlease try again or WhatsApp us at 8080 8719.");
+    errorEl.textContent = 'Something went wrong: ' + e.message + '. Please try again or contact us.';
+    errorEl.style.display = 'block';
     btn.disabled = false;
-    document.getElementById("voucher-btn-text").textContent = "Pay with HitPay →";
+    btn.textContent = 'Donate now →';
   }
 }
 
-// Show success message if redirected back from HitPay
-if (window.location.search.includes("payment=success") || window.location.hash === "#payment-success") {
-  document.addEventListener("DOMContentLoaded", function() {
-    var s = document.getElementById("voucher-success");
-    var f = document.getElementById("voucher-form");
-    if (s) s.style.display = "block";
-    if (f) f.style.display = "none";
-    if (s) s.scrollIntoView({ behavior: "smooth" });
-  });
-}
-
-/* ── GALLERY ── */
-var galleryState = {};
-
-function galleryScroll(id, dir) {
-  var track = document.getElementById(id);
-  if (!track) return;
-  var slides = track.querySelectorAll('.gallery-slide');
-  var total = slides.length;
-  if (galleryState[id] === undefined) galleryState[id] = 0;
-  galleryState[id] = (galleryState[id] + dir + total) % total;
-  // Each slide is 1/total of the track width, so offset = index * (100/total)%
-  var pct = galleryState[id] * (100 / total);
-  track.style.transform = 'translateX(-' + pct + '%)';
-  updateDots(id, total);
-}
-
-function galleryGoTo(id, idx) {
-  var track = document.getElementById(id);
-  if (!track) return;
-  var slides = track.querySelectorAll('.gallery-slide');
-  var total = slides.length;
-  galleryState[id] = idx;
-  var pct = idx * (100 / total);
-  track.style.transform = 'translateX(-' + pct + '%)';
-  updateDots(id, total);
-}
-
-function updateDots(id, total) {
-  var dotsEl = document.getElementById('dots-' + id.replace('gallery-',''));
-  if (!dotsEl) return;
-  dotsEl.innerHTML = '';
-  for (var i = 0; i < total; i++) {
-    var dot = document.createElement('div');
-    dot.className = 'gallery-dot' + (i === (galleryState[id]||0) ? ' active' : '');
-    (function(idx){ dot.onclick = function(){ galleryGoTo(id, idx); }; })(i);
-    dotsEl.appendChild(dot);
-  }
-}
-
-function initGalleries() {
-  ['gallery-birthday','gallery-proposal','gallery-private'].forEach(function(id) {
-    galleryState[id] = 0;
-    var track = document.getElementById(id);
-    if (!track) return;
-    var total = track.querySelectorAll('.gallery-slide').length;
-    updateDots(id, total);
+// Show success if redirected back
+if (window.location.search.includes('donated=true')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    var s = document.getElementById('donate-success');
+    if (s) {
+      s.style.display = 'block';
+      document.getElementById('donate').scrollIntoView({ behavior: 'smooth' });
+    }
   });
 }
 
