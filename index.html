@@ -30,21 +30,22 @@
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg);font-size:15px;line-height:1.6;}
   a{color:inherit;text-decoration:none;}
   button{font-family:inherit;font-size:14px;}
-
   /* NAV */
   nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border);}
   .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav-logo{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-link{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
   .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
+  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
   .nav-logo-text span{color:var(--rust);}
+  .nav-logo span{color:var(--rust);}
   .nav-links{display:flex;gap:20px;}
   .nav-links a{font-size:13px;color:var(--text-2);}
   .nav-links a:hover{color:var(--text);}
   .nav-pay-link{color:#1a7a3c !important;font-weight:600;}
   .nav-cta{background:var(--rust);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;}
   .nav-cta:hover{opacity:0.88;}
-
   /* LAYOUT */
   .page{max-width:900px;margin:0 auto;padding:0 24px;}
   section{padding:56px 0;border-bottom:0.5px solid var(--border-light);}
@@ -52,7 +53,6 @@
   .section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:8px;}
   .section-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em;line-height:1.25;}
   .section-sub{font-size:15px;color:var(--text-2);max-width:560px;line-height:1.7;margin-bottom:28px;}
-
   /* HERO */
   .hero{background:var(--cream);border-radius:var(--radius);padding:56px 40px 44px;text-align:center;margin:32px 0 0;position:relative;overflow:hidden;}
   .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--rust);color:#fff;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;}
@@ -67,13 +67,11 @@
   .btn-outline:hover{border-color:var(--text);}
   .hero-cats{display:flex;justify-content:center;gap:6px;margin-top:32px;}
   .hero-cat-face{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
-
   /* STATS */
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px;}
   .stat{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:20px 16px;text-align:center;}
   .stat-n{font-size:30px;font-weight:500;color:var(--rust);}
   .stat-l{font-size:12px;color:var(--text-3);margin-top:2px;}
-
   /* LOCATION */
   .loc-card{background:var(--cream);border-radius:var(--radius);padding:28px 32px;}
   .loc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
@@ -85,7 +83,6 @@
   .hour-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;}
   .hour-day{color:var(--text-2);}
   .hour-time{font-weight:500;}
-
   /* PRICING */
   .pricing-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
   .price-row{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:0.5px solid var(--border-light);}
@@ -93,19 +90,18 @@
   .price-label{font-size:14px;color:var(--text);}
   .price-note{font-size:12px;color:var(--text-3);margin-top:2px;}
   .price-val{font-size:16px;font-weight:500;color:var(--rust);}
-
   /* FEATURES */
   .features{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .feat{display:flex;gap:14px;padding:18px;background:var(--bg-2);border:0.5px solid var(--border-light);border-radius:var(--radius-sm);align-items:flex-start;}
   .feat-icon{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--rust-pale);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
   .feat-title{font-size:14px;font-weight:500;margin-bottom:3px;}
   .feat-desc{font-size:13px;color:var(--text-2);line-height:1.5;}
-
-  /* ART BANNER & PHOTOS */
+  /* ART BANNER */
   .art-banner{background:var(--indigo);border-radius:var(--radius);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:24px;}
   .art-banner h3{font-size:18px;font-weight:500;color:var(--indigo-pale);margin-bottom:6px;}
   .art-banner p{font-size:14px;color:#AFA9EC;line-height:1.6;max-width:400px;}
   .art-btn{background:var(--indigo-pale);color:var(--indigo);border:none;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;}
+  /* ART PHOTOS */
   .art-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
   .art-photo-card{border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-2);border:0.5px solid var(--border-light);}
   .art-photo-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--indigo-pale);}
@@ -113,7 +109,6 @@
   .art-photo-card:hover .art-photo-wrap img{transform:scale(1.04);}
   .art-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;background:var(--indigo-pale);}
   .art-photo-label{font-size:12px;color:var(--text-2);padding:8px 12px;text-align:center;}
-
   /* MENU */
   .menu-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
   .mtab{font-size:12px;font-weight:500;padding:5px 16px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg);color:var(--text-2);cursor:pointer;transition:all 0.15s;}
@@ -126,7 +121,6 @@
   .menu-item-desc{font-size:12px;color:var(--text-3);line-height:1.5;}
   .menu-item-price{font-size:14px;font-weight:500;color:var(--rust);flex-shrink:0;white-space:nowrap;}
   .menu-note{font-size:12px;color:var(--text-3);margin-top:16px;line-height:1.6;}
-
   /* CATS */
   .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
   .fbtn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg);color:var(--text-2);cursor:pointer;transition:all 0.15s;}
@@ -150,7 +144,6 @@
   .tshy{background:#FEF3E7;color:#8A5200;}
   .cat-desc-short{font-size:12px;color:var(--text-2);line-height:1.5;}
   .cat-count{font-size:12px;color:var(--text-3);margin-top:16px;}
-
   /* CAT MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
   .modal-overlay.open{display:flex;}
@@ -161,12 +154,68 @@
   .modal-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
   .modal-desc{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:16px;}
   .modal-close-btn{width:100%;background:var(--bg-2);border:0.5px solid var(--border);color:var(--text-2);padding:9px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;}
+  /* EVENTS */
+  .events-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .event-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform 0.15s,box-shadow 0.15s;}
+  .event-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+  .event-img-wrap{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--cream);}
+  .event-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+  .event-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--cream);}
+  .event-body{padding:16px 18px 18px;}
+  .event-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--rust-pale);color:var(--rust-dark);margin-bottom:8px;letter-spacing:0.04em;text-transform:uppercase;}
+  .event-name{font-size:16px;font-weight:500;color:var(--text);margin-bottom:6px;line-height:1.3;}
+  .event-desc{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:14px;}
+  .event-details{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
+  .event-detail{font-size:12px;color:var(--text-3);}
+  .event-detail strong{color:var(--text);}
+  .event-cta{display:inline-flex;align-items:center;background:var(--rust);color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;text-decoration:none;}
+  .event-cta:hover{opacity:0.88;}
+  /* RULES */
+  .rules-list{display:flex;flex-direction:column;gap:10px;}
+  .rule{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:var(--bg-2);border-radius:var(--radius-sm);border:0.5px solid var(--border-light);font-size:14px;color:var(--text-2);line-height:1.5;}
+  .rule-n{width:22px;height:22px;border-radius:50%;background:var(--rust-pale);color:var(--rust);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  /* MISSION */
+  .mission{background:var(--cream);border-radius:var(--radius);padding:36px 40px;}
+  .mission p{font-size:18px;color:var(--text);line-height:1.8;}
+  .mission p strong{color:var(--rust);font-weight:600;}
+  /* FOOTER */
+  footer{background:var(--text);color:#ccc;padding:40px 0;}
+  .footer-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+  .footer-logo{font-size:15px;font-weight:600;color:#fff;}
+  .footer-links{display:flex;gap:20px;}
+  .footer-links a{font-size:13px;color:#aaa;}
+  .footer-links a:hover{color:#fff;}
+  .footer-copy{font-size:12px;color:#666;margin-top:6px;}
 
-  /* 3-BLOCK EVENTS & GALLERIES */
+  /* ── ART PHOTOS ── */
+  .art-photos { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+  .art-photo-card { border-radius:var(--radius-sm); overflow:hidden; background:var(--bg-2); border:0.5px solid var(--border-light); }
+  .art-photo-wrap { width:100%; aspect-ratio:4/3; overflow:hidden; background:var(--indigo-pale); }
+  .art-photo-wrap img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.3s; }
+  .art-photo-card:hover .art-photo-wrap img { transform:scale(1.04); }
+  .art-photo-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:36px; background:var(--indigo-pale); }
+  .art-photo-label { font-size:12px; color:var(--text-2); padding:8px 12px; text-align:center; }
+
+  @media(max-width:700px){
+
+    .event-block { grid-template-columns:1fr; }
+    .event-block-flip .event-gallery { order:-1; }
+
+    .hero{padding:40px 24px 36px;}
+    .hero h1{font-size:32px;}
+    .cat-grid{grid-template-columns:repeat(2,1fr);}
+    .features,.events-grid,.art-photos{grid-template-columns:1fr;}
+    .hours-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .art-banner{flex-direction:column;text-align:center;}
+    .footer-inner{flex-direction:column;text-align:center;}
+  }
+
+  /* ── EVENTS ── */
   .event-block { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; margin-bottom:60px; padding-bottom:60px; border-bottom:0.5px solid var(--border-light); }
   .event-block:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .event-block-flip { }
   .event-block-content { display:flex; flex-direction:column; gap:16px; }
-  .event-tag { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; background:var(--rust-pale); color:var(--rust-dark); margin-bottom:4px; letter-spacing:0.04em; text-transform:uppercase; align-self:flex-start; }
   .event-block-title { font-size:22px; font-weight:600; color:var(--text); line-height:1.3; }
   .event-block-desc { font-size:14px; color:var(--text-2); line-height:1.8; }
   .event-meta-row { display:flex; flex-direction:column; gap:8px; }
@@ -175,9 +224,8 @@
   .event-meta-item div { display:flex; flex-direction:column; }
   .event-meta-item strong { font-size:13px; font-weight:600; color:var(--text); }
   .event-meta-item span { font-size:13px; color:var(--text-2); }
-  .event-cta { display:inline-flex; align-items:center; background:var(--rust); color:#fff; padding:9px 20px; border-radius:20px; font-size:13px; font-weight:500; text-decoration:none; align-self:flex-start; }
-  .event-cta:hover { opacity:0.88; }
 
+  /* Gallery */
   .event-gallery { position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:4/3; background:var(--cream); flex-shrink:0; }
   .gallery-viewport { width:100%; height:100%; overflow:hidden; border-radius:var(--radius); }
   .gallery-track { display:flex; height:100%; transition:transform 0.45s cubic-bezier(0.4,0,0.2,1); }
@@ -192,17 +240,8 @@
   .gallery-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.55); cursor:pointer; transition:background 0.2s; border:none; padding:0; }
   .gallery-dot.active { background:#fff; }
 
-  /* RULES */
-  .rules-list{display:flex;flex-direction:column;gap:10px;}
-  .rule{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;background:var(--bg-2);border-radius:var(--radius-sm);border:0.5px solid var(--border-light);font-size:14px;color:var(--text-2);line-height:1.5;}
-  .rule-n{width:22px;height:22px;border-radius:50%;background:var(--rust-pale);color:var(--rust);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
 
-  /* MISSION */
-  .mission{background:var(--cream);border-radius:var(--radius);padding:36px 40px;}
-  .mission p{font-size:18px;color:var(--text);line-height:1.8;}
-  .mission p strong{color:var(--rust);font-weight:600;}
-
-  /* DONATE */
+  /* ── DONATE ── */
   .donate-section { background: #1a1a1a; padding: 60px 0; }
   .donate-inner { max-width: 560px; margin: 0 auto; text-align: center; padding: 0 24px; }
   .donate-paw { font-size: 40px; margin-bottom: 16px; }
@@ -210,7 +249,8 @@
   .donate-sub { font-size: 15px; color: #aaa; line-height: 1.8; margin-bottom: 32px; }
   .donate-amounts { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
   .donate-amt { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 10px 22px; border-radius: 24px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: inherit; }
-  .donate-amt:hover, .donate-amt.selected { background: var(--rust); border-color: var(--rust); }
+  .donate-amt:hover { background: var(--rust); border-color: var(--rust); }
+  .donate-amt.selected { background: var(--rust); border-color: var(--rust); }
   .donate-custom-wrap { display: flex; align-items: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); overflow: hidden; max-width: 220px; margin: 0 auto 24px; transition: border-color 0.15s; }
   .donate-custom-wrap:focus-within { border-color: var(--rust); }
   .donate-custom-prefix { color: #aaa; padding: 0 12px; font-size: 16px; font-weight: 600; background: rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.1); white-space: nowrap; display:flex; align-items:center; height:100%; }
@@ -218,39 +258,18 @@
   .donate-custom-input::placeholder { color: rgba(255,255,255,0.25); }
   .donate-btn { background: var(--rust); color: #fff; border: none; padding: 13px 36px; border-radius: 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; font-family: inherit; }
   .donate-btn:hover { opacity: 0.88; }
+  .donate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .donate-note { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 14px; line-height: 1.7; }
   .donate-success { background: rgba(46,125,50,0.2); border: 1px solid rgba(46,125,50,0.4); border-radius: var(--radius-sm); padding: 16px 20px; color: #81C784; font-size: 14px; line-height: 1.7; margin-top: 16px; display: none; }
   .donate-error { background: rgba(198,40,40,0.2); border: 1px solid rgba(198,40,40,0.4); border-radius: var(--radius-sm); padding: 12px 16px; color: #EF9A9A; font-size: 13px; margin-bottom: 16px; display: none; }
-
-  /* FOOTER */
-  footer{background:var(--text);color:#ccc;padding:40px 0;}
-  .footer-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
-  .footer-logo{font-size:15px;font-weight:600;color:#fff;}
-  .footer-links{display:flex;gap:20px;}
-  .footer-links a{font-size:13px;color:#aaa;}
-  .footer-links a:hover{color:#fff;}
-  .footer-copy{font-size:12px;color:#666;margin-top:6px;}
-
-  @media(max-width:700px){
-    .event-block { grid-template-columns:1fr; }
-    .event-block-flip .event-gallery { order:-1; }
-    .hero{padding:40px 24px 36px;}
-    .hero h1{font-size:32px;}
-    .cat-grid{grid-template-columns:repeat(2,1fr);}
-    .features, .menu-grid, .art-photos{grid-template-columns:1fr;}
-    .hours-grid{grid-template-columns:1fr;}
-    .nav-links{display:none;}
-    .art-banner{flex-direction:column;text-align:center;}
-    .footer-inner{flex-direction:column;text-align:center;}
-  }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo-link" href="/">
-      <img src="images/logo.png" alt="The Cat Cafe Singapore" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <a class="nav-logo" href="/">
+      <img src="images/logo.png" alt="The Cat Cafe Singapore" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="nav-logo-text" style="display:none;">The Cat <span>Cafe</span></span>
     </a>
     <div class="nav-links">
@@ -258,8 +277,9 @@
       <a href="#menu">Menu</a>
       <a href="#artjam">Art jamming</a>
       <a href="#events">Events</a>
+      <a href="#vouchers">Gift vouchers</a>
       <a href="#visit">Visit</a>
-      <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
+      <a href="pay.html" target="_blank">Pay</a>
     </div>
     <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
   </div>
@@ -383,90 +403,92 @@
     <div class="cat-count" id="cat-count"></div>
   </section>
 
-  <!-- EVENTS (3-BLOCK LAYOUT WITH SCROLLABLE GALLERIES) -->
   <section id="events">
-    <div class="section-eyebrow">Private events</div>
-    <div class="section-title">Make it unforgettable</div>
-    <div class="section-sub">From birthday celebrations to intimate proposals, our cosy cafe — with 13 resident cats — makes the perfect backdrop for your most special moments.</div>
+    <div class="page">
+      <div class="section-eyebrow">Private events</div>
+      <div class="section-title">Make it unforgettable</div>
+      <div class="section-sub">From birthday celebrations to intimate proposals, our cosy cafe — with 13 resident cats — makes the perfect backdrop for your most special moments.</div>
 
-    <!-- BIRTHDAY -->
-    <div class="event-block">
-      <div class="event-block-content">
-        <div class="event-tag">Birthday parties</div>
-        <div class="event-block-title">Celebrate your birthday with 13 cats</div>
-        <div class="event-block-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, complete with food, drinks and of course, plenty of cats wandering by. Whether you're 7 or 70, birthdays are always better with cats.</div>
-        <div class="event-meta-row">
-          <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Group size</strong><span>Up to 30 pax</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">⏱</span><div><strong>Duration</strong><span>2–3 hours</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-on</strong><span>Art jamming available</span></div></div>
-        </div>
-        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
-      </div>
-      <div class="event-gallery">
-        <div class="gallery-viewport">
-          <div class="gallery-track" id="track-birthday">
-            <div class="gallery-slide"><img src="images/events/birthday1.jpg" alt="Birthday party at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F382;</div>'"></div>
-            <div class="gallery-slide"><img src="images/events/birthday2.jpg" alt="Birthday celebration with cats" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F431;</div>'"></div>
-            <div class="gallery-slide"><img src="images/events/birthday3.jpg" alt="Cat cafe birthday party Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F389;</div>'"></div>
+      <!-- BIRTHDAY -->
+      <div class="event-block">
+        <div class="event-block-content">
+          <div class="event-tag">Birthday parties</div>
+          <div class="event-block-title">Celebrate your birthday with 13 cats</div>
+          <div class="event-block-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, complete with food, drinks and of course, plenty of cats wandering by. Whether you're 7 or 70, birthdays are always better with cats.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Group size</strong><span>Up to 30 pax</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">⏱</span><div><strong>Duration</strong><span>2–3 hours</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-on</strong><span>Art jamming available</span></div></div>
           </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <button class="gallery-btn gallery-prev" onclick="gallerySt('birthday',-1)" aria-label="Previous">&#8249;</button>
-        <button class="gallery-btn gallery-next" onclick="gallerySt('birthday',1)" aria-label="Next">&#8250;</button>
-        <div class="gallery-dots" id="dots-birthday"></div>
+        <div class="event-gallery">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="track-birthday">
+              <div class="gallery-slide"><img src="images/events/birthday1.jpg" alt="Birthday party at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F382;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/birthday2.jpg" alt="Birthday celebration with cats" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F431;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/birthday3.jpg" alt="Cat cafe birthday party Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F389;</div>'"></div>
+            </div>
+          </div>
+          <button class="gallery-btn gallery-prev" onclick="gallerySt('birthday',-1)">&#8249;</button>
+          <button class="gallery-btn gallery-next" onclick="gallerySt('birthday',1)">&#8250;</button>
+          <div class="gallery-dots" id="dots-birthday"></div>
+        </div>
       </div>
-    </div>
 
-    <!-- PROPOSAL -->
-    <div class="event-block event-block-flip">
-      <div class="event-gallery">
-        <div class="gallery-viewport">
-          <div class="gallery-track" id="track-proposal">
-            <div class="gallery-slide"><img src="images/events/proposal1.jpg" alt="Proposal at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F48D;</div>'"></div>
-            <div class="gallery-slide"><img src="images/events/proposal2.jpg" alt="Solemnisation cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F490;</div>'"></div>
-            <div class="gallery-slide"><img src="images/events/proposal3.jpg" alt="Wedding ceremony with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F338;</div>'"></div>
+      <!-- PROPOSAL -->
+      <div class="event-block event-block-flip">
+        <div class="event-gallery">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="track-proposal">
+              <div class="gallery-slide"><img src="images/events/proposal1.jpg" alt="Proposal at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F48D;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/proposal2.jpg" alt="Solemnisation cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F490;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/proposal3.jpg" alt="Wedding ceremony with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F338;</div>'"></div>
+            </div>
           </div>
+          <button class="gallery-btn gallery-prev" onclick="gallerySt('proposal',-1)">&#8249;</button>
+          <button class="gallery-btn gallery-next" onclick="gallerySt('proposal',1)">&#8250;</button>
+          <div class="gallery-dots" id="dots-proposal"></div>
         </div>
-        <button class="gallery-btn gallery-prev" onclick="gallerySt('proposal',-1)" aria-label="Previous">&#8249;</button>
-        <button class="gallery-btn gallery-next" onclick="gallerySt('proposal',1)" aria-label="Next">&#8250;</button>
-        <div class="gallery-dots" id="dots-proposal"></div>
-      </div>
-      <div class="event-block-content">
-        <div class="event-tag">Proposal &amp; solemnisation</div>
-        <div class="event-block-title">Your special day, made even more special</div>
-        <div class="event-block-desc">Looking for somewhere unique and intimate to pop the question or exchange your vows? Our cats have a way of making every moment feel warmer. Whether it's a surprise proposal or a small solemnisation ceremony, we'll help you create a memory that lasts a lifetime.</div>
-        <div class="event-meta-row">
-          <div class="event-meta-item"><span class="event-meta-icon">💍</span><div><strong>Occasions</strong><span>Proposals, weddings &amp; solemnisations</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-ons</strong><span>Decorations, florals &amp; art jamming</span></div></div>
+        <div class="event-block-content">
+          <div class="event-tag">Proposal &amp; solemnisation</div>
+          <div class="event-block-title">Your special day, made even more special</div>
+          <div class="event-block-desc">Looking for somewhere unique and intimate to pop the question or exchange your vows? Our cats have a way of making every moment feel warmer. Whether it's a surprise proposal or a small solemnisation ceremony, we'll help you create a memory that lasts a lifetime.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">💍</span><div><strong>Occasions</strong><span>Proposals, weddings &amp; solemnisations</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-ons</strong><span>Decorations, florals &amp; art jamming</span></div></div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20proposal%20or%20solemnisation%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20proposal%20or%20solemnisation%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
       </div>
-    </div>
 
-    <!-- PRIVATE HIRE -->
-    <div class="event-block">
-      <div class="event-block-content">
-        <div class="event-tag">Private hire</div>
-        <div class="event-block-title">Have something special in mind?</div>
-        <div class="event-block-desc">From video shoots and commercial productions to intimate gatherings and brand activations — if it involves cats, we're in. Tell us what you're dreaming up and we'll work with you to make it happen. The whole cafe is yours.</div>
-        <div class="event-meta-row">
-          <div class="event-meta-item"><span class="event-meta-icon">🎬</span><div><strong>Use cases</strong><span>Shoots, events &amp; activations</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Capacity</strong><span>Up to 40 pax</span></div></div>
-          <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
-        </div>
-        <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
-      </div>
-      <div class="event-gallery">
-        <div class="gallery-viewport">
-          <div class="gallery-track" id="track-private">
-            <div class="gallery-slide"><img src="images/events/private1.jpg" alt="Private hire cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F3AC;</div>'"></div>
-            <div class="gallery-slide"><img src="images/events/private2.jpg" alt="Video shoot at cat cafe Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F4F8;</div>'"></div>
-            <div class="gallery-slide"><img src="images/events/private3.jpg" alt="Commercial event with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x2728;</div>'"></div>
+      <!-- PRIVATE HIRE -->
+      <div class="event-block">
+        <div class="event-block-content">
+          <div class="event-tag">Private hire</div>
+          <div class="event-block-title">Have something special in mind?</div>
+          <div class="event-block-desc">From video shoots and commercial productions to intimate gatherings and brand activations — if it involves cats, we're in. Tell us what you're dreaming up and we'll work with you to make it happen. The whole cafe is yours.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">🎬</span><div><strong>Use cases</strong><span>Shoots, events &amp; activations</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Capacity</strong><span>Up to 40 pax</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
           </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <button class="gallery-btn gallery-prev" onclick="gallerySt('private',-1)" aria-label="Previous">&#8249;</button>
-        <button class="gallery-btn gallery-next" onclick="gallerySt('private',1)" aria-label="Next">&#8250;</button>
-        <div class="gallery-dots" id="dots-private"></div>
+        <div class="event-gallery">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="track-private">
+              <div class="gallery-slide"><img src="images/events/private1.jpg" alt="Private hire cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F3AC;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/private2.jpg" alt="Video shoot at cat cafe Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F4F8;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/private3.jpg" alt="Commercial event with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x2728;</div>'"></div>
+            </div>
+          </div>
+          <button class="gallery-btn gallery-prev" onclick="gallerySt('private',-1)">&#8249;</button>
+          <button class="gallery-btn gallery-next" onclick="gallerySt('private',1)">&#8250;</button>
+          <div class="gallery-dots" id="dots-private"></div>
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -490,6 +512,7 @@
   </section>
 
 </div>
+
 
 <!-- DONATE -->
 <div class="donate-section" id="donate">
@@ -547,19 +570,19 @@ var GITHUB = "images/cats/";
 var BOOK_URL = "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4";
 
 var CATS_DEFAULT = [
-  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","cuddly"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet nature makes her a firm favourite with every visitor."},
-  {id:2,  name:"Jimmy",       img:GITHUB+"jimmy.jpg",       full:GITHUB+"jimmy.jpg",       tags:["senior","og"],              desc:"A domestic long-fur rescued from breeders, Jimmy is around 16 years old. Once wary of handling, he has blossomed in his later years — most active in the mornings, often on the cat bridge."},
-  {id:3,  name:"Tommy",       img:GITHUB+"tommy.jpg",       full:GITHUB+"tommy.jpg",       tags:["senior","og","cuddly"],     desc:"A full black Singapore cat and an original since 2014, Tommy is around 13 years old. On palliative care for nasal cancer, he still enjoys a gentle pet and the company of his humans."},
-  {id:4,  name:"Oreo",        img:GITHUB+"oreo.jpg",        full:GITHUB+"oreo.jpg",        tags:["senior","og","playful"],    desc:"Named after his black-and-white coat, Oreo is around 12 years old. Gentle and great with children — he will happily do a high-five for a treat."},
-  {id:5,  name:"Marshmellow", img:GITHUB+"marshmellow.jpg", full:GITHUB+"marshmellow.jpg", tags:["young","cuddly"],           desc:"A fluffy all-white Singapore short-fur of around 7, Marshmellow joined us after the Rail Mall cafe closed. Most often found sleeping beside his best friend Marmite."},
+  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","cuddly"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
+  {id:2,  name:"Jimmy",       img:GITHUB+"jimmy.jpg",       full:GITHUB+"jimmy.jpg",       tags:["senior","og"],              desc:"A domestic long-fur rescued from breeders, Jimmy is around 16 years old. Once wary of handling, he has blossomed in his later years. Catch him most active in the mornings, often spotted on the cat bridge."},
+  {id:3,  name:"Tommy",       img:GITHUB+"tommy.jpg",       full:GITHUB+"tommy.jpg",       tags:["senior","og","cuddly"],     desc:"A full black Singapore cat and an original since 2014, Tommy is around 13 years old. Currently on palliative care for nasal cancer, he still enjoys a gentle pet and the company of his humans."},
+  {id:4,  name:"Oreo",        img:GITHUB+"oreo.jpg",        full:GITHUB+"oreo.jpg",        tags:["senior","og","playful"],    desc:"Named after his black-and-white coat, Oreo is around 12 years old. Gentle and great with children, he will happily do a high-five for a treat."},
+  {id:5,  name:"Marshmellow", img:GITHUB+"marshmellow.jpg", full:GITHUB+"marshmellow.jpg", tags:["young","cuddly"],           desc:"A fluffy all-white Singapore short-fur of around 7, Marshmellow joined us after the Rail Mall cafe closed. Affectionate and laid-back, he is most often found sleeping beside his best friend Marmite."},
   {id:6,  name:"Marmite",     img:GITHUB+"marmite.jpg",     full:GITHUB+"marmite.jpg",     tags:["young","cuddly"],           desc:"An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and loves a gentle butt pat."},
   {id:7,  name:"Bobo",        img:GITHUB+"bobo.jpg",        full:GITHUB+"bobo.jpg",        tags:["young","cuddly"],           desc:"A gentle Siamese of around 7-8 years, Bobo meows softly and loves human company. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow."},
-  {id:8,  name:"Mochi",       img:GITHUB+"mochi.jpg",       full:GITHUB+"mochi.jpg",       tags:["young","playful"],          desc:"Our biggest cat at 6-7 kg, Mochi is around 9 years old and our cafe mascot — he looks just like our logo. Most active in the mornings and very hard to miss."},
-  {id:9,  name:"Sushi",       img:GITHUB+"sushi.jpg",       full:GITHUB+"sushi.jpg",       tags:["young","cuddly"],           desc:"A slightly plump black-and-white cat, Sushi once lived beside a kopitiam. These days she loves nothing more than resting on a customer's lap."},
-  {id:10, name:"Miso",        img:GITHUB+"miso.jpg",        full:GITHUB+"miso.jpg",        tags:["young","playful"],          desc:"Sister to Shoyu and around 4 years old, Miso is named for the warm tinge in her undercoat. She loves teaser toys and games of catch with Toby, Shoyu and Momo."},
-  {id:11, name:"Shoyu",       img:GITHUB+"shoyu.jpg",       full:GITHUB+"shoyu.jpg",       tags:["young","playful","shy"],    desc:"Miso's sister at around 3, Shoyu was rescued from a Tuas factory. Once timid and fearful, she now tolerates light pets and chases the other cats with confidence."},
-  {id:12, name:"Momo",        img:GITHUB+"momo.jpg",        full:GITHUB+"momo.jpg",        tags:["young","playful","cuddly"], desc:"An orange female of around 4, Momo is playful and affectionate. She loves light head pets and games of catch with Toby."},
-  {id:13, name:"Toby",        img:GITHUB+"toby.jpg",        full:GITHUB+"toby.jpg",        tags:["young","playful"],          desc:"The first face you will likely see — Toby greets visitors at the entrance. Around 3, dense grey coat, gentle with children and endlessly playful."}
+  {id:8,  name:"Mochi",       img:GITHUB+"mochi.jpg",       full:GITHUB+"mochi.jpg",       tags:["young","playful"],          desc:"Our biggest cat at 6-7 kg, Mochi is around 9 years old and is our cafe mascot - he looks just like our logo! Most active in the mornings and very hard to miss."},
+  {id:9,  name:"Sushi",       img:GITHUB+"sushi.jpg",       full:GITHUB+"sushi.jpg",       tags:["young","cuddly"],           desc:"A slightly plump black-and-white cat, Sushi once lived beside a kopitiam. These days she has traded street life for laps and loves nothing more than resting on a customer."},
+  {id:10, name:"Miso",        img:GITHUB+"miso.jpg",        full:GITHUB+"miso.jpg",        tags:["young","playful"],          desc:"Sister to Shoyu and around 4 years old, Miso is named for the warm tinge in her undercoat. She loves teaser toys and is often found in a game of catch with Toby, Shoyu and Momo."},
+  {id:11, name:"Shoyu",       img:GITHUB+"shoyu.jpg",       full:GITHUB+"shoyu.jpg",       tags:["young","playful","shy"],    desc:"Miso's sister at around 3 years old, Shoyu was rescued from a Tuas factory. Once timid and fearful, she has come a long way and now tolerates light pets and chases the other cats with confidence."},
+  {id:12, name:"Momo",        img:GITHUB+"momo.jpg",        full:GITHUB+"momo.jpg",        tags:["young","playful","cuddly"], desc:"An orange female of around 4, Momo is playful and affectionate. She loves light head pets and can often be found in a game of catch with Toby."},
+  {id:13, name:"Toby",        img:GITHUB+"toby.jpg",        full:GITHUB+"toby.jpg",        tags:["young","playful"],          desc:"The first face you will likely see - Toby greets visitors at the entrance. Around 3 years old with an unusually dense grey coat, he is gentle with children and endlessly playful."}
 ];
 
 var MENU_DEFAULT = [
@@ -601,15 +624,15 @@ var PRICING_DEFAULT = [
 ];
 
 var HOURS_DEFAULT = [
-  {day:"Monday",            open:"15:00", close:"21:00", closed:false},
-  {day:"Tuesday - Friday",   open:"10:00", close:"21:00", closed:false},
+  {day:"Monday",         open:"15:00", close:"21:00", closed:false},
+  {day:"Tuesday - Friday",  open:"10:00", close:"21:00", closed:false},
   {day:"Saturday - Sunday", open:"10:00", close:"22:00", closed:false},
-  {day:"Public holidays",    open:"10:00", close:"22:00", closed:false}
+  {day:"Public holidays",   open:"10:00", close:"22:00", closed:false}
 ];
 
-// Admin data overrides
-var CATS    = (typeof CC_DATA !== "undefined" && CC_DATA.cats)    ? CC_DATA.cats    : CATS_DEFAULT;
-var MENU    = (typeof CC_DATA !== "undefined" && CC_DATA.menu)    ? CC_DATA.menu    : MENU_DEFAULT;
+// Use admin data if available
+var CATS  = (typeof CC_DATA !== "undefined" && CC_DATA.cats)    ? CC_DATA.cats    : CATS_DEFAULT;
+var MENU  = (typeof CC_DATA !== "undefined" && CC_DATA.menu)    ? CC_DATA.menu    : MENU_DEFAULT;
 var PRICING = (typeof CC_DATA !== "undefined" && CC_DATA.pricing) ? CC_DATA.pricing : PRICING_DEFAULT;
 var HOURS   = (typeof CC_DATA !== "undefined" && CC_DATA.hours)   ? CC_DATA.hours   : HOURS_DEFAULT;
 
@@ -659,7 +682,7 @@ function closeCatModal(e) {
 
 function showMenu(cat, btn) {
   document.querySelectorAll(".mtab").forEach(function(b){b.classList.remove("active");});
-  if(btn) btn.classList.add("active");
+  btn.classList.add("active");
   var list = cat === "all" ? MENU : MENU.filter(function(m){return m.cat === cat;});
   document.getElementById("menu-grid").innerHTML = list.map(function(item) {
     return '<div class="menu-item">'
@@ -673,85 +696,173 @@ function showMenu(cat, btn) {
 }
 
 function renderHours() {
-  var display = document.getElementById("hours-display");
-  if(!display) return;
-  display.innerHTML = HOURS.map(function(h) {
-    return '<div class="hour-row"><span class="hour-day">' + h.day + '</span><span class="hour-time">' + (h.closed ? 'Closed' : h.open + ' - ' + h.close) + '</span></div>';
-  }).join("");
+  var col1 = HOURS.slice(0, Math.ceil(HOURS.length/2));
+  var col2 = HOURS.slice(Math.ceil(HOURS.length/2));
+  function fmt(t) {
+    var p = t.split(":"); var h = parseInt(p[0]); var m = p[1];
+    return (h%12||12) + (m!=="00"?":"+m:"") + " " + (h>=12?"pm":"am");
+  }
+  function col(arr) {
+    return "<div>" + arr.map(function(h) {
+      var t = h.closed ? "Closed" : fmt(h.open) + " - " + fmt(h.close);
+      return '<div class="hour-row"><span class="hour-day">' + h.day + '</span><span class="hour-time">' + t + '</span></div>';
+    }).join("") + "</div>";
+  }
+  document.getElementById("hours-display").innerHTML = col(col1) + col(col2);
 }
 
 function renderPricing() {
-  var display = document.getElementById("pricing-display");
-  if(!display) return;
-  display.innerHTML = PRICING.map(function(p) {
-    return '<div class="price-row"><div><div class="price-label">' + p.label + '</div>' + (p.note ? '<div class="price-note">' + p.note + '</div>' : '') + '</div><div class="price-val">' + p.price + '</div></div>';
+  document.getElementById("pricing-display").innerHTML = PRICING.map(function(p) {
+    return '<div class="price-row">'
+      + '<div><div class="price-label">' + p.label + '</div>'
+      + (p.note ? '<div class="price-note">' + p.note + '</div>' : '')
+      + '</div><div class="price-val">' + p.price + '</div></div>';
   }).join("");
 }
 
-/* EVENT GALLERIES SLIDER LOGIC */
-var galleryState = { birthday: 0, proposal: 0, private: 0 };
-
-function gallerySt(name, dir) {
-  var track = document.getElementById("track-" + name);
-  if (!track) return;
-  var totalSlides = track.children.length;
-  galleryState[name] = (galleryState[name] + dir + totalSlides) % totalSlides;
-  track.style.transform = "translateX(-" + (galleryState[name] * 100) + "%)";
-  updateDots(name);
-}
-
-function goToSlide(name, idx) {
-  galleryState[name] = idx;
-  var track = document.getElementById("track-" + name);
-  if (track) track.style.transform = "translateX(-" + (idx * 100) + "%)";
-  updateDots(name);
-}
-
-function updateDots(name) {
-  var dotsContainer = document.getElementById("dots-" + name);
-  var track = document.getElementById("track-" + name);
-  if (!dotsContainer || !track) return;
-  var totalSlides = track.children.length;
-  var html = "";
-  for (var i = 0; i < totalSlides; i++) {
-    html += '<button class="gallery-dot' + (i === galleryState[name] ? ' active' : '') + '" onclick="goToSlide(\'' + name + '\',' + i + ')"></button>';
-  }
-  dotsContainer.innerHTML = html;
-}
-
-/* DONATIONS */
-var donateAmount = 20;
-function setDonate(amt, btn) {
-  donateAmount = amt;
-  document.querySelectorAll('.donate-amt').forEach(function(b){b.classList.remove('selected');});
-  if(btn) btn.classList.add('selected');
-  document.getElementById('donate-amount').value = amt;
-}
-function onDonateInput() {
-  var val = parseFloat(document.getElementById('donate-amount').value);
-  donateAmount = val || 0;
-  document.querySelectorAll('.donate-amt').forEach(function(b){b.classList.remove('selected');});
-}
-function submitDonate() {
-  if(!donateAmount || donateAmount <= 0) {
-    document.getElementById('donate-error').style.display = 'block';
-    document.getElementById('donate-error').textContent = 'Please enter a valid donation amount.';
-    return;
-  }
-  document.getElementById('donate-error').style.display = 'none';
-  document.getElementById('donate-success').style.display = 'block';
-}
-
-/* INITIALIZATION */
-document.addEventListener("DOMContentLoaded", function() {
+async function loadContent() {
+  try {
+    const [cats, menu, settings] = await Promise.all([
+      fetch("/content/cats.json").then(r => r.json()),
+      fetch("/content/menu.json").then(r => r.json()),
+      fetch("/content/settings.json").then(r => r.json())
+    ]);
+    CATS = cats;
+    MENU = menu;
+    if (settings.pricing) PRICING = settings.pricing;
+    if (settings.hours)   HOURS   = settings.hours;
+    if (settings.info && settings.info.booking_url) {
+      document.querySelectorAll("a[href*='inline.app']").forEach(a => { a.href = settings.info.booking_url; });
+    }
+  } catch(e) { console.log("Using default content:", e.message); }
   renderCatCards(CATS);
-  showMenu('topup', document.querySelector('.mtab'));
   renderHours();
   renderPricing();
-  updateDots("birthday");
-  updateDots("proposal");
-  updateDots("private");
-});
+  showMenu("topup", document.querySelector(".mtab"));
+}
+loadContent().then(function(){ initGalleries(); });
+/* ── GALLERY ── */
+var G = {}; // gallery state: { name: currentIndex }
+
+function gallerySt(name, dir) {
+  var track = document.getElementById('track-' + name);
+  if (!track) return;
+  var slides = track.children;
+  var total = slides.length;
+  if (G[name] === undefined) G[name] = 0;
+  G[name] = (G[name] + dir + total) % total;
+  applyGallery(name, track, total);
+}
+
+function galleryGo(name, idx) {
+  var track = document.getElementById('track-' + name);
+  if (!track) return;
+  var total = track.children.length;
+  G[name] = idx;
+  applyGallery(name, track, total);
+}
+
+function applyGallery(name, track, total) {
+  // Shift track by exactly one slide width per step
+  track.style.transform = 'translateX(-' + (G[name] * 100) + '%)';
+  // Update dots
+  var dotsEl = document.getElementById('dots-' + name);
+  if (!dotsEl) return;
+  Array.from(dotsEl.children).forEach(function(d, i) {
+    d.classList.toggle('active', i === G[name]);
+  });
+}
+
+function initGalleries() {
+  ['birthday', 'proposal', 'private'].forEach(function(name) {
+    G[name] = 0;
+    var track = document.getElementById('track-' + name);
+    if (!track) return;
+    var total = track.children.length;
+    // Set each slide to exactly 100% width of viewport
+    Array.from(track.children).forEach(function(slide) {
+      slide.style.minWidth = '100%';
+    });
+    // Build dots
+    var dotsEl = document.getElementById('dots-' + name);
+    if (!dotsEl) return;
+    dotsEl.innerHTML = '';
+    for (var i = 0; i < total; i++) {
+      var dot = document.createElement('button');
+      dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to slide ' + (i+1));
+      (function(idx, n) {
+        dot.onclick = function(e) { e.stopPropagation(); galleryGo(n, idx); };
+      })(i, name);
+      dotsEl.appendChild(dot);
+    }
+  });
+}
+
+
+/* ── DONATE ── */
+var donateAmt = 20;
+
+function setDonate(val, btn) {
+  donateAmt = val;
+  document.getElementById('donate-amount').value = val;
+  document.querySelectorAll('.donate-amt').forEach(function(b) { b.classList.remove('selected'); });
+  if (btn) btn.classList.add('selected');
+  document.getElementById('donate-error').style.display = 'none';
+}
+
+function onDonateInput() {
+  var val = parseFloat(document.getElementById('donate-amount').value);
+  donateAmt = val || 0;
+  document.querySelectorAll('.donate-amt').forEach(function(b) { b.classList.remove('selected'); });
+}
+
+async function submitDonate() {
+  var amount = parseFloat(document.getElementById('donate-amount').value);
+  var errorEl = document.getElementById('donate-error');
+  errorEl.style.display = 'none';
+
+  if (!amount || amount < 1) {
+    errorEl.textContent = 'Please enter a valid donation amount (minimum S$1).';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  var btn = document.getElementById('donate-btn');
+  btn.disabled = true;
+  btn.textContent = 'Processing…';
+
+  try {
+    var res = await fetch('/.netlify/functions/donate-create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount: amount.toFixed(2) })
+    });
+    var data = await res.json();
+    if (data.ok && data.checkout_url) {
+      window.location.href = data.checkout_url;
+    } else {
+      throw new Error(data.error || 'Could not process donation');
+    }
+  } catch(e) {
+    errorEl.textContent = 'Something went wrong: ' + e.message + '. Please try again or contact us.';
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Donate now →';
+  }
+}
+
+// Show success if redirected back
+if (window.location.search.includes('donated=true')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    var s = document.getElementById('donate-success');
+    if (s) {
+      s.style.display = 'block';
+      document.getElementById('donate').scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+}
+
 </script>
 </body>
 </html>
