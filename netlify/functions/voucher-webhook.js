@@ -6,7 +6,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const GITHUB_REPO    = process.env.GITHUB_REPO;
 const GITHUB_TOKEN   = process.env.GITHUB_TOKEN;
 const GITHUB_BRANCH  = process.env.GITHUB_BRANCH || "main";
-const FROM_EMAIL = process.env.RESEND_FROM || "onboarding@resend.dev";
+const FROM_EMAIL = process.env.RESEND_FROM || "info@thecatcafe.sg";
 const SITE_URL       = process.env.URL || "https://thecatcafe-sg.netlify.app";
 
 // ── Generate unique voucher code ──

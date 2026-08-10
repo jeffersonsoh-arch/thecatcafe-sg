@@ -3,7 +3,7 @@ const crypto  = require("crypto");
 
 const HITPAY_SALT  = process.env.HITPAY_SALT;
 const RESEND_KEY   = process.env.RESEND_API_KEY;
-const FROM_EMAIL   = process.env.RESEND_FROM || "onboarding@resend.dev";
+const FROM_EMAIL   = process.env.RESEND_FROM || "info@thecatcafe.sg";
 
 function sendReceipt(to, name, amount, purpose, reference) {
   const html = `<!DOCTYPE html>
