@@ -59,7 +59,7 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { voucher_type, buyer_name, buyer_email, recipient_name, message } = body;
+    const { voucher_type, buyer_name, buyer_email, recipient_name, message, quantity, unit_amount, total_amount } = body;
 
     if (!VOUCHERS[voucher_type]) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid voucher type" }) };
@@ -68,15 +68,20 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "Name and email required" }) };
     }
 
+    // Use dynamic quantity and amounts if provided, otherwise fall back to defaults
+    const qty = quantity || 1;
+    const amt = unit_amount || parseFloat(VOUCHERS[voucher_type].amount);
+    const total = total_amount || (amt * qty);
+    
     const voucher = VOUCHERS[voucher_type];
     const reference = `VC-${voucher_type}-${Date.now()}`;
 
     const result = await hitpayPost({
-      amount:                  voucher.amount,
+      amount:                  total.toFixed(2),
       currency:                "SGD",
       email:                   buyer_email,
       name:                    buyer_name,
-      purpose:                 `${voucher.label} - The Cat Cafe Singapore`,
+      purpose:                 `${voucher.label} (${qty}x S$${amt.toFixed(2)}) - The Cat Cafe Singapore`,
       reference_number:        reference,
       redirect_url:            `${SITE_URL}/voucher-success.html`,
       webhook:                 `${SITE_URL}/.netlify/functions/voucher-webhook`,
