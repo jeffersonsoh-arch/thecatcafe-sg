@@ -3,6 +3,11 @@ const https = require("https");
 const HITPAY_API_KEY = process.env.HITPAY_API_KEY;
 const SITE_URL = process.env.SITE_URL || "https://thecatcafe-sg.netlify.app";
 
+// Use sandbox or live based on env var
+const HITPAY_HOST = process.env.HITPAY_ENV === "live"
+  ? "api.hit-pay.com"
+  : "api.sandbox.hit-pay.com";
+
 const VOUCHERS = {
   "gift-10":  { amount: "10.00", label: "Gift Voucher",  desc: "S$10 gift voucher redeemable at The Cat Cafe Singapore" },
   "entry-22": { amount: "22.00", label: "Entry Ticket",  desc: "Entry ticket (2 hrs) incl. 1 complimentary drink at The Cat Cafe Singapore" }
@@ -12,7 +17,7 @@ function hitpayPost(params) {
   return new Promise((resolve, reject) => {
     const payload = new URLSearchParams(params).toString();
     const options = {
-      hostname: "api.sandbox.hit-pay.com",
+      hostname: HITPAY_HOST,
       path: "/v1/payment-requests",
       method: "POST",
       headers: {
