@@ -232,7 +232,9 @@ exports.handler = async (event) => {
     const typeMatch = ref.match(/^VC-(gift-10|entry-22)-\d+$/);
     const voucherType = typeMatch ? typeMatch[1] : "gift-10";
     const label  = voucherType === "entry-22" ? "Entry Ticket" : "Gift Voucher";
-    const amount = voucherType === "entry-22" ? "22.00" : "10.00";
+    
+    // Use actual paid amount from HitPay instead of hardcoded default
+    const amount = parseFloat(params.amount || 0).toFixed(2);
 
     const code = generateCode();
     const now    = new Date();
