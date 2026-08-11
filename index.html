@@ -200,8 +200,8 @@
   @media(max-width:700px){
 
     .event-block { grid-template-columns:1fr; gap:32px; margin-bottom:56px; padding-bottom:56px; }
-    .event-block-content { order:1 !important; }
-    .event-gallery { order:2 !important; aspect-ratio:16/9; }
+    .event-gallery { order:-1 !important; aspect-ratio:16/9; }
+    .event-block-content { order:unset !important; }
     .event-block-title { font-size:20px; }
     .event-meta-row { flex-direction:row; flex-wrap:wrap; gap:12px; }
     .event-meta-item { flex:1 1 auto; min-width:140px; }
@@ -459,17 +459,6 @@
 
       <!-- BIRTHDAY -->
       <div class="event-block">
-        <div class="event-block-content">
-          <div class="event-tag">Birthday parties</div>
-          <div class="event-block-title">Celebrate your birthday with 13 cats</div>
-          <div class="event-block-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, complete with food, drinks and of course, plenty of cats wandering by. Whether you're 7 or 70, birthdays are always better with cats.</div>
-          <div class="event-meta-row">
-            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Group size</strong><span>Up to 30 pax</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">⏱</span><div><strong>Duration</strong><span>2–3 hours</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-on</strong><span>Art jamming available</span></div></div>
-          </div>
-          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
-        </div>
         <div class="event-gallery">
           <div class="gallery-viewport">
             <div class="gallery-track" id="track-birthday">
@@ -482,20 +471,21 @@
           <button class="gallery-btn gallery-next" onclick="gallerySt('birthday',1)">&#8250;</button>
           <div class="gallery-dots" id="dots-birthday"></div>
         </div>
+        <div class="event-block-content">
+          <div class="event-tag">Birthday parties</div>
+          <div class="event-block-title">Celebrate your birthday with 13 cats</div>
+          <div class="event-block-desc">Make your birthday one to remember. We'll set aside a dedicated space for your group, complete with food, drinks and of course, plenty of cats wandering by. Whether you're 7 or 70, birthdays are always better with cats.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Group size</strong><span>Up to 30 pax</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">⏱</span><div><strong>Duration</strong><span>2–3 hours</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-on</strong><span>Art jamming available</span></div></div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
       </div>
 
       <!-- PROPOSAL -->
       <div class="event-block">
-        <div class="event-block-content">
-          <div class="event-tag">Proposal &amp; solemnisation</div>
-          <div class="event-block-title">Your special day, made even more special</div>
-          <div class="event-block-desc">Looking for somewhere unique and intimate to pop the question or exchange your vows? Our cats have a way of making every moment feel warmer. Whether it's a surprise proposal or a small solemnisation ceremony, we'll help you create a memory that lasts a lifetime.</div>
-          <div class="event-meta-row">
-            <div class="event-meta-item"><span class="event-meta-icon">💍</span><div><strong>Occasions</strong><span>Proposals, weddings &amp; solemnisations</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-ons</strong><span>Decorations, florals &amp; art jamming</span></div></div>
-          </div>
-          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20proposal%20or%20solemnisation%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
-        </div>
         <div class="event-gallery">
           <div class="gallery-viewport">
             <div class="gallery-track" id="track-proposal">
@@ -508,21 +498,20 @@
           <button class="gallery-btn gallery-next" onclick="gallerySt('proposal',1)">&#8250;</button>
           <div class="gallery-dots" id="dots-proposal"></div>
         </div>
+        <div class="event-block-content">
+          <div class="event-tag">Proposal &amp; solemnisation</div>
+          <div class="event-block-title">Your special day, made even more special</div>
+          <div class="event-block-desc">Looking for somewhere unique and intimate to pop the question or exchange your vows? Our cats have a way of making every moment feel warmer. Whether it's a surprise proposal or a small solemnisation ceremony, we'll help you create a memory that lasts a lifetime.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">💍</span><div><strong>Occasions</strong><span>Proposals, weddings &amp; solemnisations</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🎨</span><div><strong>Add-ons</strong><span>Decorations, florals &amp; art jamming</span></div></div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20proposal%20or%20solemnisation%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
+        </div>
       </div>
 
       <!-- PRIVATE HIRE -->
       <div class="event-block">
-        <div class="event-block-content">
-          <div class="event-tag">Private hire</div>
-          <div class="event-block-title">Have something special in mind?</div>
-          <div class="event-block-desc">From video shoots and commercial productions to intimate gatherings and brand activations — if it involves cats, we're in. Tell us what you're dreaming up and we'll work with you to make it happen. The whole cafe is yours.</div>
-          <div class="event-meta-row">
-            <div class="event-meta-item"><span class="event-meta-icon">🎬</span><div><strong>Use cases</strong><span>Shoots, events &amp; activations</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Capacity</strong><span>Up to 40 pax</span></div></div>
-            <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
-          </div>
-          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
-        </div>
         <div class="event-gallery">
           <div class="gallery-viewport">
             <div class="gallery-track" id="track-private">
@@ -534,6 +523,17 @@
           <button class="gallery-btn gallery-prev" onclick="gallerySt('private',-1)">&#8249;</button>
           <button class="gallery-btn gallery-next" onclick="gallerySt('private',1)">&#8250;</button>
           <div class="gallery-dots" id="dots-private"></div>
+        </div>
+        <div class="event-block-content">
+          <div class="event-tag">Private hire</div>
+          <div class="event-block-title">Have something special in mind?</div>
+          <div class="event-block-desc">From video shoots and commercial productions to intimate gatherings and brand activations — if it involves cats, we're in. Tell us what you're dreaming up and we'll work with you to make it happen. The whole cafe is yours.</div>
+          <div class="event-meta-row">
+            <div class="event-meta-item"><span class="event-meta-icon">🎬</span><div><strong>Use cases</strong><span>Shoots, events &amp; activations</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">👥</span><div><strong>Capacity</strong><span>Up to 40 pax</span></div></div>
+            <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
+          </div>
+          <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
       </div>
 
