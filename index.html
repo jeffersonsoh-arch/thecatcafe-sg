@@ -43,8 +43,8 @@
   .nav-links{display:flex;gap:20px;}
   .nav-links a{font-size:13px;color:var(--text-2);}
   .nav-links a:hover{color:var(--text);}
-  .nav-pay-link{background:#1a56db;color:#fff !important;font-weight:600;padding:6px 14px;border-radius:20px;transition:opacity 0.15s;}
-  .nav-pay-link:hover{opacity:0.88;color:#fff !important;}
+  .nav-pay-link{background:#1a56db;color:#fff !important;font-weight:700;padding:8px 20px;border-radius:20px;font-size:13px;letter-spacing:0.03em;box-shadow:0 2px 12px rgba(26,86,219,0.4);transition:all 0.2s;display:inline-flex;align-items:center;gap:5px;}
+  .nav-pay-link:hover{background:#1e40af !important;color:#fff !important;box-shadow:0 4px 18px rgba(26,86,219,0.55);transform:translateY(-2px);}
   .nav-cta{background:var(--rust);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;}
   .nav-cta:hover{opacity:0.88;}
   /* LAYOUT */
@@ -288,6 +288,24 @@
   .voucher-submit { width:100%; background:var(--rust); color:#fff; border:none; padding:13px; border-radius:var(--radius-sm); font-size:15px; font-weight:600; cursor:pointer; margin-top:14px; transition:opacity 0.15s; display:flex; align-items:center; justify-content:center; gap:8px; font-family:inherit; }
   .voucher-submit:hover { opacity:0.88; }
   .voucher-submit:disabled { opacity:0.5; cursor:not-allowed; }
+
+  .voucher-field-label { display:block; font-size:11px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; text-align:left; }
+  .voucher-amount-wrap { margin:12px 0 10px; text-align:left; }
+  .voucher-amount-row { display:flex; align-items:center; border:1.5px solid var(--border); border-radius:var(--radius-sm); overflow:hidden; background:var(--bg); transition:border-color 0.15s; }
+  .voucher-card.selected .voucher-amount-row { border-color:var(--rust); }
+  .voucher-currency { padding:0 10px; font-size:16px; font-weight:600; color:var(--text-3); background:var(--bg-2); border-right:1px solid var(--border); }
+  .voucher-amount-input { border:none; outline:none; font-size:20px; font-weight:700; color:var(--text); padding:8px 10px; width:100%; font-family:inherit; background:transparent; }
+  .voucher-presets { display:flex; gap:5px; margin-top:6px; }
+  .voucher-presets button { flex:1; background:var(--bg-2); border:0.5px solid var(--border); border-radius:var(--radius-sm); padding:4px 0; font-size:11px; font-weight:600; color:var(--text-2); cursor:pointer; transition:all 0.15s; font-family:inherit; }
+  .voucher-presets button:hover { background:var(--rust-pale); border-color:var(--rust); color:var(--rust-dark); }
+  .voucher-qty-wrap { margin:10px 0; }
+  .voucher-qty-row { display:flex; align-items:center; gap:12px; }
+  .voucher-qty-btn { width:32px; height:32px; border-radius:50%; border:1.5px solid var(--border); background:var(--bg); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text); transition:all 0.15s; font-family:inherit; }
+  .voucher-qty-btn:hover { border-color:var(--rust); color:var(--rust); background:var(--rust-pale); }
+  .voucher-card.selected .voucher-qty-btn { border-color:var(--rust); }
+  .voucher-qty { font-size:20px; font-weight:700; color:var(--text); min-width:28px; text-align:center; }
+  .voucher-total { font-size:14px; font-weight:600; color:var(--rust); margin-top:10px; text-align:center; background:var(--rust-pale); padding:6px 12px; border-radius:var(--radius-sm); }
+
   .voucher-note { font-size:12px; color:var(--text-3); text-align:center; margin-top:10px; line-height:1.6; }
 </style>
 </head>
@@ -306,7 +324,7 @@
       <a href="#events">Events</a>
       <a href="#vouchers">Gift vouchers</a>
       <a href="#visit">Visit</a>
-      <a href="pay.html" target="_blank">Pay</a>
+      <a href="pay.html" target="_blank" class="nav-pay-link">&#x1F4B3;&nbsp;Pay</a>
     </div>
     <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
   </div>
@@ -549,19 +567,52 @@
     <div class="section-sub">Purchase a gift voucher or entry ticket online. A beautifully designed voucher with a unique code will be emailed instantly after payment.</div>
 
     <div class="voucher-grid">
+
+      <!-- GIFT VOUCHER -->
       <div class="voucher-card" id="vc-gift-10" onclick="selectVoucher('gift-10')">
         <div class="voucher-emoji">🎁</div>
         <div class="voucher-name">Gift Voucher</div>
-        <div class="voucher-desc">S$10 credit redeemable on any visit. Perfect as a gift for cat lovers.</div>
-        <div class="voucher-price"><span>S$</span>10</div>
+        <div class="voucher-desc">Credit redeemable on any visit. Perfect as a gift for cat lovers.</div>
+        <div class="voucher-amount-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Amount (S$)</label>
+          <div class="voucher-amount-row">
+            <span class="voucher-currency">S$</span>
+            <input type="number" id="gift-amount" class="voucher-amount-input" value="10" min="1" step="1" oninput="updateVoucherTotal('gift-10')" onclick="selectVoucher('gift-10')">
+          </div>
+          <div class="voucher-presets">
+            <button onclick="setGiftAmount(10)">S$10</button>
+            <button onclick="setGiftAmount(20)">S$20</button>
+            <button onclick="setGiftAmount(50)">S$50</button>
+          </div>
+        </div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Quantity</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('gift-10',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-gift-10">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('gift-10',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-gift-10">Total: S$10</div>
       </div>
+
+      <!-- ENTRY TICKET -->
       <div class="voucher-card" id="vc-entry-22" onclick="selectVoucher('entry-22')">
         <div class="voucher-popular">Most popular</div>
         <div class="voucher-emoji">🐱</div>
         <div class="voucher-name">Entry Ticket</div>
-        <div class="voucher-desc">Full 2-hour entry with 1 complimentary drink. Skip the queue, book ahead.</div>
-        <div class="voucher-price"><span>S$</span>22</div>
+        <div class="voucher-desc">2-hour entry with 1 complimentary drink. S$22 per person.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('entry-22',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-entry-22">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('entry-22',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-entry-22">Total: S$22</div>
       </div>
+
     </div>
 
     <div class="voucher-form" id="voucher-form">
@@ -586,7 +637,7 @@
           </div>
         </div>
         <button class="voucher-submit" id="voucher-submit-btn" onclick="purchaseVoucher()">
-          <span id="voucher-btn-text">Pay with HitPay &rarr;</span>
+          <span id="voucher-btn-text">Pay S$22 with HitPay &rarr;</span>
         </button>
         <div class="voucher-note">
           Accepts PayNow, PayLah!, credit/debit cards &amp; NETS &middot; Secured by HitPay &middot; Valid 12 months
@@ -947,15 +998,55 @@ if (window.location.search.includes('donated=true')) {
 
 /* ── VOUCHERS ── */
 var selectedVoucher = null;
+var voucherQty = { "gift-10": 1, "entry-22": 1 };
+var giftAmount = 10;
 
 function selectVoucher(type) {
   selectedVoucher = type;
   document.querySelectorAll(".voucher-card").forEach(function(c) { c.classList.remove("selected"); });
   document.getElementById("vc-" + type).classList.add("selected");
-  var labels = { "gift-10":"Gift Voucher — S$10", "entry-22":"Entry Ticket — S$22" };
+  var total = getVoucherTotal(type);
+  var labels = { "gift-10": "Gift Voucher", "entry-22": "Entry Ticket" };
   document.getElementById("voucher-form-title").textContent = "Purchase: " + labels[type];
   document.getElementById("voucher-form-fields").style.display = "block";
-  document.getElementById("voucher-form").scrollIntoView({ behavior:"smooth", block:"nearest" });
+  document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
+  document.getElementById("voucher-form").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function getVoucherTotal(type) {
+  if (type === "gift-10") {
+    var amt = parseFloat(document.getElementById("gift-amount").value) || 10;
+    return amt * (voucherQty["gift-10"] || 1);
+  }
+  return 22 * (voucherQty["entry-22"] || 1);
+}
+
+function changeQty(type, dir) {
+  voucherQty[type] = Math.max(1, Math.min(20, (voucherQty[type] || 1) + dir));
+  document.getElementById("qty-" + type).textContent = voucherQty[type];
+  updateVoucherTotal(type);
+  if (selectedVoucher === type) {
+    var total = getVoucherTotal(type);
+    document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
+  }
+}
+
+function setGiftAmount(val) {
+  document.getElementById("gift-amount").value = val;
+  giftAmount = val;
+  updateVoucherTotal("gift-10");
+  selectVoucher("gift-10");
+}
+
+function updateVoucherTotal(type) {
+  var total = getVoucherTotal(type);
+  var label = type === "entry-22"
+    ? voucherQty[type] + " ticket" + (voucherQty[type] > 1 ? "s" : "") + " × S$22"
+    : voucherQty[type] + " voucher" + (voucherQty[type] > 1 ? "s" : "") + " × S$" + (parseFloat(document.getElementById("gift-amount").value) || 10);
+  document.getElementById("total-" + type).textContent = "Total: S$" + total.toFixed(0) + " — " + label;
+  if (selectedVoucher === type) {
+    document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
+  }
 }
 
 async function purchaseVoucher() {
@@ -964,6 +1055,12 @@ async function purchaseVoucher() {
   var buyerEmail = document.getElementById("vf-buyer-email").value.trim();
   if (!buyerName || !buyerEmail) { alert("Please enter your name and email."); return; }
   if (!/^[^@]+@[^@]+\.[^@]+$/.test(buyerEmail)) { alert("Please enter a valid email address."); return; }
+
+  var qty   = voucherQty[selectedVoucher] || 1;
+  var total = getVoucherTotal(selectedVoucher);
+  var unitAmt = selectedVoucher === "gift-10"
+    ? (parseFloat(document.getElementById("gift-amount").value) || 10)
+    : 22;
 
   var btn = document.getElementById("voucher-submit-btn");
   btn.disabled = true;
@@ -975,6 +1072,9 @@ async function purchaseVoucher() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         voucher_type:   selectedVoucher,
+        quantity:       qty,
+        unit_amount:    unitAmt,
+        total_amount:   total,
         buyer_name:     buyerName,
         buyer_email:    buyerEmail,
         recipient_name: document.getElementById("vf-recipient").value.trim() || buyerName,
@@ -990,7 +1090,7 @@ async function purchaseVoucher() {
   } catch(e) {
     alert("Something went wrong: " + e.message + "\nPlease try again or WhatsApp us at 8080 8719.");
     btn.disabled = false;
-    document.getElementById("voucher-btn-text").textContent = "Pay with HitPay →";
+    document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
   }
 }
 
