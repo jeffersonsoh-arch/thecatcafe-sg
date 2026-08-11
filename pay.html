@@ -256,12 +256,6 @@ function showError(msg) {
   el.style.display = "block";
   el.scrollIntoView({ behavior:"smooth", block:"nearest" });
 }
-
-// Show success if redirected back
-if (window.location.search.includes("status=success") || window.location.hash === "#success") {
-  document.getElementById("payment-card").style.display = "none";
-  document.getElementById("success-card").style.display = "block";
-}
 </script>
 </body>
 </html>
