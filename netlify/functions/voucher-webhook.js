@@ -233,8 +233,13 @@ exports.handler = async (event) => {
     const voucherType = typeMatch ? typeMatch[1] : "gift-10";
     const label  = voucherType === "entry-22" ? "Entry Ticket" : "Gift Voucher";
     
-    // Use actual paid amount from HitPay instead of hardcoded default
-    const amount = parseFloat(params.amount || 0).toFixed(2);
+    // Use actual paid amount from HitPay - check payments array first for accurate total
+    let amount;
+    if (params.payments && params.payments.length > 0 && params.payments[0].amount) {
+      amount = parseFloat(params.payments[0].amount).toFixed(2);
+    } else {
+      amount = parseFloat(params.amount || 0).toFixed(2);
+    }
 
     const code = generateCode();
     const now    = new Date();
