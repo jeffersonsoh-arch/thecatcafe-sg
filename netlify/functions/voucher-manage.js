@@ -94,7 +94,15 @@ exports.handler = async (event) => {
 
   const authHeader = event.headers.authorization || event.headers.Authorization || "";
   if (!authHeader.startsWith("Bearer ")) {
-    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized" }) };
+    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized - Missing token" }) };
+  }
+
+  const token = authHeader.slice(7);
+  const { verifyNetlifyToken } = require("./lib/auth");
+  const authResult = await verifyNetlifyToken(token);
+  
+  if (!authResult.valid) {
+    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized - Invalid token: " + authResult.error }) };
   }
 
   try {

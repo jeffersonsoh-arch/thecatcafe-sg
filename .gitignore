@@ -13,6 +13,12 @@ node_modules/
 
 # Editors
 .vscode/
+.idea/
+
+# Build artifacts
+dist/
+build/
+target/
 
 # Python
 __pycache__/
@@ -23,9 +29,6 @@ __pycache__/
 env/
 venv/
 .venv/
-pip-log.txt
-pip-selfcheck.json
-*.so
-.DS_Store
-Thumbs.db
+.ENV
+.ENV.*
 ```
