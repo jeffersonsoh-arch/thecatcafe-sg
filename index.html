@@ -35,18 +35,16 @@
   .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
   @media(max-width:700px){
     .nav-inner{justify-content:space-between;}
-    .nav-links{display:none;}
-    .nav-mobile-cta{display:flex;gap:8px;align-items:center;}
-    .nav-desktop-only{display:none;}
+    .nav-links{display:none !important;}
+    .nav-mobile-cta{display:flex !important;gap:8px;align-items:center;}
+    .nav-desktop-only{display:none !important;}
   }
   .nav-mobile-cta{display:none;}
   .nav-logo{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-link{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
   .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
-  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
   .nav-logo-text span{color:var(--rust);}
-  .nav-logo span{color:var(--rust);}
   .nav-links{display:flex;gap:20px;}
   .nav-links a{font-size:13px;color:var(--text-2);}
   .nav-links a:hover{color:var(--text);}
@@ -339,8 +337,10 @@
       <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
       <a class="nav-cta" id="book-link-mobile" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
     </div>
-    <a href="pay.html" target="_blank" class="nav-pay-link nav-desktop-only">Pay</a>
-    <a class="nav-cta nav-desktop-only" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+    <div class="nav-desktop-only" style="display:flex;gap:12px;align-items:center;">
+      <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
+      <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+    </div>
   </div>
 </nav>
 
