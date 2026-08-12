@@ -1,0 +1,8 @@
+{
+  "name": "thecatcafe-sg",
+  "version": "1.0.0",
+  "description": "The Cat Cafe Singapore – website and CMS",
+  "dependencies": {
+    "pdfkit": "^0.15.0"
+  }
+}

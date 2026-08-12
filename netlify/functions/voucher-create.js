@@ -80,7 +80,7 @@ exports.handler = async (event) => {
     const total = total_amount || (amt * qty);
     
     const voucher = VOUCHERS[voucher_type];
-    const reference = `VC-${voucher_type}-${Date.now()}`;
+    const reference = `VC-${voucher_type}-qty${qty}-${Date.now()}`;
 
     const result = await hitpayPost({
       amount:                  total.toFixed(2),
