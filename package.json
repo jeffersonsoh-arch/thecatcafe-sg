@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "The Cat Cafe Singapore – website and CMS",
   "dependencies": {
-    "pdfkit": "^0.15.0"
+    "pdfkit": "^0.15.0",
+    "qrcode": "^1.5.3"
   }
 }

@@ -1,6 +1,7 @@
 const https = require("https");
 const crypto = require("crypto");
 const PDFDocument = require("pdfkit");
+const QRCode = require("qrcode");
 
 const HITPAY_SALT    = process.env.HITPAY_SALT;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -79,8 +80,26 @@ function generateCode() {
   return code;
 }
 
-// ── Generate a styled PDF ticket for one code ──
-function generateTicketPDF(code, voucherType, recipientName, expiry) {
+// ── Generate QR Code Buffer for PDF ──
+async function generateQRCodeBuffer(url) {
+  return await QRCode.toBuffer(url, {
+    margin: 1,
+    width: 250,
+    color: { dark: "#1a1a1a", light: "#ffffff" }
+  });
+}
+
+// ── Generate QR Code Data URL for HTML Email ──
+async function generateQRCodeDataURL(url) {
+  return await QRCode.toDataURL(url, {
+    margin: 1,
+    width: 200,
+    color: { dark: "#1a1a1a", light: "#ffffff" }
+  });
+}
+
+// ── Generate a styled PDF ticket with embedded QR Code ──
+function generateTicketPDF(code, voucherType, recipientName, expiry, qrBuffer) {
   return new Promise((resolve, reject) => {
     try {
       const def = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
@@ -109,7 +128,7 @@ function generateTicketPDF(code, voucherType, recipientName, expiry) {
       // ── HEADER (0 → 130) ──
       doc.rect(0, 0, W, 130).fill(accent);
 
-      // Subtle decorative circle
+      // Decorative circle
       doc.save();
       doc.opacity(0.12);
       doc.roundedRect(W - 90, -10, 120, 100, 50).fill("#ffffff");
@@ -146,8 +165,8 @@ function generateTicketPDF(code, voucherType, recipientName, expiry) {
          .fillColor("#ffffff")
          .text(`${def.ribbonLabel} TIER`, 0, 111, { align: "center", width: W, characterSpacing: 2.5 });
 
-      // ── BODY (130 → footer) ──
-      const footerH = 92;
+      // ── BODY ──
+      const footerH = 80;
       const bodyStart = 130;
       const bodyEnd = H - footerH;
 
@@ -155,88 +174,101 @@ function generateTicketPDF(code, voucherType, recipientName, expiry) {
 
       // Greeting
       doc.font("Helvetica-Bold")
-         .fontSize(10.5)
+         .fontSize(10)
          .fillColor("#333333")
-         .text(`Dear ${recipientName},`, pad, bodyStart + 16);
+         .text(`Dear ${recipientName},`, pad, bodyStart + 14);
 
       doc.font("Helvetica")
-         .fontSize(9)
-         .fillColor("#999999")
-         .text("Your entrance ticket is confirmed. Present the code below on arrival.", pad, bodyStart + 32, { width: W - pad * 2 });
+         .fontSize(8.5)
+         .fillColor("#888888")
+         .text("Present this ticket or scan the QR code below on arrival.", pad, bodyStart + 28, { width: W - pad * 2 });
 
       // Perks box
-      const perksBoxY = bodyStart + 60;
-      const perksLineH = 17;
-      const perksBoxH = 28 + def.perks.length * perksLineH + 10;
+      const perksBoxY = bodyStart + 46;
+      const perksLineH = 15;
+      const perksBoxH = 22 + def.perks.length * perksLineH + 6;
 
       doc.roundedRect(pad, perksBoxY, W - pad * 2, perksBoxH, 5).fill(accentLight);
 
       doc.font("Helvetica-Bold")
-         .fontSize(7.5)
+         .fontSize(7)
          .fillColor(accent)
-         .text("WHAT'S INCLUDED", pad + 14, perksBoxY + 10, { characterSpacing: 1.5 });
+         .text("WHAT'S INCLUDED", pad + 12, perksBoxY + 8, { characterSpacing: 1.5 });
 
       def.perks.forEach((perk, i) => {
-        const py = perksBoxY + 26 + i * perksLineH;
+        const py = perksBoxY + 22 + i * perksLineH;
         doc.font("Helvetica")
-           .fontSize(9.5)
+           .fontSize(9)
            .fillColor("#333333")
-           .text(`\u2022  ${perk.text}`, pad + 14, py, { width: W - pad * 2 - 28 });
+           .text(`\u2022  ${perk.text}`, pad + 12, py, { width: W - pad * 2 - 24 });
       });
 
-      // Voucher code section
-      const codeSectionY = perksBoxY + perksBoxH + 18;
+      // Voucher Code & QR Code Box
+      const codeSectionY = perksBoxY + perksBoxH + 14;
 
       doc.font("Helvetica-Bold")
          .fontSize(7.5)
          .fillColor("#bbbbbb")
-         .text("YOUR VOUCHER CODE", 0, codeSectionY, { align: "center", width: W, characterSpacing: 2 });
+         .text("VOUCHER CODE & SCANNABLE QR", 0, codeSectionY, { align: "center", width: W, characterSpacing: 1.5 });
 
-      // Dashed code box
-      doc.roundedRect(pad, codeSectionY + 14, W - pad * 2, 48, 5)
+      // Dashed code box container
+      const boxH = 104;
+      doc.roundedRect(pad, codeSectionY + 12, W - pad * 2, boxH, 6)
          .strokeColor(accent)
          .lineWidth(1.5)
          .dash(4, { space: 3 })
          .stroke();
 
-      doc.font("Courier-Bold")
-         .fontSize(21)
-         .fillColor("#1a1a1a")
-         .text(code, 0, codeSectionY + 24, { align: "center", width: W });
+      // Render Code text on Left, QR Code on Right
+      doc.undash();
 
-      // Expiry
-      doc.undash()
-         .font("Helvetica")
+      // Code string
+      doc.font("Courier-Bold")
+         .fontSize(17)
+         .fillColor("#1a1a1a")
+         .text(code, pad + 14, codeSectionY + 34, { width: W - pad * 2 - 120 });
+
+      doc.font("Helvetica")
          .fontSize(8)
-         .fillColor("#aaaaaa")
-         .text(`Valid until ${expiry}  \u2022  One use only  \u2022  Non-transferable`, 0, codeSectionY + 70, { align: "center", width: W });
+         .fillColor("#888888")
+         .text(`Valid until ${expiry}`, pad + 14, codeSectionY + 62);
+
+      doc.font("Helvetica-Oblique")
+         .fontSize(7.5)
+         .fillColor(accent)
+         .text("One-time scan redemption", pad + 14, codeSectionY + 76);
+
+      // Embed QR Code image on right side of dashed box
+      if (qrBuffer) {
+        doc.image(qrBuffer, W - pad - 92, codeSectionY + 18, { width: 80, height: 80 });
+      }
 
       // Divider
-      const sepY = codeSectionY + 86;
+      const sepY = codeSectionY + boxH + 16;
       doc.moveTo(pad, sepY).lineTo(W - pad, sepY).strokeColor("#eeeeee").lineWidth(0.5).stroke();
 
-      // Redemption note
+      // Redemption instructions
       doc.font("Helvetica")
-         .fontSize(8.5)
-         .fillColor("#999999")
-         .text("Show this ticket at 241B Victoria Street, Level 3, Bugis (near Bugis MRT).", pad, sepY + 10, { width: W - pad * 2, align: "center" });
+         .fontSize(8)
+         .fillColor("#888888")
+         .text("Show code or let staff scan QR code at 241B Victoria Street, Level 3, Bugis.", pad, sepY + 8, { width: W - pad * 2, align: "center" });
 
       // ── FOOTER ──
       doc.rect(0, H - footerH, W, footerH).fill("#1a1a1a");
 
       doc.font("Helvetica-Bold")
-         .fontSize(9)
+         .fontSize(8.5)
          .fillColor("#ffffff")
-         .text("The Cat Cafe Singapore", 0, H - footerH + 14, { align: "center", width: W });
+         .text("The Cat Cafe Singapore", 0, H - footerH + 12, { align: "center", width: W });
 
       doc.font("Helvetica")
          .fontSize(7.5)
          .fillColor("#888888")
-         .text("241B Victoria Street, Level 3, Singapore 188030", 0, H - footerH + 30, { align: "center", width: W });
+         .text("241B Victoria Street, Level 3, Singapore 188030", 0, H - footerH + 26, { align: "center", width: W });
 
-      doc.text("+65 6338 6815  \u2022  info@thecatcafe.sg", 0, H - footerH + 44, { align: "center", width: W });
+      doc.text("+65 6338 6815  \u2022  info@thecatcafe.sg", 0, H - footerH + 40, { align: "center", width: W });
 
-      doc.text("thecatcafe.sg  \u2022  @sgcatcafe", 0, H - footerH + 58, { align: "center", width: W });
+      doc.text("thecatcafe.sg  \u2022  @sgcatcafe", 0, H - footerH + 54, { align: "center", width: W });
 
       doc.end();
 
@@ -247,33 +279,24 @@ function generateTicketPDF(code, voucherType, recipientName, expiry) {
 }
 
 // ── Build Standard tier email ──
-function buildStandardEmail(codes, def, recipientName, buyerName, expiry, message) {
+function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
   const isGift = buyerName !== recipientName;
-  const isMulti = codes.length > 1;
+  const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
-      <td style="padding:6px 0;font-size:20px;width:32px;text-align:center;">&#x2022;</td>
-      <td style="padding:6px 0 6px 10px;font-size:14px;color:#2d2d2d;font-weight:500;">${p.text}</td>
+      <td style="padding:6px 0;font-size:18px;width:28px;text-align:center;color:${accentColor};">&#x2713;</td>
+      <td style="padding:6px 0 6px 8px;font-size:14px;color:#2d2d2d;font-weight:500;">${p.text}</td>
     </tr>`
   ).join("");
 
-  const codeSection = isMulti
-    ? `<div style="margin-bottom:24px;">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:12px;">Your Voucher Codes (${codes.length} tickets)</div>
-        ${codes.map((c, i) => `
-          <div style="background:${accentLight};border:1.5px dashed ${accentColor};border-radius:8px;padding:12px 20px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:11px;color:#999;">Ticket ${i + 1}</span>
-            <span style="font-size:20px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;">${c}</span>
-          </div>`).join("")}
-        <div style="font-size:12px;color:#999;margin-top:8px;text-align:center;">&#128206; Your individual PDF tickets are attached to this email.</div>
-      </div>`
-    : `<div style="background:${accentLight};border:2px solid ${accentColor};border-radius:12px;padding:24px;text-align:center;margin-bottom:24px;">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:10px;">Your Voucher Code</div>
-        <div style="font-size:28px;font-weight:800;letter-spacing:0.2em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:12px 24px;border-radius:8px;border:2px dashed ${accentColor};display:inline-block;">${codes[0]}</div>
-        <div style="margin-top:12px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
-        <div style="font-size:11px;color:#bbb;margin-top:6px;">&#128206; Your PDF ticket is also attached to this email.</div>
-      </div>`;
+  const codeSection = tickets.map((t, i) => `
+    <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
+      ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
+      <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
+      ${t.qrDataURL ? `<div style="margin:8px 0;"><img src="${t.qrDataURL}" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>` : ""}
+      <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
+    </div>`).join("");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -284,8 +307,6 @@ function buildStandardEmail(codes, def, recipientName, buyerName, expiry, messag
 <div style="max-width:580px;margin:0 auto;">
 
   <div style="background:${headerBg};border-radius:16px 16px 0 0;padding:20px 40px 20px;text-align:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
-    <div style="position:absolute;bottom:-40px;left:-20px;width:90px;height:90px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
     <div style="font-size:12px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.75);text-transform:uppercase;margin-bottom:8px;">The Cat Cafe Singapore</div>
     <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">Standard Entrance</div>
     <div style="font-size:13px;color:rgba(255,255,255,0.8);">${def.tagline}</div>
@@ -294,7 +315,7 @@ function buildStandardEmail(codes, def, recipientName, buyerName, expiry, messag
   <div style="background:#ffffff;padding:24px 40px;">
     <div style="font-size:15px;color:#444;margin-bottom:${message ? '18px' : '24px'};">
       Dear <strong style="color:#1a1a1a;">${recipientName}</strong>,<br>
-      ${isGift ? `<em>${buyerName}</em> has gifted you a wonderful cat café experience! &#127873;` : `Your cat café visit is all set – we can't wait to see you! &#128062;`}
+      ${isGift ? `<em>${buyerName}</em> has gifted you a wonderful cat café experience! 🎁` : `Your cat café visit is all set – we can't wait to see you! 🐾`}
     </div>
 
     ${message ? `<div style="background:${accentLight};border-left:4px solid ${accentColor};border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:#333;line-height:1.6;font-style:italic;">"${message}"</div>` : ""}
@@ -311,8 +332,8 @@ function buildStandardEmail(codes, def, recipientName, buyerName, expiry, messag
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or your voucher code to our staff on arrival<br>
-      3. Our team will verify and mark your ticket as redeemed
+      2. Show this email or let staff scan your QR code on arrival<br>
+      3. Staff will instantly verify and mark your ticket as redeemed
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -338,33 +359,24 @@ function buildStandardEmail(codes, def, recipientName, buyerName, expiry, messag
 }
 
 // ── Build Premium tier email ──
-function buildPremiumEmail(codes, def, recipientName, buyerName, expiry, message) {
+function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
   const isGift = buyerName !== recipientName;
-  const isMulti = codes.length > 1;
+  const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
-      <td style="padding:7px 0;font-size:18px;width:32px;text-align:center;">&#x2022;</td>
-      <td style="padding:7px 0 7px 10px;font-size:14px;color:#2d2d2d;font-weight:500;">${p.text}</td>
+      <td style="padding:7px 0;font-size:18px;width:28px;text-align:center;color:${accentColor};">&#x2713;</td>
+      <td style="padding:7px 0 7px 8px;font-size:14px;color:#2d2d2d;font-weight:500;">${p.text}</td>
     </tr>`
   ).join("");
 
-  const codeSection = isMulti
-    ? `<div style="margin-bottom:24px;">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:12px;">Your Voucher Codes (${codes.length} tickets)</div>
-        ${codes.map((c, i) => `
-          <div style="background:${accentLight};border:1.5px dashed ${accentColor};border-radius:8px;padding:12px 20px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:11px;color:#999;">Ticket ${i + 1}</span>
-            <span style="font-size:20px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;">${c}</span>
-          </div>`).join("")}
-        <div style="font-size:12px;color:#999;margin-top:8px;text-align:center;">&#128206; Your individual PDF tickets are attached to this email.</div>
-      </div>`
-    : `<div style="background:${accentLight};border:2px solid ${accentColor};border-radius:12px;padding:24px;text-align:center;margin-bottom:24px;">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:10px;">Your Voucher Code</div>
-        <div style="font-size:28px;font-weight:800;letter-spacing:0.2em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:12px 24px;border-radius:8px;border:2px dashed ${accentColor};display:inline-block;">${codes[0]}</div>
-        <div style="margin-top:12px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
-        <div style="font-size:11px;color:#bbb;margin-top:6px;">&#128206; Your PDF ticket is also attached to this email.</div>
-      </div>`;
+  const codeSection = tickets.map((t, i) => `
+    <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
+      ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
+      <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
+      ${t.qrDataURL ? `<div style="margin:8px 0;"><img src="${t.qrDataURL}" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>` : ""}
+      <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
+    </div>`).join("");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -375,11 +387,8 @@ function buildPremiumEmail(codes, def, recipientName, buyerName, expiry, message
 <div style="max-width:580px;margin:0 auto;">
 
   <div style="background:${headerBg};border-radius:16px 16px 0 0;padding:20px 40px 20px;text-align:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,0.1);border-radius:50%;"></div>
-    <div style="position:absolute;top:20px;right:40px;width:50px;height:50px;background:rgba(255,255,255,0.07);border-radius:50%;"></div>
-    <div style="position:absolute;bottom:-30px;left:-15px;width:80px;height:80px;background:rgba(255,255,255,0.07);border-radius:50%;"></div>
     <div style="font-size:12px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.75);text-transform:uppercase;margin-bottom:8px;">The Cat Cafe Singapore</div>
-    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">Premium Entrance &#10024;</div>
+    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">Premium Entrance ✨</div>
     <div style="font-size:13px;color:rgba(255,255,255,0.85);">${def.tagline}</div>
   </div>
 
@@ -388,20 +397,20 @@ function buildPremiumEmail(codes, def, recipientName, buyerName, expiry, message
   <div style="background:#fff;padding:24px 40px;">
     <div style="font-size:15px;color:#444;margin-bottom:${message ? '18px' : '24px'};">
       Dear <strong style="color:#1a1a1a;">${recipientName}</strong>,<br>
-      ${isGift ? `<em>${buyerName}</em> has sent you a premium cat café gift – how special! &#127873;` : `Your premium cat café experience awaits — you deserve it! &#10024;`}
+      ${isGift ? `<em>${buyerName}</em> has sent you a premium cat café gift – how special! 🎁` : `Your premium cat café experience awaits — you deserve it! ✨`}
     </div>
 
     ${message ? `<div style="background:${accentLight};border-left:4px solid ${accentColor};border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:#333;line-height:1.6;font-style:italic;">"${message}"</div>` : ""}
 
     <div style="background:${badgeGradient};border-radius:8px;padding:5px 12px;display:inline-block;margin-bottom:20px;">
-      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">&#10024; ${def.ribbonLabel} TIER</span>
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">✨ ${def.ribbonLabel} TIER</span>
     </div>
 
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:10px;">Your Premium Inclusions</div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">${perksHTML}</table>
 
     <div style="background:linear-gradient(135deg,#fef3e2,#fde8c0);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:#8a5a00;">
-      <span style="font-size:18px;margin-right:10px;">&#11088;</span>
+      <span style="font-size:18px;margin-right:10px;">⭐</span>
       <span>Choose your drink and dessert when you arrive!</span>
     </div>
 
@@ -410,7 +419,7 @@ function buildPremiumEmail(codes, def, recipientName, buyerName, expiry, message
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or your voucher code to our staff on arrival<br>
+      2. Show this email or let staff scan your QR code on arrival<br>
       3. Choose your premium drink and dessert from our menu<br>
       4. Enjoy your time with our wonderful cats!
     </div>
@@ -438,33 +447,24 @@ function buildPremiumEmail(codes, def, recipientName, buyerName, expiry, message
 }
 
 // ── Build Ultimate tier email ──
-function buildUltimateEmail(codes, def, recipientName, buyerName, expiry, message) {
+function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
   const isGift = buyerName !== recipientName;
-  const isMulti = codes.length > 1;
+  const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
-      <td style="padding:8px 0;font-size:18px;width:32px;text-align:center;">&#x2022;</td>
-      <td style="padding:8px 0 8px 10px;font-size:14px;color:#2d2d2d;font-weight:600;">${p.text}</td>
+      <td style="padding:8px 0;font-size:18px;width:28px;text-align:center;color:${accentColor};">&#x2713;</td>
+      <td style="padding:8px 0 8px 8px;font-size:14px;color:#2d2d2d;font-weight:600;">${p.text}</td>
     </tr>`
   ).join("");
 
-  const codeSection = isMulti
-    ? `<div style="margin-bottom:24px;">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:12px;">Your Voucher Codes (${codes.length} tickets)</div>
-        ${codes.map((c, i) => `
-          <div style="background:${accentLight};border:1.5px dashed ${accentColor};border-radius:8px;padding:12px 20px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:11px;color:#999;">Ticket ${i + 1}</span>
-            <span style="font-size:20px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;">${c}</span>
-          </div>`).join("")}
-        <div style="font-size:12px;color:#999;margin-top:8px;text-align:center;">&#128206; Your individual PDF tickets are attached to this email.</div>
-      </div>`
-    : `<div style="background:${accentLight};border:2px solid ${accentColor};border-radius:12px;padding:24px;text-align:center;margin-bottom:24px;box-shadow:0 4px 20px rgba(123,79,191,0.1);">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:10px;">&#128081; Your Voucher Code</div>
-        <div style="font-size:28px;font-weight:800;letter-spacing:0.2em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:12px 24px;border-radius:8px;border:2px dashed ${accentColor};display:inline-block;">${codes[0]}</div>
-        <div style="margin-top:12px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
-        <div style="font-size:11px;color:#bbb;margin-top:6px;">&#128206; Your PDF ticket is also attached to this email.</div>
-      </div>`;
+  const codeSection = tickets.map((t, i) => `
+    <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
+      ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">👑 Your Voucher Code</div>`}
+      <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
+      ${t.qrDataURL ? `<div style="margin:8px 0;"><img src="${t.qrDataURL}" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>` : ""}
+      <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
+    </div>`).join("");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -475,11 +475,8 @@ function buildUltimateEmail(codes, def, recipientName, buyerName, expiry, messag
 <div style="max-width:580px;margin:0 auto;">
 
   <div style="background:${headerBg};border-radius:16px 16px 0 0;padding:20px 40px 20px;text-align:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:rgba(255,255,255,0.09);border-radius:50%;"></div>
-    <div style="position:absolute;top:30px;right:60px;width:60px;height:60px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
-    <div style="position:absolute;bottom:-50px;left:-25px;width:110px;height:110px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
     <div style="font-size:12px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-bottom:8px;">The Cat Cafe Singapore</div>
-    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">Ultimate Entrance &#128081;</div>
+    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">Ultimate Entrance 👑</div>
     <div style="font-size:13px;color:rgba(255,255,255,0.85);font-style:italic;">${def.tagline}</div>
   </div>
 
@@ -488,20 +485,20 @@ function buildUltimateEmail(codes, def, recipientName, buyerName, expiry, messag
   <div style="background:#fff;padding:24px 40px;">
     <div style="font-size:15px;color:#444;margin-bottom:${message ? '18px' : '24px'};">
       Dear <strong style="color:#1a1a1a;">${recipientName}</strong>,<br>
-      ${isGift ? `<em>${buyerName}</em> has gifted you the ultimate cat café experience! &#128081;` : `You've chosen the very best — the full Ultimate experience is all yours! &#127881;`}
+      ${isGift ? `<em>${buyerName}</em> has gifted you the ultimate cat café experience! 👑` : `You've chosen the very best — the full Ultimate experience is all yours! 🎉`}
     </div>
 
     ${message ? `<div style="background:${accentLight};border-left:4px solid ${accentColor};border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:#333;line-height:1.6;font-style:italic;">"${message}"</div>` : ""}
 
     <div style="background:${badgeGradient};border-radius:8px;padding:5px 12px;display:inline-block;margin-bottom:20px;box-shadow:0 4px 14px rgba(123,79,191,0.35);">
-      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">&#128081; ${def.ribbonLabel} TIER</span>
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">👑 ${def.ribbonLabel} TIER</span>
     </div>
 
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:10px;">Everything That's Included</div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:18px;">${perksHTML}</table>
 
     <div style="background:linear-gradient(135deg,#f4eefb,#ead6f7);border-radius:10px;padding:16px 18px;margin-bottom:24px;font-size:13px;color:#5a2d8a;line-height:1.7;border:1px solid #d8b4fe;">
-      <strong>&#128081; The Full Experience:</strong> Arrive, settle in, choose your premium drink, pick your dessert, and enjoy a satisfying main course — all while our cats keep you company.
+      <strong>👑 The Full Experience:</strong> Arrive, settle in, choose your premium drink, pick your dessert, and enjoy a satisfying main course — all while our cats keep you company.
     </div>
 
     ${codeSection}
@@ -509,7 +506,7 @@ function buildUltimateEmail(codes, def, recipientName, buyerName, expiry, messag
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or your voucher code to our staff on arrival<br>
+      2. Show this email or let staff scan your QR code on arrival<br>
       3. Choose your premium drink, dessert, and main course from our menu<br>
       4. Sit back, relax, and enjoy the full cat café experience!
     </div>
@@ -536,15 +533,15 @@ function buildUltimateEmail(codes, def, recipientName, buyerName, expiry, messag
 </body></html>`;
 }
 
-// ── Route to correct email builder (codes = array) ──
-function buildVoucherHTML(codes, voucherType, recipientName, buyerName, expiry, message) {
+// ── Route to correct email builder ──
+function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry, message) {
   const def = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
-  if (voucherType === "ultimate-40") return buildUltimateEmail(codes, def, recipientName, buyerName, expiry, message);
-  if (voucherType === "premium-30")  return buildPremiumEmail(codes, def, recipientName, buyerName, expiry, message);
-  return buildStandardEmail(codes, def, recipientName, buyerName, expiry, message);
+  if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message);
+  if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message);
+  return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message);
 }
 
-// ── Send email via Resend (with optional PDF attachments) ──
+// ── Send email via Resend ──
 function sendEmail(to, subject, html, attachments = []) {
   return new Promise((resolve, reject) => {
     const payload = JSON.stringify({
@@ -581,7 +578,7 @@ function sendEmail(to, subject, html, attachments = []) {
   });
 }
 
-// ── Batch save multiple voucher records to GitHub in one API call ──
+// ── Batch save multiple voucher records to GitHub ──
 async function saveVouchers(newVouchers) {
   const current = await new Promise((resolve) => {
     const options = {
@@ -667,7 +664,6 @@ exports.handler = async (event) => {
 
     console.log("Parsed params:", JSON.stringify(params));
 
-    // Verify HMAC
     if (HITPAY_SALT) {
       const sorted = Object.keys(params).sort().map(k => {
         const v = params[k];
@@ -688,9 +684,6 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: "OK - status: " + params.status };
     }
 
-    // Parse voucher type AND quantity from reference
-    // Format: VC-{type}-qty{n}-{timestamp}  (new)
-    // Format: VC-{type}-{timestamp}          (legacy, qty defaults to 1)
     const ref = params.reference_number || "";
     const typeMatch = ref.match(/^VC-(standard-22|premium-30|ultimate-40)(?:-qty(\d+))?-\d+$/);
     const voucherType = typeMatch ? typeMatch[1] : "standard-22";
@@ -698,7 +691,6 @@ exports.handler = async (event) => {
     const def         = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
     const label       = def.label;
 
-    // Amount stored for internal records only — not shown in customer email
     let amount;
     if (params.payments && params.payments.length > 0 && params.payments[0].amount) {
       amount = parseFloat(params.payments[0].amount).toFixed(2);
@@ -717,13 +709,18 @@ exports.handler = async (event) => {
 
     console.log(`Generating ${qty} ticket(s) of type "${voucherType}"...`);
 
-    // 1. Generate N codes + N PDF buffers
+    // 1. Generate N codes + N QR codes + N PDF buffers
     const tickets = [];
     for (let i = 0; i < qty; i++) {
       const code = generateCode();
-      console.log(`Generating PDF for ticket ${i + 1}/${qty}: ${code}`);
-      const pdfBuffer = await generateTicketPDF(code, voucherType, recipientName, expiryStr);
-      tickets.push({ code, pdfBuffer });
+      const redeemUrl = `${SITE_URL}/admin?redeem=${code}`;
+      console.log(`Generating QR code & PDF for ticket ${i + 1}/${qty}: ${code} (${redeemUrl})`);
+
+      const qrBuffer  = await generateQRCodeBuffer(redeemUrl);
+      const qrDataURL = await generateQRCodeDataURL(redeemUrl);
+      const pdfBuffer = await generateTicketPDF(code, voucherType, recipientName, expiryStr, qrBuffer);
+
+      tickets.push({ code, redeemUrl, qrBuffer, qrDataURL, pdfBuffer });
     }
 
     // 2. Save all N voucher records to GitHub in one write
@@ -745,23 +742,23 @@ exports.handler = async (event) => {
     await saveVouchers(voucherRecords);
     console.log(`${qty} voucher record(s) saved to GitHub`);
 
-    // 3. Send customer email with PDF attachments (one PDF per ticket)
+    // 3. Send customer email with inline QR codes & PDF attachments
     if (RESEND_API_KEY && buyerEmail) {
-      const codes = tickets.map(t => t.code);
       const attachments = tickets.map((t, i) => ({
         filename: qty > 1
           ? `cat-cafe-ticket-${i + 1}-of-${qty}.pdf`
           : `cat-cafe-ticket-${t.code}.pdf`,
         content: t.pdfBuffer.toString("base64")
       }));
-      const html = buildVoucherHTML(codes, voucherType, recipientName, buyerName, expiryStr, "");
+
+      const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, "");
       await sendEmail(buyerEmail, def.emailSubject, html, attachments);
       console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
     } else {
       console.warn("Resend not configured or no buyer email — skipping customer email");
     }
 
-    // 4. Internal cafe notification (includes amount for records)
+    // 4. Internal cafe notification
     if (RESEND_API_KEY) {
       const codeList = tickets.map((t, i) => `<br>&nbsp;&nbsp;&nbsp;${i + 1}. ${t.code}`).join("");
       await sendEmail(

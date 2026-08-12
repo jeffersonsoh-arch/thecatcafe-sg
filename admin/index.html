@@ -435,7 +435,22 @@ function loginSuccess(user) {
   document.getElementById("login-screen").style.display = "none";
   document.getElementById("app").style.display = "flex";
   document.getElementById("topbar-user").textContent = user.email;
-  loadAll();
+  loadAll().then(() => {
+    checkUrlRedeem();
+  });
+}
+
+function checkUrlRedeem() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const redeemCode = urlParams.get("redeem") || urlParams.get("code");
+  if (redeemCode) {
+    const vouchersNav = document.querySelector('[onclick*="vouchers"]');
+    nav('vouchers', vouchersNav);
+    loadVouchers().then(() => {
+      document.getElementById("redeem-input").value = redeemCode.trim().toUpperCase();
+      lookupVoucher();
+    });
+  }
 }
 
 /* ════════ DATA STORE ════════ */
