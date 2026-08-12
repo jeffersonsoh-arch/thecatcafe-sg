@@ -4,8 +4,34 @@ const GITHUB_REPO   = process.env.GITHUB_REPO;
 const GITHUB_TOKEN  = process.env.GITHUB_TOKEN;
 const GITHUB_BRANCH = process.env.GITHUB_BRANCH || "main";
 
+const VOUCHER_LABELS = {
+  "standard-22": "Standard Entrance Ticket",
+  "premium-30":  "Premium Entrance Ticket",
+  "ultimate-40": "Ultimate Entrance Ticket"
+};
+
+const VOUCHER_AMOUNTS = {
+  "standard-22": "22.00",
+  "premium-30":  "30.00",
+  "ultimate-40": "40.00"
+};
+
+function generateCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "TCC";
+  for (let i = 0; i < 12; i++) {
+    if (i % 4 === 0) code += "-";
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return code;
+}
+
 async function getVouchers() {
   return new Promise((resolve) => {
+    if (!GITHUB_REPO || !GITHUB_TOKEN) {
+      console.warn("GITHUB_REPO or GITHUB_TOKEN not configured in Netlify env vars");
+      return resolve({ sha: null, vouchers: [] });
+    }
     const options = {
       hostname: "api.github.com",
       path: `/repos/${GITHUB_REPO}/contents/content/vouchers.json?ref=${GITHUB_BRANCH}`,
@@ -26,8 +52,11 @@ async function getVouchers() {
 }
 
 async function saveVouchers(vouchers, sha) {
+  if (!GITHUB_REPO || !GITHUB_TOKEN) {
+    throw new Error("GITHUB_REPO or GITHUB_TOKEN is not set in Netlify environment variables");
+  }
   const content = Buffer.from(JSON.stringify(vouchers, null, 2)).toString("base64");
-  const body = JSON.stringify({ message: "CMS: update voucher", content, branch: GITHUB_BRANCH, ...(sha ? { sha } : {}) });
+  const body = JSON.stringify({ message: "CMS: update vouchers database", content, branch: GITHUB_BRANCH, ...(sha ? { sha } : {}) });
 
   return new Promise((resolve, reject) => {
     const options = {
@@ -63,28 +92,34 @@ exports.handler = async (event) => {
 
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
 
-  // Auth check
   const authHeader = event.headers.authorization || event.headers.Authorization || "";
   if (!authHeader.startsWith("Bearer ")) {
     return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized" }) };
   }
 
   try {
-    const { action, code } = JSON.parse(event.body);
+    const body = JSON.parse(event.body || "{}");
+    const { action, code } = body;
     const { sha, vouchers } = await getVouchers();
 
     if (action === "lookup") {
+      if (!code) return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: "Voucher code required" }) };
       const v = vouchers.find(v => v.code === code.toUpperCase().trim());
-      if (!v) return { statusCode: 404, headers, body: JSON.stringify({ ok: false, error: "Voucher not found" }) };
+      if (!v) return { statusCode: 404, headers, body: JSON.stringify({ ok: false, error: "Voucher not found in system" }) };
       const expired = new Date(v.expires_at) < new Date();
       return { statusCode: 200, headers, body: JSON.stringify({ ok: true, voucher: v, expired }) };
     }
 
     if (action === "redeem") {
+      if (!code) return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: "Voucher code required" }) };
       const idx = vouchers.findIndex(v => v.code === code.toUpperCase().trim());
       if (idx === -1) return { statusCode: 404, headers, body: JSON.stringify({ ok: false, error: "Voucher not found" }) };
-      if (vouchers[idx].redeemed) return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: "Already redeemed on " + new Date(vouchers[idx].redeemed_at).toLocaleDateString("en-SG") }) };
-      if (new Date(vouchers[idx].expires_at) < new Date()) return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: "Voucher expired" }) };
+      if (vouchers[idx].redeemed) {
+        return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: "Already redeemed on " + new Date(vouchers[idx].redeemed_at).toLocaleDateString("en-SG") }) };
+      }
+      if (new Date(vouchers[idx].expires_at) < new Date()) {
+        return { statusCode: 400, headers, body: JSON.stringify({ ok: false, error: "Voucher expired" }) };
+      }
 
       vouchers[idx].redeemed = true;
       vouchers[idx].redeemed_at = new Date().toISOString();
@@ -92,8 +127,39 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers, body: JSON.stringify({ ok: true, message: "Voucher redeemed successfully", voucher: vouchers[idx] }) };
     }
 
+    if (action === "create") {
+      const { voucher_type = "standard-22", buyer_name = "Walk-in Customer", buyer_email = "", recipient_name, custom_amount } = body;
+      const typeKey = VOUCHER_LABELS[voucher_type] ? voucher_type : "standard-22";
+      const label = VOUCHER_LABELS[typeKey];
+      const amount = custom_amount || VOUCHER_AMOUNTS[typeKey];
+
+      const newCode = generateCode();
+      const now = new Date();
+      const expiry = new Date(now);
+      expiry.setFullYear(expiry.getFullYear() + 1);
+
+      const newVoucher = {
+        code:           newCode,
+        type:           typeKey,
+        label,
+        amount,
+        buyer_name,
+        buyer_email,
+        recipient_name: recipient_name || buyer_name,
+        issued_at:      now.toISOString(),
+        expires_at:     expiry.toISOString(),
+        redeemed:       false,
+        redeemed_at:    null,
+        payment_id:     "CMS-MANUAL-" + Date.now()
+      };
+
+      const updatedList = [...vouchers, newVoucher];
+      await saveVouchers(updatedList, sha);
+      return { statusCode: 200, headers, body: JSON.stringify({ ok: true, message: "Voucher issued successfully", voucher: newVoucher }) };
+    }
+
     if (action === "list") {
-      return { statusCode: 200, headers, body: JSON.stringify({ ok: true, vouchers }) };
+      return { statusCode: 200, headers, body: JSON.stringify({ ok: true, vouchers, envConfigured: Boolean(GITHUB_REPO && GITHUB_TOKEN) }) };
     }
 
     return { statusCode: 400, headers, body: JSON.stringify({ error: "Unknown action" }) };

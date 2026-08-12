@@ -330,8 +330,16 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
       <!-- VOUCHERS -->
       <div class="panel" id="panel-vouchers">
         <div class="panel-header">
-          <div><div class="panel-title">Gift Vouchers</div><div class="panel-sub">Redeem vouchers and view all issued vouchers.</div></div>
-          <div class="panel-actions"><button class="btn-sm btn-secondary" onclick="loadVouchers()">Refresh</button></div>
+          <div><div class="panel-title">Gift Vouchers</div><div class="panel-sub">Manage, issue, track, search, and redeem vouchers.</div></div>
+          <div class="panel-actions">
+            <button class="btn-sm btn-primary" onclick="openIssueVoucherModal()">+ Issue Voucher</button>
+            <button class="btn-sm btn-indigo" onclick="exportVouchersCSV()">📥 Export CSV</button>
+            <button class="btn-sm btn-secondary" onclick="loadVouchers()">Refresh</button>
+          </div>
+        </div>
+
+        <div id="vouchers-env-warning" style="display:none;background:var(--amber-pale);border:1px solid #FFCC80;border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--amber);">
+          <strong>⚠️ Netlify Setup Notice:</strong> <code>GITHUB_REPO</code> or <code>GITHUB_TOKEN</code> is not set in Netlify environment variables. Vouchers can be looked up locally, but updates cannot be saved back to GitHub until environment variables are configured.
         </div>
 
         <div class="voucher-stats" id="voucher-stats"></div>
@@ -349,7 +357,24 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
         </div>
 
         <div class="card">
-          <div class="card-title">All vouchers</div>
+          <div class="card-title" style="flex-wrap:wrap;gap:10px;">
+            <span>All vouchers</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <input type="text" id="vouchers-search" placeholder="🔍 Search code, name, email..." style="width:200px;font-size:12px;padding:6px 10px;" oninput="renderVouchersTable()">
+              <select id="vouchers-status-filter" style="width:auto;font-size:12px;padding:6px 10px;" onchange="renderVouchersTable()">
+                <option value="all">All statuses</option>
+                <option value="active">Active</option>
+                <option value="redeemed">Redeemed</option>
+                <option value="expired">Expired</option>
+              </select>
+              <select id="vouchers-tier-filter" style="width:auto;font-size:12px;padding:6px 10px;" onchange="renderVouchersTable()">
+                <option value="all">All tiers</option>
+                <option value="standard-22">Standard (S$22)</option>
+                <option value="premium-30">Premium (S$30)</option>
+                <option value="ultimate-40">Ultimate (S$40)</option>
+              </select>
+            </div>
+          </div>
           <div id="vouchers-table-wrap"><div style="color:var(--text-3);font-size:13px;">Loading vouchers…</div></div>
         </div>
       </div>
@@ -405,6 +430,28 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeModal('modal-menu')">Cancel</button>
       <button class="btn-sm btn-primary" onclick="saveMenuModal()">Save item</button>
+    </div>
+<!-- ISSUE VOUCHER MODAL -->
+<div class="modal-bg" id="modal-issue-voucher">
+  <div class="modal">
+    <div class="modal-title">🎁 Issue New Voucher</div>
+    <div class="field">
+      <label>Voucher Tier</label>
+      <select id="iv-type">
+        <option value="standard-22">Standard Entrance Ticket (S$22)</option>
+        <option value="premium-30">Premium Entrance Ticket (S$30)</option>
+        <option value="ultimate-40">Ultimate Entrance Ticket (S$40)</option>
+      </select>
+    </div>
+    <div class="fg2">
+      <div class="field"><label>Buyer / Customer Name</label><input type="text" id="iv-name" placeholder="e.g. Jane Doe"></div>
+      <div class="field"><label>Buyer Email</label><input type="email" id="iv-email" placeholder="e.g. jane@example.com"></div>
+    </div>
+    <div class="field"><label>Recipient Name (optional, defaults to Buyer Name)</label><input type="text" id="iv-recipient" placeholder="Leave blank if same as buyer"></div>
+    <div class="field"><label>Custom Amount (optional)</label><input type="text" id="iv-amount" placeholder="Leave blank for tier default"></div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modal-issue-voucher')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="submitIssueVoucher()">Create &amp; Issue Voucher</button>
     </div>
   </div>
 </div>
@@ -881,6 +928,12 @@ async function loadVouchers() {
     });
     const data = await res.json();
     allVouchers = data.vouchers || [];
+    
+    const warnEl = document.getElementById("vouchers-env-warning");
+    if (warnEl) {
+      warnEl.style.display = (data.envConfigured === false) ? "block" : "none";
+    }
+
     renderVoucherStats();
     renderVouchersTable();
   } catch(e) {
@@ -904,23 +957,53 @@ function renderVoucherStats() {
 
 function renderVouchersTable() {
   if (!allVouchers.length) {
-    document.getElementById("vouchers-table-wrap").innerHTML = '<div style="color:var(--text-3);font-size:13px;">No vouchers issued yet.</div>';
+    document.getElementById("vouchers-table-wrap").innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:12px 0;">No vouchers issued yet.</div>';
     return;
   }
+
+  const search = (document.getElementById("vouchers-search")?.value || "").trim().toLowerCase();
+  const statusFilter = document.getElementById("vouchers-status-filter")?.value || "all";
+  const tierFilter = document.getElementById("vouchers-tier-filter")?.value || "all";
   const now = new Date();
-  const sorted = [...allVouchers].sort((a,b) => new Date(b.issued_at) - new Date(a.issued_at));
+
+  const filtered = allVouchers.filter(v => {
+    const expired = !v.redeemed && new Date(v.expires_at) <= now;
+    if (statusFilter === "active" && (v.redeemed || expired)) return false;
+    if (statusFilter === "redeemed" && !v.redeemed) return false;
+    if (statusFilter === "expired" && (v.redeemed || !expired)) return false;
+
+    if (tierFilter !== "all" && v.type !== tierFilter) return false;
+
+    if (search) {
+      const matchCode = (v.code || "").toLowerCase().includes(search);
+      const matchBuyer = (v.buyer_name || "").toLowerCase().includes(search);
+      const matchEmail = (v.buyer_email || "").toLowerCase().includes(search);
+      const matchPayment = (v.payment_id || "").toLowerCase().includes(search);
+      if (!matchCode && !matchBuyer && !matchEmail && !matchPayment) return false;
+    }
+
+    return true;
+  });
+
+  if (!filtered.length) {
+    document.getElementById("vouchers-table-wrap").innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:12px 0;">No matching vouchers found.</div>';
+    return;
+  }
+
+  const sorted = [...filtered].sort((a,b) => new Date(b.issued_at) - new Date(a.issued_at));
+
   document.getElementById("vouchers-table-wrap").innerHTML = `
     <div style="overflow-x:auto;">
     <table class="voucher-table">
-      <tr><th>Code</th><th>Type</th><th>Buyer</th><th>Issued</th><th>Expires</th><th>Status</th><th></th></tr>
-      ${sorted.map((v,i) => {
+      <tr><th>Code</th><th>Type / Price</th><th>Buyer</th><th>Issued</th><th>Expires</th><th>Status</th><th>Action</th></tr>
+      ${sorted.map((v) => {
         const expired = !v.redeemed && new Date(v.expires_at) < now;
         const status = v.redeemed ? "redeemed" : expired ? "expired" : "active";
         const statusLabel = v.redeemed ? "Redeemed" : expired ? "Expired" : "Active";
         return `<tr>
-          <td><span class="v-code">${v.code}</span></td>
+          <td><span class="v-code" style="font-family:monospace;font-weight:700;letter-spacing:0.06em;background:var(--bg-3);padding:2px 6px;border-radius:4px;">${v.code}</span></td>
           <td>${v.label} <span style="color:var(--rust);font-weight:600;">S$${v.amount}</span></td>
-          <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v.buyer_name}<br><span style="color:var(--text-3);font-size:11px;">${v.buyer_email}</span></td>
+          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v.buyer_name}<br><span style="color:var(--text-3);font-size:11px;">${v.buyer_email}</span></td>
           <td style="white-space:nowrap;font-size:12px;">${new Date(v.issued_at).toLocaleDateString("en-SG")}</td>
           <td style="white-space:nowrap;font-size:12px;">${new Date(v.expires_at).toLocaleDateString("en-SG")}</td>
           <td><span class="v-badge ${status}">${statusLabel}${v.redeemed ? "<br><span style='font-size:10px;font-weight:400;'>"+new Date(v.redeemed_at).toLocaleDateString("en-SG")+"</span>" : ""}</span></td>
@@ -928,6 +1011,85 @@ function renderVouchersTable() {
         </tr>`;
       }).join("")}
     </table></div>`;
+}
+
+function openIssueVoucherModal() {
+  document.getElementById("iv-name").value = "";
+  document.getElementById("iv-email").value = "";
+  document.getElementById("iv-recipient").value = "";
+  document.getElementById("iv-amount").value = "";
+  document.getElementById("modal-issue-voucher").classList.add("open");
+  document.getElementById("iv-name").focus();
+}
+
+async function submitIssueVoucher() {
+  const voucher_type = document.getElementById("iv-type").value;
+  const buyer_name = document.getElementById("iv-name").value.trim();
+  const buyer_email = document.getElementById("iv-email").value.trim();
+  const recipient_name = document.getElementById("iv-recipient").value.trim();
+  const custom_amount = document.getElementById("iv-amount").value.trim();
+
+  if (!buyer_name) {
+    toast("Buyer name is required", "error");
+    return;
+  }
+
+  try {
+    const token = await currentUser.jwt();
+    const res = await fetch("/.netlify/functions/voucher-manage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+      body: JSON.stringify({ action: "create", voucher_type, buyer_name, buyer_email, recipient_name, custom_amount })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      toast("Voucher issued: " + data.voucher.code, "success");
+      closeModal("modal-issue-voucher");
+      await loadVouchers();
+      document.getElementById("redeem-input").value = data.voucher.code;
+      lookupVoucher();
+    } else {
+      toast("Error: " + data.error, "error");
+    }
+  } catch(e) {
+    toast("Error: " + e.message, "error");
+  }
+}
+
+function exportVouchersCSV() {
+  if (!allVouchers.length) {
+    toast("No vouchers to export", "error");
+    return;
+  }
+  const now = new Date();
+  const headers = ["Code", "Type", "Amount (SGD)", "Buyer Name", "Buyer Email", "Recipient Name", "Issued At", "Expires At", "Status", "Redeemed At", "Payment ID"];
+  const rows = allVouchers.map(v => {
+    const expired = !v.redeemed && new Date(v.expires_at) < now;
+    const status = v.redeemed ? "Redeemed" : expired ? "Expired" : "Active";
+    return [
+      v.code,
+      `"${(v.label||"").replace(/"/g, '""')}"`,
+      v.amount,
+      `"${(v.buyer_name||"").replace(/"/g, '""')}"`,
+      `"${(v.buyer_email||"").replace(/"/g, '""')}"`,
+      `"${(v.recipient_name||"").replace(/"/g, '""')}"`,
+      v.issued_at,
+      v.expires_at,
+      status,
+      v.redeemed_at || "",
+      v.payment_id || ""
+    ];
+  });
+
+  const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `catcafe-vouchers-${new Date().toISOString().slice(0,10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  toast("Exported " + allVouchers.length + " vouchers to CSV!", "success");
 }
 
 async function lookupVoucher() {
