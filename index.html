@@ -33,18 +33,24 @@
   /* NAV */
   nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border);}
   .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  @media(max-width:700px){
+    .nav-inner{justify-content:space-between;}
+    .nav-links{display:none !important;}
+    .nav-mobile-cta{display:flex !important;gap:8px;align-items:center;}
+    .nav-desktop-only{display:none !important;}
+  }
+  .nav-mobile-cta{display:none;}
   .nav-logo{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-link{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
   .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
-  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
   .nav-logo-text span{color:var(--rust);}
-  .nav-logo span{color:var(--rust);}
   .nav-links{display:flex;gap:20px;}
   .nav-links a{font-size:13px;color:var(--text-2);}
   .nav-links a:hover{color:var(--text);}
-  .nav-pay-link{color:var(--indigo) !important;font-weight:700;font-size:13px;letter-spacing:0.03em;transition:all 0.2s;display:inline-flex;align-items:center;}
+  .nav-pay-link{color:var(--indigo) !important;font-weight:700;font-size:13px;letter-spacing:0.03em;transition:all 0.2s;display:inline-flex;align-items:center;margin-left:12px;white-space:nowrap;}
   .nav-pay-link:hover{opacity:0.8;}
+  .nav-mobile-cta .nav-pay-link{margin-left:0;}
   .nav-cta{background:var(--rust);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;}
   .nav-cta:hover{opacity:0.88;}
   /* LAYOUT */
@@ -211,7 +217,6 @@
     .cat-grid{grid-template-columns:repeat(2,1fr);}
     .features,.events-grid,.art-photos{grid-template-columns:1fr;}
     .hours-grid{grid-template-columns:1fr;}
-    .nav-links{display:none;}
     .art-banner{flex-direction:column;text-align:center;}
     .footer-inner{flex-direction:column;text-align:center;}
   }
@@ -327,9 +332,15 @@
       <a href="#events">Events</a>
       <a href="#vouchers">Gift vouchers</a>
       <a href="#visit">Visit</a>
-      <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
     </div>
-    <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+    <div class="nav-mobile-cta">
+      <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
+      <a class="nav-cta" id="book-link-mobile" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+    </div>
+    <div class="nav-desktop-only" style="display:flex;gap:12px;align-items:center;">
+      <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
+      <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+    </div>
   </div>
 </nav>
 
