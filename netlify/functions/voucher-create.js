@@ -9,8 +9,9 @@ const HITPAY_HOST = process.env.HITPAY_ENV === "live"
   : "api.sandbox.hit-pay.com";
 
 const VOUCHERS = {
-  "gift-10":  { amount: "10.00", label: "Gift Voucher",  desc: "S$10 gift voucher redeemable at The Cat Cafe Singapore" },
-  "entry-22": { amount: "22.00", label: "Entry Ticket",  desc: "Entry ticket (2 hrs) incl. 1 complimentary drink at The Cat Cafe Singapore" }
+  "standard-22": { amount: "22.00", label: "Standard Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 complimentary drink at The Cat Cafe Singapore" },
+  "premium-30":  { amount: "30.00", label: "Premium Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 upgraded drink and a choice of dessert at The Cat Cafe Singapore" },
+  "ultimate-40": { amount: "40.00", label: "Ultimate Entrance Ticket", desc: "Entry ticket (2 hrs) incl. 1 upgraded drink, dessert and 1 main course at The Cat Cafe Singapore" }
 };
 
 function hitpayPost(params) {

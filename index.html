@@ -578,53 +578,57 @@
   <div class="page">
     <div class="section-eyebrow">Gift vouchers</div>
     <div class="section-title">Give the gift of cats</div>
-    <div class="section-sub">Purchase a gift voucher or entry ticket online. A beautifully designed voucher with a unique code will be emailed instantly after payment.</div>
+    <div class="section-sub">Purchase an entrance ticket online. A beautifully designed voucher with a unique code will be emailed instantly after payment.</div>
 
     <div class="voucher-grid">
 
-      <!-- GIFT VOUCHER -->
-      <div class="voucher-card" id="vc-gift-10" onclick="selectVoucher('gift-10')">
-        <div class="voucher-emoji">🎁</div>
-        <div class="voucher-name">Gift Voucher</div>
-        <div class="voucher-desc">Credit redeemable on any visit. Perfect as a gift for cat lovers.</div>
-        <div class="voucher-amount-wrap" onclick="event.stopPropagation()">
-          <label class="voucher-field-label">Amount (S$)</label>
-          <div class="voucher-amount-row">
-            <span class="voucher-currency">S$</span>
-            <input type="number" id="gift-amount" class="voucher-amount-input" value="10" min="1" step="1" oninput="updateVoucherTotal('gift-10')" onclick="selectVoucher('gift-10')">
-          </div>
-          <div class="voucher-presets">
-            <button onclick="setGiftAmount(10)">S$10</button>
-            <button onclick="setGiftAmount(20)">S$20</button>
-            <button onclick="setGiftAmount(50)">S$50</button>
-          </div>
-        </div>
-        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
-          <label class="voucher-field-label">Quantity</label>
-          <div class="voucher-qty-row">
-            <button class="voucher-qty-btn" onclick="changeQty('gift-10',-1)">&#8722;</button>
-            <span class="voucher-qty" id="qty-gift-10">1</span>
-            <button class="voucher-qty-btn" onclick="changeQty('gift-10',1)">&#43;</button>
-          </div>
-        </div>
-        <div class="voucher-total" id="total-gift-10">Total: S$10</div>
-      </div>
-
-      <!-- ENTRY TICKET -->
-      <div class="voucher-card" id="vc-entry-22" onclick="selectVoucher('entry-22')">
-        <div class="voucher-popular">Most popular</div>
-        <div class="voucher-emoji">🐱</div>
-        <div class="voucher-name">Entry Ticket</div>
-        <div class="voucher-desc">2-hour entry with 1 complimentary drink. S$22 per person.</div>
+      <!-- STANDARD ENTRANCE TICKET -->
+      <div class="voucher-card" id="vc-standard-22" onclick="selectVoucher('standard-22')">
+        <div class="voucher-emoji">🎫</div>
+        <div class="voucher-name">Standard Entrance Ticket</div>
+        <div class="voucher-desc">2-hour entry with 1 complimentary drink.</div>
         <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
           <label class="voucher-field-label">Number of tickets</label>
           <div class="voucher-qty-row">
-            <button class="voucher-qty-btn" onclick="changeQty('entry-22',-1)">&#8722;</button>
-            <span class="voucher-qty" id="qty-entry-22">1</span>
-            <button class="voucher-qty-btn" onclick="changeQty('entry-22',1)">&#43;</button>
+            <button class="voucher-qty-btn" onclick="changeQty('standard-22',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-standard-22">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('standard-22',1)">&#43;</button>
           </div>
         </div>
-        <div class="voucher-total" id="total-entry-22">Total: S$22</div>
+        <div class="voucher-total" id="total-standard-22">Total: S$22</div>
+      </div>
+
+      <!-- PREMIUM ENTRANCE TICKET -->
+      <div class="voucher-card" id="vc-premium-30" onclick="selectVoucher('premium-30')">
+        <div class="voucher-popular">Best value</div>
+        <div class="voucher-emoji">🍰</div>
+        <div class="voucher-name">Premium Entrance Ticket</div>
+        <div class="voucher-desc">2-hour entry with 1 upgraded drink and a choice of dessert.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('premium-30',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-premium-30">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('premium-30',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-premium-30">Total: S$30</div>
+      </div>
+
+      <!-- ULTIMATE ENTRANCE TICKET -->
+      <div class="voucher-card" id="vc-ultimate-40" onclick="selectVoucher('ultimate-40')">
+        <div class="voucher-emoji">👑</div>
+        <div class="voucher-name">Ultimate Entrance Ticket</div>
+        <div class="voucher-desc">2-hour entry with 1 upgraded drink, dessert and 1 main course.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('ultimate-40',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-ultimate-40">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('ultimate-40',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-ultimate-40">Total: S$40</div>
       </div>
 
     </div>
@@ -1013,15 +1017,14 @@ if (window.location.search.includes('donated=true')) {
 
 /* ── VOUCHERS ── */
 var selectedVoucher = null;
-var voucherQty = { "gift-10": 1, "entry-22": 1 };
-var giftAmount = 10;
+var voucherQty = { "standard-22": 1, "premium-30": 1, "ultimate-40": 1 };
 
 function selectVoucher(type) {
   selectedVoucher = type;
   document.querySelectorAll(".voucher-card").forEach(function(c) { c.classList.remove("selected"); });
   document.getElementById("vc-" + type).classList.add("selected");
   var total = getVoucherTotal(type);
-  var labels = { "gift-10": "Gift Voucher", "entry-22": "Entry Ticket" };
+  var labels = { "standard-22": "Standard Entrance Ticket", "premium-30": "Premium Entrance Ticket", "ultimate-40": "Ultimate Entrance Ticket" };
   document.getElementById("voucher-form-title").textContent = "Purchase: " + labels[type];
   document.getElementById("voucher-form-fields").style.display = "block";
   document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
@@ -1029,11 +1032,8 @@ function selectVoucher(type) {
 }
 
 function getVoucherTotal(type) {
-  if (type === "gift-10") {
-    var amt = parseFloat(document.getElementById("gift-amount").value) || 10;
-    return amt * (voucherQty["gift-10"] || 1);
-  }
-  return 22 * (voucherQty["entry-22"] || 1);
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  return prices[type] * (voucherQty[type] || 1);
 }
 
 function changeQty(type, dir) {
@@ -1046,18 +1046,11 @@ function changeQty(type, dir) {
   }
 }
 
-function setGiftAmount(val) {
-  document.getElementById("gift-amount").value = val;
-  giftAmount = val;
-  updateVoucherTotal("gift-10");
-  selectVoucher("gift-10");
-}
-
 function updateVoucherTotal(type) {
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  var price = prices[type];
   var total = getVoucherTotal(type);
-  var label = type === "entry-22"
-    ? voucherQty[type] + " ticket" + (voucherQty[type] > 1 ? "s" : "") + " × S$22"
-    : voucherQty[type] + " voucher" + (voucherQty[type] > 1 ? "s" : "") + " × S$" + (parseFloat(document.getElementById("gift-amount").value) || 10);
+  var label = voucherQty[type] + " ticket" + (voucherQty[type] > 1 ? "s" : "") + " × S$" + price;
   document.getElementById("total-" + type).textContent = "Total: S$" + total.toFixed(0) + " — " + label;
   if (selectedVoucher === type) {
     document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
@@ -1073,9 +1066,8 @@ async function purchaseVoucher() {
 
   var qty   = voucherQty[selectedVoucher] || 1;
   var total = getVoucherTotal(selectedVoucher);
-  var unitAmt = selectedVoucher === "gift-10"
-    ? (parseFloat(document.getElementById("gift-amount").value) || 10)
-    : 22;
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  var unitAmt = prices[selectedVoucher];
 
   var btn = document.getElementById("voucher-submit-btn");
   btn.disabled = true;
