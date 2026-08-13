@@ -278,5 +278,47 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-artjam-semi-55-qty2-1786631462103"
+  },
+  {
+    "code": "TCC-YBJJ-7FTA-5G44",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
+    "amount": "169.13",
+    "buyer_name": "Jefferson",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "Jefferson",
+    "issued_at": "2026-08-13T14:41:11.784Z",
+    "expires_at": "2027-08-13T14:41:11.784Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty3-1786632043662"
+  },
+  {
+    "code": "TCC-AHKS-RZ8N-35GF",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
+    "amount": "169.13",
+    "buyer_name": "Jefferson",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "Jefferson",
+    "issued_at": "2026-08-13T14:41:11.784Z",
+    "expires_at": "2027-08-13T14:41:11.784Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty3-1786632043662"
+  },
+  {
+    "code": "TCC-BRCD-AEWW-3NTB",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
+    "amount": "169.13",
+    "buyer_name": "Jefferson",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "Jefferson",
+    "issued_at": "2026-08-13T14:41:11.784Z",
+    "expires_at": "2027-08-13T14:41:11.784Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty3-1786632043662"
   }
 ]
