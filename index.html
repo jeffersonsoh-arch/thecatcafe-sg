@@ -690,6 +690,10 @@
             <label>Recipient name <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
             <input type="text" id="vf-recipient" placeholder="Leave blank if for yourself">
           </div>
+          <div class="vf-field">
+            <label>Recipient email <span style="font-weight:400;color:var(--text-3);">(for gift vouchers)</span></label>
+            <input type="email" id="vf-recipient-email" placeholder="gift@recipient.com">
+          </div>
           <div class="vf-field full">
             <label>Personal message <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
             <textarea id="vf-message" placeholder="Add a personal note to the voucher..."></textarea>
@@ -1119,14 +1123,15 @@ async function purchaseVoucher() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        voucher_type:   selectedVoucher,
-        quantity:       qty,
-        unit_amount:    unitAmt,
-        total_amount:   total,
-        buyer_name:     buyerName,
-        buyer_email:    buyerEmail,
-        recipient_name: document.getElementById("vf-recipient").value.trim() || buyerName,
-        message:        document.getElementById("vf-message").value.trim()
+        voucher_type:     selectedVoucher,
+        quantity:         qty,
+        unit_amount:      unitAmt,
+        total_amount:     total,
+        buyer_name:       buyerName,
+        buyer_email:      buyerEmail,
+        recipient_name:   document.getElementById("vf-recipient").value.trim() || buyerName,
+        recipient_email:  document.getElementById("vf-recipient-email").value.trim() || buyerEmail,
+        message:          document.getElementById("vf-message").value.trim()
       })
     });
     var data = await res.json();

@@ -67,11 +67,10 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { voucher_type, buyer_name, buyer_email, recipient_name, message, quantity, unit_amount, total_amount } = body;
+    const { voucher_type, buyer_name, buyer_email, recipient_name, recipient_email, message, quantity, unit_amount, total_amount } = body;
 
     if (!VOUCHERS[voucher_type]) {
-      return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid voucher type" }) };
-    }
+      return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid voucher type" }) };\n    }
     if (!buyer_email || !buyer_name) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "Name and email required" }) };
     }

@@ -335,7 +335,7 @@ function generateTicketPDF(code, voucherType, recipientName, expiry, qrBuffer) {
 
 // ── Build Standard tier email ──
 function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message) {
-  const { accentColor, accentLight, badgeGradient, headerBg } = def;
+  const { accentColor, accentLight, badgeGradient, headerBg, label, ribbonLabel } = def;
   const isGift = buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
@@ -355,14 +355,14 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Your Standard Entrance Ticket – The Cat Cafe</title>
+<title>${label} – The Cat Cafe</title>
 </head>
 <body style="margin:0;padding:16px 0;background:#f0f7f4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
 <div style="max-width:580px;margin:0 auto;">
 
   <div style="background:${headerBg};border-radius:16px 16px 0 0;padding:20px 40px 20px;text-align:center;position:relative;overflow:hidden;">
     <div style="font-size:12px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.75);text-transform:uppercase;margin-bottom:8px;">The Cat Cafe Singapore</div>
-    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">Standard Entrance</div>
+    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">${label}</div>
     <div style="font-size:13px;color:rgba(255,255,255,0.8);">${def.tagline}</div>
   </div>
 
@@ -375,7 +375,7 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
     ${message ? `<div style="background:${accentLight};border-left:4px solid ${accentColor};border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:#333;line-height:1.6;font-style:italic;">"${message}"</div>` : ""}
 
     <div style="background:${badgeGradient};border-radius:8px;padding:5px 12px;display:inline-block;margin-bottom:20px;">
-      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">${def.ribbonLabel} TIER</span>
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">${ribbonLabel} TIER</span>
     </div>
 
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:10px;">What's included</div>
@@ -593,7 +593,7 @@ function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry
   const def = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
   if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message);
   if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message);
-  // Art jamming vouchers use the standard email template
+  // Art jamming and standard vouchers use the standard email template
   return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message);
 }
 
