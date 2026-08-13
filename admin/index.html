@@ -168,7 +168,7 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
 </div>
 
 <!-- APP -->
-<div id="app" style="display:none;flex-direction:column;">
+<div id="app" style="display:none;flex-direction:column;" data-auth-required="true">
   <div class="topbar">
     <div class="topbar-logo">The Cat <span>Cafe</span></div>
     <span class="topbar-badge">CMS</span>
@@ -463,6 +463,42 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
 var currentUser = null;
 var userToken = null;
 
+// Security: Validate authentication state on page load and prevent CSS-based bypasses
+(function enforceAuth() {
+  var appEl = document.getElementById('app');
+  var loginScreen = document.getElementById('login-screen');
+  
+  // Check if user is actually authenticated before showing the app
+  if (!currentUser && appEl && appEl.style.display !== 'none') {
+    // Force hide app if not authenticated (prevents CSS manipulation bypass)
+    appEl.style.display = 'none';
+    loginScreen.style.display = 'flex';
+    console.warn('Unauthorized access attempt detected. Login required.');
+  }
+})();
+
+// Security: Monitor for unauthorized DOM style changes to prevent CSS-based auth bypass
+(function watchForAuthBypass() {
+  var appEl = document.getElementById('app');
+  if (!appEl) return;
+  
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+        var target = mutation.target;
+        if (target.id === 'app' && !currentUser && target.style.display !== 'none') {
+          // Unauthorized change detected - revert immediately
+          target.style.display = 'none';
+          document.getElementById('login-screen').style.display = 'flex';
+          console.error('Security Alert: Unauthorized display change blocked. Authentication required.');
+        }
+      }
+    });
+  });
+  
+  observer.observe(appEl, { attributes: true, attributeFilter: ['style'] });
+})();
+
 netlifyIdentity.on("init", user => {
   if (user) loginSuccess(user);
 });
@@ -602,7 +638,14 @@ function renderTagChips() {
   catTags.forEach((tag, i) => {
     const chip = document.createElement("span");
     chip.className = "tag-chip";
-    chip.innerHTML = `${tag} <button class="tag-chip-remove" onclick="removeTag(${i})">×</button>`;
+    const tagText = document.createElement("span");
+    tagText.textContent = tag;
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "tag-chip-remove";
+    removeBtn.textContent = "×";
+    removeBtn.onclick = function() { removeTag(i); };
+    chip.appendChild(tagText);
+    chip.appendChild(removeBtn);
     wrap.insertBefore(chip, input);
   });
 }
@@ -944,7 +987,12 @@ async function loadVouchers() {
     renderVoucherStats();
     renderVouchersTable();
   } catch(e) {
-    document.getElementById("vouchers-table-wrap").innerHTML = `<div style="color:var(--red);font-size:13px;">Failed to load: ${e.message}</div>`;
+    const errorMsg = document.createElement("div");
+    errorMsg.style.color = "var(--red)";
+    errorMsg.style.fontSize = "13px";
+    errorMsg.textContent = "Failed to load: " + e.message;
+    document.getElementById("vouchers-table-wrap").innerHTML = "";
+    document.getElementById("vouchers-table-wrap").appendChild(errorMsg);
   }
 }
 
@@ -1115,29 +1163,43 @@ async function lookupVoucher() {
     const data = await res.json();
     if (!data.ok) {
       resultEl.className = "voucher-result err";
-      resultEl.innerHTML = "&#x2717; " + data.error;
+      resultEl.textContent = "✗ " + data.error;
     } else {
       const v = data.voucher;
       const expired = data.expired;
       if (v.redeemed) {
         resultEl.className = "voucher-result warn";
-        resultEl.innerHTML = `&#x26A0; Already redeemed on ${new Date(v.redeemed_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}`;
+        const redeemedDate = new Date(v.redeemed_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"});
+        resultEl.textContent = "⚠ Already redeemed on " + redeemedDate;
       } else if (expired) {
         resultEl.className = "voucher-result err";
-        resultEl.innerHTML = `&#x2717; Voucher expired on ${new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}`;
+        const expiredDate = new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"});
+        resultEl.textContent = "✗ Voucher expired on " + expiredDate;
       } else {
         resultEl.className = "voucher-result ok";
-        resultEl.innerHTML = `&#x2713; Valid voucher<br>
-          <strong>${escapeHTML(v.label)} — S$${escapeHTML(v.amount)}</strong><br>
-          Issued to: ${escapeHTML(v.buyer_name)} (${escapeHTML(v.buyer_email)})<br>
-          Expires: ${new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}<br><br>
-          <button class="btn-sm btn-success" onclick="redeemVoucher('${escapeHTML(v.code.replace(/'/g, "\\'"))}')">&#x2713; Mark as redeemed</button>`;
+        resultEl.innerHTML = "&#x2713; Valid voucher<br>";
+        const strongEl = document.createElement("strong");
+        strongEl.textContent = escapeHTML(v.label) + " — S$" + escapeHTML(v.amount);
+        resultEl.appendChild(strongEl);
+        resultEl.appendChild(document.createElement("br"));
+        const issuedText = document.createTextNode("Issued to: " + escapeHTML(v.buyer_name) + " (" + escapeHTML(v.buyer_email) + ")");
+        resultEl.appendChild(issuedText);
+        resultEl.appendChild(document.createElement("br"));
+        const expiresText = document.createTextNode("Expires: " + expiresDate);
+        resultEl.appendChild(expiresText);
+        resultEl.appendChild(document.createElement("br"));
+        resultEl.appendChild(document.createElement("br"));
+        const redeemBtn = document.createElement("button");
+        redeemBtn.className = "btn-sm btn-success";
+        redeemBtn.textContent = "✓ Mark as redeemed";
+        redeemBtn.onclick = function() { redeemVoucher(escapeHTML(v.code.replace(/'/g, "\\'"))); };
+        resultEl.appendChild(redeemBtn);
       }
     }
     resultEl.style.display = "block";
   } catch(e) {
     resultEl.className = "voucher-result err";
-    resultEl.innerHTML = "Error: " + e.message;
+    resultEl.textContent = "Error: " + e.message;
     resultEl.style.display = "block";
   }
 }
