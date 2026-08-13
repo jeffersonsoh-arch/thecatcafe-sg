@@ -388,6 +388,10 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
       3. Staff will instantly verify and mark your ticket as redeemed<br>
     </div>
 
+    <div style="background:${accentLight};border-radius:8px;padding:12px 16px;font-size:13px;color:${accentColor};font-weight:600;text-align:center;margin-bottom:16px;">
+      📅 Booking recommended
+    </div>
+
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
       <strong style="color:#666;">Terms & Conditions:</strong> Valid for 12 months from date of purchase. Non-transferable. Non-refundable. Cannot be exchanged for cash. One redemption per code. Subject to availability.
     </div>
@@ -473,6 +477,10 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
       2. Show this email or your voucher code on arrival<br>
       3. Choose your premium drink and dessert from our menu<br>
       4. Enjoy your time with our wonderful cats!<br>
+    </div>
+
+    <div style="background:${accentLight};border-radius:8px;padding:12px 16px;font-size:13px;color:${accentColor};font-weight:600;text-align:center;margin-bottom:16px;">
+      📅 Booking recommended
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -561,6 +569,10 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
       4. Sit back, relax, and enjoy the full cat café experience!<br>
     </div>
 
+    <div style="background:${accentLight};border-radius:8px;padding:12px 16px;font-size:13px;color:${accentColor};font-weight:600;text-align:center;margin-bottom:16px;">
+      📅 Booking recommended
+    </div>
+
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
       <strong style="color:#666;">Terms & Conditions:</strong> Valid for 12 months from date of purchase. Non-transferable. Non-refundable. Cannot be exchanged for cash. One redemption per code. Subject to availability.
     </div>
@@ -639,6 +651,10 @@ function buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, messag
       2. Show this email or your voucher code on arrival<br>
       3. Staff will verify and prepare your art materials<br>
       4. Let your creativity flow with our cats by your side!<br>
+    </div>
+
+    <div style="background:${accentLight};border-radius:8px;padding:12px 16px;font-size:13px;color:${accentColor};font-weight:600;text-align:center;margin-bottom:16px;">
+      📅 Booking recommended
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
