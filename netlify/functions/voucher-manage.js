@@ -1,4 +1,6 @@
 const https = require("https");
+const fs = require("fs");
+const path = require("path");
 
 const GITHUB_REPO   = process.env.GITHUB_REPO;
 const GITHUB_TOKEN  = process.env.GITHUB_TOKEN;
@@ -28,9 +30,22 @@ function generateCode() {
 
 async function getVouchers() {
   return new Promise((resolve) => {
+    // First, try to read from local file (works in development and as fallback)
+    const localPath = path.join(__dirname, "../../content/vouchers.json");
+    let localVouchers = [];
+    try {
+      if (fs.existsSync(localPath)) {
+        const content = fs.readFileSync(localPath, "utf8");
+        localVouchers = JSON.parse(content);
+      }
+    } catch(e) {
+      console.warn("Could not read local vouchers.json:", e.message);
+    }
+    
+    // If GitHub credentials are configured, fetch from GitHub (source of truth)
     if (!GITHUB_REPO || !GITHUB_TOKEN) {
-      console.warn("GITHUB_REPO or GITHUB_TOKEN not configured in Netlify env vars");
-      return resolve({ sha: null, vouchers: [] });
+      console.warn("GITHUB_REPO or GITHUB_TOKEN not configured in Netlify env vars, using local file");
+      return resolve({ sha: null, vouchers: localVouchers });
     }
     const options = {
       hostname: "api.github.com",
@@ -45,18 +60,38 @@ async function getVouchers() {
           const parsed = JSON.parse(data);
           const content = Buffer.from(parsed.content, "base64").toString("utf8");
           resolve({ sha: parsed.sha, vouchers: JSON.parse(content) });
-        } catch(e) { resolve({ sha: null, vouchers: [] }); }
+        } catch(e) { 
+          console.warn("GitHub API error, falling back to local file:", e.message);
+          resolve({ sha: null, vouchers: localVouchers }); 
+        }
       });
-    }).on("error", () => resolve({ sha: null, vouchers: [] }));
+    }).on("error", (err) => {
+      console.warn("GitHub request failed, falling back to local file:", err.message);
+      resolve({ sha: null, vouchers: localVouchers });
+    });
   });
 }
 
 async function saveVouchers(vouchers, sha) {
-  if (!GITHUB_REPO || !GITHUB_TOKEN) {
-    throw new Error("GITHUB_REPO or GITHUB_TOKEN is not set in Netlify environment variables");
+  const content = JSON.stringify(vouchers, null, 2);
+  const localPath = path.join(__dirname, "../../content/vouchers.json");
+  
+  // Always save to local file first (for immediate effect and as backup)
+  try {
+    fs.writeFileSync(localPath, content, "utf8");
+    console.log("Vouchers saved to local file:", localPath);
+  } catch(e) {
+    console.error("Failed to save local vouchers.json:", e.message);
   }
-  const content = Buffer.from(JSON.stringify(vouchers, null, 2)).toString("base64");
-  const body = JSON.stringify({ message: "CMS: update vouchers database", content, branch: GITHUB_BRANCH, ...(sha ? { sha } : {}) });
+  
+  // If GitHub credentials are configured, also push to GitHub
+  if (!GITHUB_REPO || !GITHUB_TOKEN) {
+    console.warn("GITHUB_REPO or GITHUB_TOKEN not configured - vouchers saved locally only");
+    return { saved: true, local: true };
+  }
+  
+  const base64Content = Buffer.from(content).toString("base64");
+  const body = JSON.stringify({ message: "CMS: update vouchers database", content: base64Content, branch: GITHUB_BRANCH, ...(sha ? { sha } : {}) });
 
   return new Promise((resolve, reject) => {
     const options = {
