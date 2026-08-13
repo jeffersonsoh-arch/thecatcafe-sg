@@ -1272,6 +1272,7 @@ async function lookupVoucher() {
         const issuedText = document.createTextNode("Issued to: " + escapeHTML(v.buyer_name) + " (" + escapeHTML(v.buyer_email) + ")");
         resultEl.appendChild(issuedText);
         resultEl.appendChild(document.createElement("br"));
+        const expiresDate = new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"});
         const expiresText = document.createTextNode("Expires: " + expiresDate);
         resultEl.appendChild(expiresText);
         resultEl.appendChild(document.createElement("br"));
