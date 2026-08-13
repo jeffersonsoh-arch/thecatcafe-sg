@@ -89,13 +89,29 @@ async function generateQRCodeBuffer(url) {
   });
 }
 
-// ── Generate QR Code Data URL for HTML Email ──
+// ── Generate QR Code Data URL for HTML Email (fallback) ──
 async function generateQRCodeDataURL(url) {
   return await QRCode.toDataURL(url, {
     margin: 1,
     width: 200,
     color: { dark: "#1a1a1a", light: "#ffffff" }
   });
+}
+
+// ── Generate QR Code as inline attachment object for email ──
+async function generateQRCodeInline(url, index) {
+  const buffer = await QRCode.toBuffer(url, {
+    margin: 2,
+    width: 250,
+    color: { dark: "#000000", light: "#ffffff" }
+  });
+  return {
+    filename: `qr-code-${index}.png`,
+    content: buffer.toString("base64"),
+    contentType: "image/png",
+    disposition: "inline",
+    cid: `qr-code-${index}@catcafe`
+  };
 }
 
 // ── Generate a styled PDF ticket with embedded QR Code ──
@@ -294,7 +310,7 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      ${t.qrDataURL ? `<div style="margin:8px 0;"><img src="${t.qrDataURL}" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>` : ""}
+      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
@@ -374,7 +390,7 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      ${t.qrDataURL ? `<div style="margin:8px 0;"><img src="${t.qrDataURL}" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>` : ""}
+      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
@@ -462,7 +478,7 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">👑 Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      ${t.qrDataURL ? `<div style="margin:8px 0;"><img src="${t.qrDataURL}" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>` : ""}
+      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
@@ -714,18 +730,18 @@ exports.handler = async (event) => {
 
     console.log(`Generating ${qty} ticket(s) of type "${voucherType}"...`);
 
-    // 1. Generate N codes + N QR codes + N PDF buffers
+    // 1. Generate N codes + N QR codes (inline for email) + N PDF buffers
     const tickets = [];
     for (let i = 0; i < qty; i++) {
       const code = generateCode();
       const redeemUrl = `${SITE_URL}/admin?redeem=${code}`;
       console.log(`Generating QR code & PDF for ticket ${i + 1}/${qty}: ${code} (${redeemUrl})`);
 
-      const qrBuffer  = await generateQRCodeBuffer(redeemUrl);
-      const qrDataURL = await generateQRCodeDataURL(redeemUrl);
-      const pdfBuffer = await generateTicketPDF(code, voucherType, recipientName, expiryStr, qrBuffer);
+      const qrBuffer     = await generateQRCodeBuffer(redeemUrl);
+      const qrInlineObj  = await generateQRCodeInline(redeemUrl, i);
+      const pdfBuffer    = await generateTicketPDF(code, voucherType, recipientName, expiryStr, qrBuffer);
 
-      tickets.push({ code, redeemUrl, qrBuffer, qrDataURL, pdfBuffer });
+      tickets.push({ code, redeemUrl, qrBuffer, qrInlineObj, pdfBuffer });
     }
 
     // 2. Save all N voucher records to GitHub in one write
@@ -754,16 +770,27 @@ exports.handler = async (event) => {
 
     // 3. Send customer email with inline QR codes & PDF attachments
     if (RESEND_API_KEY && buyerEmail) {
-      const attachments = tickets.map((t, i) => ({
-        filename: qty > 1
-          ? `cat-cafe-ticket-${i + 1}-of-${qty}.pdf`
-          : `cat-cafe-ticket-${t.code}.pdf`,
-        content: t.pdfBuffer.toString("base64")
-      }));
+      // Build attachments array: PDF files + inline QR code images
+      const attachments = [];
+      
+      // Add PDF attachments
+      tickets.forEach((t, i) => {
+        attachments.push({
+          filename: qty > 1
+            ? `cat-cafe-ticket-${i + 1}-of-${qty}.pdf`
+            : `cat-cafe-ticket-${t.code}.pdf`,
+          content: t.pdfBuffer.toString("base64")
+        });
+      });
+      
+      // Add inline QR code images for email body
+      tickets.forEach((t, i) => {
+        attachments.push(t.qrInlineObj);
+      });
 
       const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, "");
       await sendEmail(buyerEmail, def.emailSubject, html, attachments);
-      console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
+      console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} attachment(s) (${tickets.length} PDFs + ${tickets.length} QR codes)`);
     } else {
       console.warn("Resend not configured or no buyer email — skipping customer email");
     }
