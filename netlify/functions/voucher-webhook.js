@@ -2,6 +2,8 @@ const https = require("https");
 const crypto = require("crypto");
 const PDFDocument = require("pdfkit");
 const QRCode = require("qrcode");
+const fs = require("fs");
+const path = require("path");
 
 const HITPAY_SALT    = process.env.HITPAY_SALT;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -729,9 +731,34 @@ function sendEmail(to, subject, html, attachments = []) {
 
 // ── Batch save multiple voucher records to GitHub ──
 async function saveVouchers(newVouchers) {
+  const localPath = path.join(__dirname, "../../content/vouchers.json");
+  
+  // Read current vouchers from local file first
+  let currentVouchers = [];
+  try {
+    if (fs.existsSync(localPath)) {
+      const content = fs.readFileSync(localPath, "utf8");
+      currentVouchers = JSON.parse(content);
+    }
+  } catch(e) {
+    console.warn("Could not read local vouchers.json:", e.message);
+  }
+  
+  const merged = [...currentVouchers, ...newVouchers];
+  const newContent = JSON.stringify(merged, null, 2);
+  
+  // Always save to local file first
+  try {
+    fs.writeFileSync(localPath, newContent, "utf8");
+    console.log("Vouchers saved to local file:", localPath);
+  } catch(e) {
+    console.error("Failed to save local vouchers.json:", e.message);
+  }
+  
+  // If GitHub credentials are configured, also push to GitHub
   if (!GITHUB_REPO || !GITHUB_TOKEN) {
-    console.error("GITHUB_REPO or GITHUB_TOKEN not configured - cannot save vouchers to GitHub");
-    throw new Error("GitHub repository credentials not configured. Please set GITHUB_REPO and GITHUB_TOKEN in Netlify environment variables.");
+    console.warn("GITHUB_REPO or GITHUB_TOKEN not configured - vouchers saved locally only");
+    return { saved: true, local: true };
   }
   
   const current = await new Promise((resolve) => {
@@ -760,12 +787,12 @@ async function saveVouchers(newVouchers) {
     }).on("error", () => resolve({ sha: null, vouchers: [] }));
   });
 
-  const merged = [...current.vouchers, ...newVouchers];
-  const newContent = Buffer.from(JSON.stringify(merged, null, 2)).toString("base64");
+  const mergedGitHub = [...current.vouchers, ...newVouchers];
+  const base64Content = Buffer.from(JSON.stringify(mergedGitHub, null, 2)).toString("base64");
   const summary = newVouchers.map(v => v.code).join(", ");
   const body = JSON.stringify({
     message: `New voucher${newVouchers.length > 1 ? "s" : ""}: ${summary}`,
-    content: newContent,
+    content: base64Content,
     branch: GITHUB_BRANCH,
     ...(current.sha ? { sha: current.sha } : {})
   });

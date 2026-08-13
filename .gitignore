@@ -1,63 +1,44 @@
-```gitignore
+```
 # Dependencies
 node_modules/
-
-# Environment variables
-.env
-.env.local
-.env.*
-
-# Logs and temporary files
-*.log
-*.tmp
-
-# Editor/IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
 
 # Build artifacts
 dist/
 build/
 target/
 
-# Python specific
+# Environment variables
+.env
+.env.local
+.env.*
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# IDE files
+.vscode/
+.idea/
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.py.class
-.venv/
+.Python
 venv/
+.venv/
 .env/
 
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
+# Node.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Compressed files
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
+# OS generated files
+.DS_Store
+Thumbs.db
 ```
