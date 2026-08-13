@@ -11,7 +11,9 @@ const HITPAY_HOST = process.env.HITPAY_ENV === "live"
 const VOUCHERS = {
   "standard-22": { amount: "22.00", label: "Standard Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 complimentary drink at The Cat Cafe Singapore" },
   "premium-30":  { amount: "30.00", label: "Premium Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 upgraded drink and a choice of dessert at The Cat Cafe Singapore" },
-  "ultimate-40": { amount: "40.00", label: "Ultimate Entrance Ticket", desc: "Entry ticket (2 hrs) incl. 1 upgraded drink, dessert and 1 main course at The Cat Cafe Singapore" }
+  "ultimate-40": { amount: "40.00", label: "Ultimate Entrance Ticket", desc: "Entry ticket (2 hrs) incl. 1 upgraded drink, dessert and 1 main course at The Cat Cafe Singapore" },
+  "artjam-unguided-40": { amount: "40.00", label: "Unguided Art Jamming Session", desc: "2 hours art jamming with free upgraded drinks and all materials at The Cat Cafe Singapore" },
+  "artjam-semi-55": { amount: "55.00", label: "Semi-Guided Art Jamming Session", desc: "3 hours guided art jamming with free upgraded drinks, slice of cake and all materials at The Cat Cafe Singapore" }
 };
 
 function hitpayPost(params) {
@@ -65,11 +67,10 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { voucher_type, buyer_name, buyer_email, recipient_name, message, quantity, unit_amount, total_amount } = body;
+    const { voucher_type, buyer_name, buyer_email, recipient_name, recipient_email, message, quantity, unit_amount, total_amount } = body;
 
     if (!VOUCHERS[voucher_type]) {
-      return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid voucher type" }) };
-    }
+      return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid voucher type" }) };\n    }
     if (!buyer_email || !buyer_name) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "Name and email required" }) };
     }

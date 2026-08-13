@@ -154,7 +154,7 @@
   .tsenior{background:var(--indigo-pale);color:var(--indigo);}
   .tyoung{background:var(--rust-pale);color:var(--rust-dark);}
   .tog{background:#F5F0E8;color:#5C4A1E;}
-  .tcuddly{background:#FCE8F3;color:#8B1558;}
+  .tlapcat{background:#FCE8F3;color:#8B1558;}
   .tplayful{background:#E1F5EE;color:#0F6E56;}
   .tshy{background:#FEF3E7;color:#8A5200;}
   .cat-desc-short{font-size:12px;color:var(--text-2);line-height:1.5;}
@@ -462,7 +462,7 @@
       <button class="fbtn" onclick="filterCats('og',this)">OG since '14</button>
       <button class="fbtn" onclick="filterCats('senior',this)">Senior</button>
       <button class="fbtn" onclick="filterCats('young',this)">Young</button>
-      <button class="fbtn" onclick="filterCats('cuddly',this)">Cuddly</button>
+      <button class="fbtn" onclick="filterCats('lapcat',this)">Lap cat</button>
       <button class="fbtn" onclick="filterCats('playful',this)">Playful</button>
       <button class="fbtn" onclick="filterCats('shy',this)">Shy</button>
     </div>
@@ -639,6 +639,39 @@
         <div class="voucher-total" id="total-ultimate-40">Total: S$40</div>
       </div>
 
+      <!-- UNGUIDED ART JAMMING -->
+      <div class="voucher-card" id="vc-artjam-unguided-40" onclick="selectVoucher('artjam-unguided-40')">
+        <div class="voucher-emoji">🎨</div>
+        <div class="voucher-name">Unguided Art Jamming Session</div>
+        <div class="voucher-desc">2 hours art jamming with free upgraded drinks and all materials. 📅 Booking recommended.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-unguided-40',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-artjam-unguided-40">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-unguided-40',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-artjam-unguided-40">Total: S$40</div>
+      </div>
+
+      <!-- SEMI-GUIDED ART JAMMING -->
+      <div class="voucher-card" id="vc-artjam-semi-55" onclick="selectVoucher('artjam-semi-55')">
+        <div class="voucher-popular">Includes cake</div>
+        <div class="voucher-emoji">🖌️</div>
+        <div class="voucher-name">Semi-Guided Art Jamming Session</div>
+        <div class="voucher-desc">3 hours guided art jamming with free upgraded drinks, slice of cake and all materials. 📅 Booking recommended.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-semi-55',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-artjam-semi-55">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-semi-55',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-artjam-semi-55">Total: S$55</div>
+      </div>
+
     </div>
 
     <div class="voucher-form" id="voucher-form">
@@ -656,6 +689,10 @@
           <div class="vf-field">
             <label>Recipient name <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
             <input type="text" id="vf-recipient" placeholder="Leave blank if for yourself">
+          </div>
+          <div class="vf-field">
+            <label>Recipient email <span style="font-weight:400;color:var(--text-3);">(for gift vouchers)</span></label>
+            <input type="email" id="vf-recipient-email" placeholder="gift@recipient.com">
           </div>
           <div class="vf-field full">
             <label>Personal message <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
@@ -729,18 +766,18 @@ var GITHUB = "images/cats/";
 var BOOK_URL = "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4";
 
 var CATS_DEFAULT = [
-  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","cuddly"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
+  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","lapcat"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
   {id:2,  name:"Jimmy",       img:GITHUB+"jimmy.jpg",       full:GITHUB+"jimmy.jpg",       tags:["senior","og"],              desc:"A domestic long-fur rescued from breeders, Jimmy is around 16 years old. Once wary of handling, he has blossomed in his later years. Catch him most active in the mornings, often spotted on the cat bridge."},
-  {id:3,  name:"Tommy",       img:GITHUB+"tommy.jpg",       full:GITHUB+"tommy.jpg",       tags:["senior","og","cuddly"],     desc:"A full black Singapore cat and an original since 2014, Tommy is around 13 years old. Currently on palliative care for nasal cancer, he still enjoys a gentle pet and the company of his humans."},
+  {id:3,  name:"Tommy",       img:GITHUB+"tommy.jpg",       full:GITHUB+"tommy.jpg",       tags:["senior","og","lapcat"],     desc:"A full black Singapore cat and an original since 2014, Tommy is around 13 years old. Currently on palliative care for nasal cancer, he still enjoys a gentle pet and the company of his humans."},
   {id:4,  name:"Oreo",        img:GITHUB+"oreo.jpg",        full:GITHUB+"oreo.jpg",        tags:["senior","og","playful"],    desc:"Named after his black-and-white coat, Oreo is around 12 years old. Gentle and great with children, he will happily do a high-five for a treat."},
-  {id:5,  name:"Marshmellow", img:GITHUB+"marshmellow.jpg", full:GITHUB+"marshmellow.jpg", tags:["young","cuddly"],           desc:"A fluffy all-white Singapore short-fur of around 7, Marshmellow joined us after the Rail Mall cafe closed. Affectionate and laid-back, he is most often found sleeping beside his best friend Marmite."},
-  {id:6,  name:"Marmite",     img:GITHUB+"marmite.jpg",     full:GITHUB+"marmite.jpg",     tags:["young","cuddly"],           desc:"An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and loves a gentle butt pat."},
-  {id:7,  name:"Bobo",        img:GITHUB+"bobo.jpg",        full:GITHUB+"bobo.jpg",        tags:["young","cuddly"],           desc:"A gentle Siamese of around 7-8 years, Bobo meows softly and loves human company. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow."},
+  {id:5,  name:"Marshmellow", img:GITHUB+"marshmellow.jpg", full:GITHUB+"marshmellow.jpg", tags:["young","lapcat"],           desc:"A fluffy all-white Singapore short-fur of around 7, Marshmellow joined us after the Rail Mall cafe closed. Affectionate and laid-back, he is most often found sleeping beside his best friend Marmite."},
+  {id:6,  name:"Marmite",     img:GITHUB+"marmite.jpg",     full:GITHUB+"marmite.jpg",     tags:["young","lapcat"],           desc:"An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and loves a gentle butt pat."},
+  {id:7,  name:"Bobo",        img:GITHUB+"bobo.jpg",        full:GITHUB+"bobo.jpg",        tags:["young","lapcat"],           desc:"A gentle Siamese of around 7-8 years, Bobo meows softly and loves human company. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow."},
   {id:8,  name:"Mochi",       img:GITHUB+"mochi.jpg",       full:GITHUB+"mochi.jpg",       tags:["young","playful"],          desc:"Our biggest cat at 6-7 kg, Mochi is around 9 years old and is our cafe mascot - he looks just like our logo! Most active in the mornings and very hard to miss."},
-  {id:9,  name:"Sushi",       img:GITHUB+"sushi.jpg",       full:GITHUB+"sushi.jpg",       tags:["young","cuddly"],           desc:"A slightly plump black-and-white cat, Sushi once lived beside a kopitiam. These days she has traded street life for laps and loves nothing more than resting on a customer."},
+  {id:9,  name:"Sushi",       img:GITHUB+"sushi.jpg",       full:GITHUB+"sushi.jpg",       tags:["young","lapcat"],           desc:"A slightly plump black-and-white cat, Sushi once lived beside a kopitiam. These days she has traded street life for laps and loves nothing more than resting on a customer."},
   {id:10, name:"Miso",        img:GITHUB+"miso.jpg",        full:GITHUB+"miso.jpg",        tags:["young","playful"],          desc:"Sister to Shoyu and around 4 years old, Miso is named for the warm tinge in her undercoat. She loves teaser toys and is often found in a game of catch with Toby, Shoyu and Momo."},
   {id:11, name:"Shoyu",       img:GITHUB+"shoyu.jpg",       full:GITHUB+"shoyu.jpg",       tags:["young","playful","shy"],    desc:"Miso's sister at around 3 years old, Shoyu was rescued from a Tuas factory. Once timid and fearful, she has come a long way and now tolerates light pets and chases the other cats with confidence."},
-  {id:12, name:"Momo",        img:GITHUB+"momo.jpg",        full:GITHUB+"momo.jpg",        tags:["young","playful","cuddly"], desc:"An orange female of around 4, Momo is playful and affectionate. She loves light head pets and can often be found in a game of catch with Toby."},
+  {id:12, name:"Momo",        img:GITHUB+"momo.jpg",        full:GITHUB+"momo.jpg",        tags:["young","playful","lapcat"], desc:"An orange female of around 4, Momo is playful and affectionate. She loves light head pets and can often be found in a game of catch with Toby."},
   {id:13, name:"Toby",        img:GITHUB+"toby.jpg",        full:GITHUB+"toby.jpg",        tags:["young","playful"],          desc:"The first face you will likely see - Toby greets visitors at the entrance. Around 3 years old with an unusually dense grey coat, he is gentle with children and endlessly playful."}
 ];
 
@@ -795,8 +832,8 @@ var MENU  = (typeof CC_DATA !== "undefined" && CC_DATA.menu)    ? CC_DATA.menu  
 var PRICING = (typeof CC_DATA !== "undefined" && CC_DATA.pricing) ? CC_DATA.pricing : PRICING_DEFAULT;
 var HOURS   = (typeof CC_DATA !== "undefined" && CC_DATA.hours)   ? CC_DATA.hours   : HOURS_DEFAULT;
 
-var TAG_LABEL = {senior:"Senior", young:"Young", og:"OG since '14", cuddly:"Cuddly", playful:"Playful", shy:"Shy"};
-var TAG_CLASS  = {senior:"tsenior", young:"tyoung", og:"tog", cuddly:"tcuddly", playful:"tplayful", shy:"tshy"};
+var TAG_LABEL = {senior:"Senior", young:"Young", og:"OG since '14", lapcat:"Lap cat", playful:"Playful", shy:"Shy"};
+var TAG_CLASS  = {senior:"tsenior", young:"tyoung", og:"tog", lapcat:"tlapcat", playful:"tplayful", shy:"tshy"};
 
 function makeTags(tags, size) {
   return tags.map(function(t) {
@@ -1025,14 +1062,14 @@ if (window.location.search.includes('donated=true')) {
 
 /* ── VOUCHERS ── */
 var selectedVoucher = null;
-var voucherQty = { "standard-22": 1, "premium-30": 1, "ultimate-40": 1 };
+var voucherQty = { "standard-22": 1, "premium-30": 1, "ultimate-40": 1, "artjam-unguided-40": 1, "artjam-semi-55": 1 };
 
 function selectVoucher(type) {
   selectedVoucher = type;
   document.querySelectorAll(".voucher-card").forEach(function(c) { c.classList.remove("selected"); });
   document.getElementById("vc-" + type).classList.add("selected");
   var total = getVoucherTotal(type);
-  var labels = { "standard-22": "Standard Entrance Ticket", "premium-30": "Premium Entrance Ticket", "ultimate-40": "Ultimate Entrance Ticket" };
+  var labels = { "standard-22": "Standard Entrance Ticket", "premium-30": "Premium Entrance Ticket", "ultimate-40": "Ultimate Entrance Ticket", "artjam-unguided-40": "Unguided Art Jamming Session", "artjam-semi-55": "Semi-Guided Art Jamming Session" };
   document.getElementById("voucher-form-title").textContent = "Purchase: " + labels[type];
   document.getElementById("voucher-form-fields").style.display = "block";
   document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
@@ -1040,7 +1077,7 @@ function selectVoucher(type) {
 }
 
 function getVoucherTotal(type) {
-  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
   return prices[type] * (voucherQty[type] || 1);
 }
 
@@ -1055,7 +1092,7 @@ function changeQty(type, dir) {
 }
 
 function updateVoucherTotal(type) {
-  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
   var price = prices[type];
   var total = getVoucherTotal(type);
   var label = voucherQty[type] + " ticket" + (voucherQty[type] > 1 ? "s" : "") + " × S$" + price;
@@ -1074,7 +1111,7 @@ async function purchaseVoucher() {
 
   var qty   = voucherQty[selectedVoucher] || 1;
   var total = getVoucherTotal(selectedVoucher);
-  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
   var unitAmt = prices[selectedVoucher];
 
   var btn = document.getElementById("voucher-submit-btn");
@@ -1086,14 +1123,15 @@ async function purchaseVoucher() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        voucher_type:   selectedVoucher,
-        quantity:       qty,
-        unit_amount:    unitAmt,
-        total_amount:   total,
-        buyer_name:     buyerName,
-        buyer_email:    buyerEmail,
-        recipient_name: document.getElementById("vf-recipient").value.trim() || buyerName,
-        message:        document.getElementById("vf-message").value.trim()
+        voucher_type:     selectedVoucher,
+        quantity:         qty,
+        unit_amount:      unitAmt,
+        total_amount:     total,
+        buyer_name:       buyerName,
+        buyer_email:      buyerEmail,
+        recipient_name:   document.getElementById("vf-recipient").value.trim() || buyerName,
+        recipient_email:  document.getElementById("vf-recipient-email").value.trim() || buyerEmail,
+        message:          document.getElementById("vf-message").value.trim()
       })
     });
     var data = await res.json();

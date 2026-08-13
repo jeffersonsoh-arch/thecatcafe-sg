@@ -20,7 +20,7 @@ const VOUCHER_DEFS = {
     perks: [
       { text: "2 hours of cat café access" },
       { text: "1 complimentary canned drink" },
-      { text: "Unlimited cuddles with our cats" }
+      { text: "Unlimited time with our cats" }
     ],
     accentColor:   "#2F8F6E",
     accentLight:   "#E6F5F0",
@@ -38,7 +38,7 @@ const VOUCHER_DEFS = {
       { text: "2 hours of cat café access" },
       { text: "1 premium upgraded drink of your choice" },
       { text: "A delightful dessert of your choice" },
-      { text: "Unlimited cuddles with our cats" }
+      { text: "Unlimited time with our cats" }
     ],
     accentColor:   "#C4832A",
     accentLight:   "#FDF3E5",
@@ -57,7 +57,7 @@ const VOUCHER_DEFS = {
       { text: "1 premium upgraded drink of your choice" },
       { text: "A delightful dessert of your choice" },
       { text: "1 main course of your choice" },
-      { text: "Unlimited cuddles with our cats" }
+      { text: "Unlimited time with our cats" }
     ],
     accentColor:   "#7B4FBF",
     accentLight:   "#F2EBF9",
@@ -66,6 +66,45 @@ const VOUCHER_DEFS = {
     headerBg:      "linear-gradient(160deg, #3d2166 0%, #7B4FBF 60%, #a07de0 100%)",
     ribbonLabel:   "ULTIMATE",
     emailSubject:  "Your Ultimate Entrance Ticket – The Cat Cafe Singapore"
+  },
+  "artjam-unguided-40": {
+    label:         "Unguided Art Jamming Session",
+    tier:          "Art Jamming",
+    tagline:       "Express yourself with free-flow creativity and feline friends",
+    perks: [
+      { text: "2 hours of art jamming session" },
+      { text: "Free upgraded drinks" },
+      { text: "All art materials provided" },
+      { text: "Unlimited time with our cats" },
+      { text: "📅 Booking recommended before visiting" }
+    ],
+    accentColor:   "#E85D75",
+    accentLight:   "#FDE8EC",
+    darkColor:     "#c4455a",
+    badgeGradient: "linear-gradient(135deg, #E85D75 0%, #c4455a 100%)",
+    headerBg:      "linear-gradient(160deg, #a8324a 0%, #E85D75 60%, #f08a9e 100%)",
+    ribbonLabel:   "ART JAMMING",
+    emailSubject:  "Your Unguided Art Jamming Session – The Cat Cafe Singapore"
+  },
+  "artjam-semi-55": {
+    label:         "Semi-Guided Art Jamming Session",
+    tier:          "Art Jamming Premium",
+    tagline:       "Elevated creativity with guidance, treats, and purrs",
+    perks: [
+      { text: "3 hours of guided art jamming session" },
+      { text: "Free upgraded drinks" },
+      { text: "A slice of cake" },
+      { text: "All art materials provided" },
+      { text: "Unlimited time with our cats" },
+      { text: "📅 Booking recommended before visiting" }
+    ],
+    accentColor:   "#6B5B95",
+    accentLight:   "#F0EDF7",
+    darkColor:     "#524575",
+    badgeGradient: "linear-gradient(135deg, #6B5B95 0%, #524575 100%)",
+    headerBg:      "linear-gradient(160deg, #3d2f66 0%, #6B5B95 60%, #9a8abf 100%)",
+    ribbonLabel:   "ART JAMMING PREMIUM",
+    emailSubject:  "Your Semi-Guided Art Jamming Session – The Cat Cafe Singapore"
   }
 };
 
@@ -296,7 +335,7 @@ function generateTicketPDF(code, voucherType, recipientName, expiry, qrBuffer) {
 
 // ── Build Standard tier email ──
 function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message) {
-  const { accentColor, accentLight, badgeGradient, headerBg } = def;
+  const { accentColor, accentLight, badgeGradient, headerBg, label, ribbonLabel } = def;
   const isGift = buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
@@ -310,21 +349,20 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Your Standard Entrance Ticket – The Cat Cafe</title>
+<title>${label} – The Cat Cafe</title>
 </head>
 <body style="margin:0;padding:16px 0;background:#f0f7f4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
 <div style="max-width:580px;margin:0 auto;">
 
   <div style="background:${headerBg};border-radius:16px 16px 0 0;padding:20px 40px 20px;text-align:center;position:relative;overflow:hidden;">
     <div style="font-size:12px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.75);text-transform:uppercase;margin-bottom:8px;">The Cat Cafe Singapore</div>
-    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">Standard Entrance</div>
+    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">${label}</div>
     <div style="font-size:13px;color:rgba(255,255,255,0.8);">${def.tagline}</div>
   </div>
 
@@ -337,7 +375,7 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
     ${message ? `<div style="background:${accentLight};border-left:4px solid ${accentColor};border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:#333;line-height:1.6;font-style:italic;">"${message}"</div>` : ""}
 
     <div style="background:${badgeGradient};border-radius:8px;padding:5px 12px;display:inline-block;margin-bottom:20px;">
-      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">${def.ribbonLabel} TIER</span>
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">${ribbonLabel} TIER</span>
     </div>
 
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:10px;">What's included</div>
@@ -348,8 +386,9 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or let staff scan your QR code on arrival<br>
-      3. Staff will instantly verify and mark your ticket as redeemed
+      2. Show this email or your voucher code on arrival<br>
+      3. Staff will instantly verify and mark your ticket as redeemed<br>
+      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -390,7 +429,6 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
@@ -435,9 +473,10 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or let staff scan your QR code on arrival<br>
+      2. Show this email or your voucher code on arrival<br>
       3. Choose your premium drink and dessert from our menu<br>
-      4. Enjoy your time with our wonderful cats!
+      4. Enjoy your time with our wonderful cats!<br>
+      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -478,7 +517,6 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">👑 Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
@@ -522,9 +560,10 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or let staff scan your QR code on arrival<br>
+      2. Show this email or your voucher code on arrival<br>
       3. Choose your premium drink, dessert, and main course from our menu<br>
-      4. Sit back, relax, and enjoy the full cat café experience!
+      4. Sit back, relax, and enjoy the full cat café experience!<br>
+      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -554,6 +593,7 @@ function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry
   const def = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
   if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message);
   if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message);
+  // Art jamming and standard vouchers use the standard email template
   return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message);
 }
 
@@ -706,7 +746,7 @@ exports.handler = async (event) => {
     }
 
     const ref = params.reference_number || "";
-    const typeMatch = ref.match(/^VC-(standard-22|premium-30|ultimate-40)(?:-qty(\d+))?-\d+$/);
+    const typeMatch = ref.match(/^VC-(standard-22|premium-30|ultimate-40|artjam-unguided-40|artjam-semi-55)(?:-qty(\d+))?-\d+$/);
     const voucherType = typeMatch ? typeMatch[1] : "standard-22";
     const qty         = typeMatch && typeMatch[2] ? parseInt(typeMatch[2], 10) : 1;
     const def         = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
@@ -768,9 +808,9 @@ exports.handler = async (event) => {
       // Continue with email sending even if GitHub save fails
     }
 
-    // 3. Send customer email with inline QR codes & PDF attachments
+    // 3. Send customer email with PDF attachments (no inline QR codes as they don't render in emails)
     if (RESEND_API_KEY && buyerEmail) {
-      // Build attachments array: PDF files + inline QR code images
+      // Build attachments array: PDF files only (QR codes kept in PDFs, not as separate inline images)
       const attachments = [];
       
       // Add PDF attachments
@@ -782,15 +822,10 @@ exports.handler = async (event) => {
           content: t.pdfBuffer.toString("base64")
         });
       });
-      
-      // Add inline QR code images for email body
-      tickets.forEach((t, i) => {
-        attachments.push(t.qrInlineObj);
-      });
 
       const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, "");
       await sendEmail(buyerEmail, def.emailSubject, html, attachments);
-      console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} attachment(s) (${tickets.length} PDFs + ${tickets.length} QR codes)`);
+      console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
     } else {
       console.warn("Resend not configured or no buyer email — skipping customer email");
     }
