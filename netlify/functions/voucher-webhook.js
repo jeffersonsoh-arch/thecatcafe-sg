@@ -731,7 +731,7 @@ function sendEmail(to, subject, html, attachments = []) {
 
 // ── Batch save multiple voucher records to GitHub ──
 async function saveVouchers(newVouchers) {
-  const localPath = path.join(__dirname, "../../content/vouchers.json");
+  const localPath = path.resolve(__dirname, '../../content/vouchers.json');
   
   // Read current vouchers from local file first
   let currentVouchers = [];
@@ -739,6 +739,7 @@ async function saveVouchers(newVouchers) {
     if (fs.existsSync(localPath)) {
       const content = fs.readFileSync(localPath, "utf8");
       currentVouchers = JSON.parse(content);
+      console.log("Loaded", currentVouchers.length, "existing vouchers from local file");
     }
   } catch(e) {
     console.warn("Could not read local vouchers.json:", e.message);
@@ -750,7 +751,7 @@ async function saveVouchers(newVouchers) {
   // Always save to local file first
   try {
     fs.writeFileSync(localPath, newContent, "utf8");
-    console.log("Vouchers saved to local file:", localPath);
+    console.log("Vouchers saved to local file:", localPath, "- Total:", merged.length);
   } catch(e) {
     console.error("Failed to save local vouchers.json:", e.message);
   }
