@@ -20,7 +20,7 @@ const VOUCHER_DEFS = {
     perks: [
       { text: "2 hours of cat café access" },
       { text: "1 complimentary canned drink" },
-      { text: "Unlimited cuddles with our cats" }
+      { text: "Unlimited time with our cats" }
     ],
     accentColor:   "#2F8F6E",
     accentLight:   "#E6F5F0",
@@ -38,7 +38,7 @@ const VOUCHER_DEFS = {
       { text: "2 hours of cat café access" },
       { text: "1 premium upgraded drink of your choice" },
       { text: "A delightful dessert of your choice" },
-      { text: "Unlimited cuddles with our cats" }
+      { text: "Unlimited time with our cats" }
     ],
     accentColor:   "#C4832A",
     accentLight:   "#FDF3E5",
@@ -57,7 +57,7 @@ const VOUCHER_DEFS = {
       { text: "1 premium upgraded drink of your choice" },
       { text: "A delightful dessert of your choice" },
       { text: "1 main course of your choice" },
-      { text: "Unlimited cuddles with our cats" }
+      { text: "Unlimited time with our cats" }
     ],
     accentColor:   "#7B4FBF",
     accentLight:   "#F2EBF9",
@@ -66,6 +66,45 @@ const VOUCHER_DEFS = {
     headerBg:      "linear-gradient(160deg, #3d2166 0%, #7B4FBF 60%, #a07de0 100%)",
     ribbonLabel:   "ULTIMATE",
     emailSubject:  "Your Ultimate Entrance Ticket – The Cat Cafe Singapore"
+  },
+  "artjam-unguided-40": {
+    label:         "Unguided Art Jamming Session",
+    tier:          "Art Jamming",
+    tagline:       "Express yourself with free-flow creativity and feline friends",
+    perks: [
+      { text: "2 hours of art jamming session" },
+      { text: "Free upgraded drinks" },
+      { text: "All art materials provided" },
+      { text: "Unlimited time with our cats" },
+      { text: "📅 Booking recommended before visiting" }
+    ],
+    accentColor:   "#E85D75",
+    accentLight:   "#FDE8EC",
+    darkColor:     "#c4455a",
+    badgeGradient: "linear-gradient(135deg, #E85D75 0%, #c4455a 100%)",
+    headerBg:      "linear-gradient(160deg, #a8324a 0%, #E85D75 60%, #f08a9e 100%)",
+    ribbonLabel:   "ART JAMMING",
+    emailSubject:  "Your Unguided Art Jamming Session – The Cat Cafe Singapore"
+  },
+  "artjam-semi-55": {
+    label:         "Semi-Guided Art Jamming Session",
+    tier:          "Art Jamming Premium",
+    tagline:       "Elevated creativity with guidance, treats, and purrs",
+    perks: [
+      { text: "3 hours of guided art jamming session" },
+      { text: "Free upgraded drinks" },
+      { text: "A slice of cake" },
+      { text: "All art materials provided" },
+      { text: "Unlimited time with our cats" },
+      { text: "📅 Booking recommended before visiting" }
+    ],
+    accentColor:   "#6B5B95",
+    accentLight:   "#F0EDF7",
+    darkColor:     "#524575",
+    badgeGradient: "linear-gradient(135deg, #6B5B95 0%, #524575 100%)",
+    headerBg:      "linear-gradient(160deg, #3d2f66 0%, #6B5B95 60%, #9a8abf 100%)",
+    ribbonLabel:   "ART JAMMING PREMIUM",
+    emailSubject:  "Your Semi-Guided Art Jamming Session – The Cat Cafe Singapore"
   }
 };
 
@@ -310,7 +349,6 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
@@ -390,7 +428,6 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
@@ -478,7 +515,6 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
       ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">👑 Your Voucher Code</div>`}
       <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
-      <div style="margin:8px 0;"><img src="cid:qr-code-${i}@catcafe" width="130" height="130" alt="QR Code" style="display:block;margin:0 auto;border:3px solid #fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"><div style="font-size:11px;color:#666;margin-top:6px;font-weight:600;">📷 Staff: Scan QR code with camera to redeem</div></div>
       <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
     </div>`).join("");
 
@@ -554,6 +590,7 @@ function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry
   const def = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
   if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message);
   if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message);
+  // Art jamming vouchers use the standard email template
   return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message);
 }
 
@@ -706,7 +743,7 @@ exports.handler = async (event) => {
     }
 
     const ref = params.reference_number || "";
-    const typeMatch = ref.match(/^VC-(standard-22|premium-30|ultimate-40)(?:-qty(\d+))?-\d+$/);
+    const typeMatch = ref.match(/^VC-(standard-22|premium-30|ultimate-40|artjam-unguided-40|artjam-semi-55)(?:-qty(\d+))?-\d+$/);
     const voucherType = typeMatch ? typeMatch[1] : "standard-22";
     const qty         = typeMatch && typeMatch[2] ? parseInt(typeMatch[2], 10) : 1;
     const def         = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
