@@ -580,6 +580,11 @@ function sendEmail(to, subject, html, attachments = []) {
 
 // ── Batch save multiple voucher records to GitHub ──
 async function saveVouchers(newVouchers) {
+  if (!GITHUB_REPO || !GITHUB_TOKEN) {
+    console.error("GITHUB_REPO or GITHUB_TOKEN not configured - cannot save vouchers to GitHub");
+    throw new Error("GitHub repository credentials not configured. Please set GITHUB_REPO and GITHUB_TOKEN in Netlify environment variables.");
+  }
+  
   const current = await new Promise((resolve) => {
     const options = {
       hostname: "api.github.com",
@@ -739,8 +744,13 @@ exports.handler = async (event) => {
       payment_id:     params.payment_request_id || ref
     }));
 
-    await saveVouchers(voucherRecords);
-    console.log(`${qty} voucher record(s) saved to GitHub`);
+    try {
+      await saveVouchers(voucherRecords);
+      console.log(`${qty} voucher record(s) saved to GitHub`);
+    } catch(saveErr) {
+      console.error("Failed to save vouchers to GitHub:", saveErr.message);
+      // Continue with email sending even if GitHub save fails
+    }
 
     // 3. Send customer email with inline QR codes & PDF attachments
     if (RESEND_API_KEY && buyerEmail) {
