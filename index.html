@@ -639,6 +639,39 @@
         <div class="voucher-total" id="total-ultimate-40">Total: S$40</div>
       </div>
 
+      <!-- UNGUIDED ART JAMMING -->
+      <div class="voucher-card" id="vc-artjam-unguided-40" onclick="selectVoucher('artjam-unguided-40')">
+        <div class="voucher-emoji">🎨</div>
+        <div class="voucher-name">Unguided Art Jamming Session</div>
+        <div class="voucher-desc">2 hours art jamming with free upgraded drinks and all materials. 📅 Booking recommended.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-unguided-40',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-artjam-unguided-40">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-unguided-40',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-artjam-unguided-40">Total: S$40</div>
+      </div>
+
+      <!-- SEMI-GUIDED ART JAMMING -->
+      <div class="voucher-card" id="vc-artjam-semi-55" onclick="selectVoucher('artjam-semi-55')">
+        <div class="voucher-popular">Includes cake</div>
+        <div class="voucher-emoji">🖌️</div>
+        <div class="voucher-name">Semi-Guided Art Jamming Session</div>
+        <div class="voucher-desc">3 hours guided art jamming with free upgraded drinks, slice of cake and all materials. 📅 Booking recommended.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-semi-55',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-artjam-semi-55">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-semi-55',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-artjam-semi-55">Total: S$55</div>
+      </div>
+
     </div>
 
     <div class="voucher-form" id="voucher-form">
@@ -1025,14 +1058,14 @@ if (window.location.search.includes('donated=true')) {
 
 /* ── VOUCHERS ── */
 var selectedVoucher = null;
-var voucherQty = { "standard-22": 1, "premium-30": 1, "ultimate-40": 1 };
+var voucherQty = { "standard-22": 1, "premium-30": 1, "ultimate-40": 1, "artjam-unguided-40": 1, "artjam-semi-55": 1 };
 
 function selectVoucher(type) {
   selectedVoucher = type;
   document.querySelectorAll(".voucher-card").forEach(function(c) { c.classList.remove("selected"); });
   document.getElementById("vc-" + type).classList.add("selected");
   var total = getVoucherTotal(type);
-  var labels = { "standard-22": "Standard Entrance Ticket", "premium-30": "Premium Entrance Ticket", "ultimate-40": "Ultimate Entrance Ticket" };
+  var labels = { "standard-22": "Standard Entrance Ticket", "premium-30": "Premium Entrance Ticket", "ultimate-40": "Ultimate Entrance Ticket", "artjam-unguided-40": "Unguided Art Jamming Session", "artjam-semi-55": "Semi-Guided Art Jamming Session" };
   document.getElementById("voucher-form-title").textContent = "Purchase: " + labels[type];
   document.getElementById("voucher-form-fields").style.display = "block";
   document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
@@ -1040,7 +1073,7 @@ function selectVoucher(type) {
 }
 
 function getVoucherTotal(type) {
-  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
   return prices[type] * (voucherQty[type] || 1);
 }
 
@@ -1055,7 +1088,7 @@ function changeQty(type, dir) {
 }
 
 function updateVoucherTotal(type) {
-  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
   var price = prices[type];
   var total = getVoucherTotal(type);
   var label = voucherQty[type] + " ticket" + (voucherQty[type] > 1 ? "s" : "") + " × S$" + price;
@@ -1074,7 +1107,7 @@ async function purchaseVoucher() {
 
   var qty   = voucherQty[selectedVoucher] || 1;
   var total = getVoucherTotal(selectedVoucher);
-  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40 };
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
   var unitAmt = prices[selectedVoucher];
 
   var btn = document.getElementById("voucher-submit-btn");

@@ -386,8 +386,9 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or let staff scan your QR code on arrival<br>
-      3. Staff will instantly verify and mark your ticket as redeemed
+      2. Show this email or your voucher code on arrival<br>
+      3. Staff will instantly verify and mark your ticket as redeemed<br>
+      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -472,9 +473,10 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or let staff scan your QR code on arrival<br>
+      2. Show this email or your voucher code on arrival<br>
       3. Choose your premium drink and dessert from our menu<br>
-      4. Enjoy your time with our wonderful cats!
+      4. Enjoy your time with our wonderful cats!<br>
+      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -558,9 +560,10 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
     <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
-      2. Show this email or let staff scan your QR code on arrival<br>
+      2. Show this email or your voucher code on arrival<br>
       3. Choose your premium drink, dessert, and main course from our menu<br>
-      4. Sit back, relax, and enjoy the full cat café experience!
+      4. Sit back, relax, and enjoy the full cat café experience!<br>
+      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -805,9 +808,9 @@ exports.handler = async (event) => {
       // Continue with email sending even if GitHub save fails
     }
 
-    // 3. Send customer email with inline QR codes & PDF attachments
+    // 3. Send customer email with PDF attachments (no inline QR codes as they don't render in emails)
     if (RESEND_API_KEY && buyerEmail) {
-      // Build attachments array: PDF files + inline QR code images
+      // Build attachments array: PDF files only (QR codes kept in PDFs, not as separate inline images)
       const attachments = [];
       
       // Add PDF attachments
@@ -819,15 +822,10 @@ exports.handler = async (event) => {
           content: t.pdfBuffer.toString("base64")
         });
       });
-      
-      // Add inline QR code images for email body
-      tickets.forEach((t, i) => {
-        attachments.push(t.qrInlineObj);
-      });
 
       const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, "");
       await sendEmail(buyerEmail, def.emailSubject, html, attachments);
-      console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} attachment(s) (${tickets.length} PDFs + ${tickets.length} QR codes)`);
+      console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
     } else {
       console.warn("Resend not configured or no buyer email — skipping customer email");
     }
