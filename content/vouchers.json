@@ -236,5 +236,19 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-ultimate-40-qty3-1786597683156"
+  },
+  {
+    "code": "TCC-PWY8-442X-3XZH",
+    "type": "standard-22",
+    "label": "Standard Entrance Ticket",
+    "amount": "112.75",
+    "buyer_name": "jefferson",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jefferson",
+    "issued_at": "2026-08-13T05:14:59.013Z",
+    "expires_at": "2027-08-13T05:14:59.013Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty2-1786598074538"
   }
 ]
