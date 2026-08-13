@@ -75,8 +75,7 @@ const VOUCHER_DEFS = {
       { text: "2 hours of art jamming session" },
       { text: "Free upgraded drinks" },
       { text: "All art materials provided" },
-      { text: "Unlimited time with our cats" },
-      { text: "📅 Booking recommended before visiting" }
+      { text: "Unlimited time with our cats" }
     ],
     accentColor:   "#E85D75",
     accentLight:   "#FDE8EC",
@@ -95,8 +94,7 @@ const VOUCHER_DEFS = {
       { text: "Free upgraded drinks" },
       { text: "A slice of cake" },
       { text: "All art materials provided" },
-      { text: "Unlimited time with our cats" },
-      { text: "📅 Booking recommended before visiting" }
+      { text: "Unlimited time with our cats" }
     ],
     accentColor:   "#6B5B95",
     accentLight:   "#F0EDF7",
@@ -388,7 +386,6 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
       1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
       2. Show this email or your voucher code on arrival<br>
       3. Staff will instantly verify and mark your ticket as redeemed<br>
-      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -476,7 +473,6 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
       2. Show this email or your voucher code on arrival<br>
       3. Choose your premium drink and dessert from our menu<br>
       4. Enjoy your time with our wonderful cats!<br>
-      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -563,7 +559,86 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
       2. Show this email or your voucher code on arrival<br>
       3. Choose your premium drink, dessert, and main course from our menu<br>
       4. Sit back, relax, and enjoy the full cat café experience!<br>
-      <strong style="color:${accentColor};">📅 Booking recommended before visiting</strong>
+    </div>
+
+    <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
+      <strong style="color:#666;">Terms & Conditions:</strong> Valid for 12 months from date of purchase. Non-transferable. Non-refundable. Cannot be exchanged for cash. One redemption per code. Subject to availability.
+    </div>
+  </div>
+
+  <div style="background:#1a1a1a;border-radius:0 0 16px 16px;padding:24px 40px;text-align:center;">
+    <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">The Cat Cafe Singapore</div>
+    <div style="font-size:12px;color:#888;line-height:2.0;margin-bottom:12px;">
+      241B Victoria Street, Level 3, Singapore 188030<br>
+      +65 6338 6815 &middot; <a href="mailto:info@thecatcafe.sg" style="color:${accentColor};text-decoration:none;">info@thecatcafe.sg</a>
+    </div>
+    <div style="font-size:12px;">
+      <a href="https://thecatcafe.sg" style="color:${accentColor};text-decoration:none;margin:0 8px;">thecatcafe.sg</a>
+      &middot;
+      <a href="https://www.instagram.com/sgcatcafe" style="color:${accentColor};text-decoration:none;margin:0 8px;">@sgcatcafe</a>
+    </div>
+  </div>
+
+</div>
+</body></html>`;
+}
+
+// ── Build Art Jamming email ──
+function buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message) {
+  const { accentColor, accentLight, badgeGradient, headerBg } = def;
+  const isGift = buyerName !== recipientName;
+  const isMulti = tickets.length > 1;
+  const perksHTML = def.perks.map(p =>
+    `<tr>
+      <td style="padding:7px 0;font-size:18px;width:28px;text-align:center;color:${accentColor};">&#x2713;</td>
+      <td style="padding:7px 0 7px 8px;font-size:14px;color:#2d2d2d;font-weight:500;">${p.text}</td>
+    </tr>`
+  ).join("");
+
+  const codeSection = tickets.map((t, i) => `
+    <div style="background:${accentLight};border:2px dashed ${accentColor};border-radius:12px;padding:20px;text-align:center;margin-bottom:16px;">
+      ${isMulti ? `<div style="font-size:11px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:6px;">Ticket ${i + 1} of ${tickets.length}</div>` : `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:${accentColor};margin-bottom:6px;">Your Voucher Code</div>`}
+      <div style="font-size:26px;font-weight:800;letter-spacing:0.18em;color:#1a1a1a;font-family:'Courier New',Courier,monospace;background:#fff;padding:10px 20px;border-radius:8px;border:1.5px solid ${accentColor};display:inline-block;margin-bottom:12px;">${t.code}</div>
+      <div style="margin-top:8px;font-size:12px;color:#888;">Valid until <strong style="color:#555;">${expiry}</strong></div>
+    </div>`).join("");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${def.label} – The Cat Cafe</title>
+</head>
+<body style="margin:0;padding:16px 0;background:#fde8ec;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
+<div style="max-width:580px;margin:0 auto;">
+
+  <div style="background:${headerBg};border-radius:16px 16px 0 0;padding:20px 40px 20px;text-align:center;position:relative;overflow:hidden;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.75);text-transform:uppercase;margin-bottom:8px;">The Cat Cafe Singapore</div>
+    <div style="font-size:26px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.5px;">${def.label}</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.8);">${def.tagline}</div>
+  </div>
+
+  <div style="background:#ffffff;padding:24px 40px;">
+    <div style="font-size:15px;color:#444;margin-bottom:${message ? '18px' : '24px'};">
+      Dear <strong style="color:#1a1a1a;">${recipientName}</strong>,<br>
+      ${isGift ? `<em>${buyerName}</em> has gifted you a creative cat café experience! 🎁🎨` : `Your art jamming cat café visit is all set – get ready to create! 🎨🐾`}
+    </div>
+
+    ${message ? `<div style="background:${accentLight};border-left:4px solid ${accentColor};border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:24px;font-size:14px;color:#333;line-height:1.6;font-style:italic;">"${message}"</div>` : ""}
+
+    <div style="background:${badgeGradient};border-radius:8px;padding:5px 12px;display:inline-block;margin-bottom:20px;">
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#fff;text-transform:uppercase;">${def.ribbonLabel} TIER</span>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:10px;">What's included</div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">${perksHTML}</table>
+
+    ${codeSection}
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#999;margin-bottom:8px;">How to Redeem</div>
+    <div style="font-size:13px;color:#555;line-height:2.0;margin-bottom:24px;">
+      1. Visit us at <strong>241B Victoria Street, Level 3, Bugis</strong> (near Bugis MRT)<br>
+      2. Show this email or your voucher code on arrival<br>
+      3. Staff will verify and prepare your art materials<br>
+      4. Let your creativity flow with our cats by your side!<br>
     </div>
 
     <div style="background:#f9f9f9;border-radius:8px;padding:12px 16px;font-size:12px;color:#888;line-height:1.8;">
@@ -593,7 +668,9 @@ function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry
   const def = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
   if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message);
   if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message);
-  // Art jamming and standard vouchers use the standard email template
+  if (voucherType === "artjam-semi-55") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message);
+  if (voucherType === "artjam-unguided-40") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message);
+  // Standard vouchers use the standard email template
   return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message);
 }
 
