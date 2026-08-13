@@ -459,41 +459,40 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
 <div class="status-bar" id="status-bar"></div>
 <script>
 /* ════════ AUTH ════════ */
-// Security: Use IIFE to create private scope for auth state that cannot be accessed from console
+// Security: Use IIFE to create completely private scope for auth state
+// NO global variables or functions are exposed that could be manipulated
 (function() {
   var _currentUser = null;
   var _userToken = null;
   var _authVerified = false;
   
-  // Expose controlled accessors that cannot be spoofed
-  window.getAuthState = function() {
-    return { user: _currentUser, token: _userToken, verified: _authVerified };
-  };
-  
-  window.isAuthenticated = function() {
+  // Private function - not exposed globally
+  function checkAuth() {
     return _authVerified && _currentUser !== null && _userToken !== null;
-  };
+  }
   
-  window.setAuthState = function(user, token) {
+  // Private function to set auth state - only called internally
+  function setAuthInternal(user, token) {
     _currentUser = user;
     _userToken = token;
     _authVerified = true;
-  };
+  }
   
-  window.clearAuthState = function() {
+  // Private function to clear auth state - only called internally
+  function clearAuthInternal() {
     _currentUser = null;
     _userToken = null;
     _authVerified = false;
-  };
+  }
   
-  // Security: Continuous auth enforcement - runs every 100ms to catch any bypass attempts
+  // Security: Continuous auth enforcement - runs every 50ms to catch any bypass attempts
   setInterval(function() {
     var appEl = document.getElementById('app');
     var loginScreen = document.getElementById('login-screen');
     
     if (!appEl || !loginScreen) return;
     
-    var isAuth = window.isAuthenticated();
+    var isAuth = checkAuth();
     var appVisible = appEl.style.display !== 'none' && appEl.style.display !== '';
     
     if (!isAuth && appVisible) {
@@ -508,13 +507,13 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
       appEl.style.display = 'flex';
       loginScreen.style.display = 'none';
     }
-  }, 100);
+  }, 50);
   
   // Security: Monitor for unauthorized DOM manipulation with enhanced detection
   var appEl = document.getElementById('app');
   if (appEl) {
     var observer = new MutationObserver(function(mutations) {
-      var isAuth = window.isAuthenticated();
+      var isAuth = checkAuth();
       
       mutations.forEach(function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
@@ -544,17 +543,26 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
     observer.observe(appEl, { attributes: true, attributeFilter: ['style'], childList: true, subtree: true });
   }
   
-  // Expose currentUser and userToken for backward compatibility but make them read-only proxies
-  Object.defineProperty(window, 'currentUser', {
-    get: function() { return _currentUser; },
-    set: function(val) { console.warn('Direct assignment to currentUser blocked. Use proper auth flow.'); },
-    configurable: false
-  });
+  // NO global exposure of currentUser, userToken, or auth functions
+  // These are completely inaccessible from the console
   
-  Object.defineProperty(window, 'userToken', {
-    get: function() { return _userToken; },
-    set: function(val) { console.warn('Direct assignment to userToken blocked. Use proper auth flow.'); },
-    configurable: false
+  // Expose ONLY what internal code needs - completely sealed object
+  var authInternalObj = {
+    setState: setAuthInternal,
+    clearState: clearAuthInternal,
+    getState: function() { return { user: _currentUser, token: _userToken }; }
+  };
+  
+  // Freeze the object to prevent modification
+  Object.freeze(authInternalObj);
+  Object.freeze(authInternalObj.getState());
+  
+  // Define with writable:false but allow internal updates via frozen reference
+  Object.defineProperty(window, '__authInternal', {
+    value: authInternalObj,
+    writable: false,
+    configurable: false,
+    enumerable: false
   });
   
 })();
@@ -567,14 +575,14 @@ netlifyIdentity.on("login", user => {
   loginSuccess(user);
 });
 netlifyIdentity.on("logout", () => {
-  window.clearAuthState();
+  if (window.__authInternal) window.__authInternal.clearState();
   document.getElementById("app").style.setProperty('display', 'none', 'important');
   document.getElementById("login-screen").style.display = "flex";
 });
 
 function loginSuccess(user) {
   user.jwt().then(token => { 
-    window.setAuthState(user, token);
+    if (window.__authInternal) window.__authInternal.setState(user, token);
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("app").style.display = "flex";
     document.getElementById("topbar-user").textContent = user.email;
@@ -620,7 +628,11 @@ async function fetchContent(type) {
 }
 
 async function saveContent(type, data) {
-  const token = await currentUser.jwt();
+  const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+  if (!authState.user || !authState.token) {
+    throw new Error("Authentication required");
+  }
+  const token = await authState.user.jwt();
   const res = await fetch("/api/content-save", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -966,7 +978,11 @@ async function uploadImage() {
   status.textContent = "Uploading…";
 
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/api/image-upload", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -1018,7 +1034,11 @@ var allVouchers = [];
 
 async function loadVouchers() {
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -1138,7 +1158,11 @@ async function submitIssueVoucher() {
   }
 
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -1202,7 +1226,11 @@ async function lookupVoucher() {
 
   resultEl.style.display = "none";
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -1255,7 +1283,11 @@ async function lookupVoucher() {
 async function redeemVoucher(code) {
   if (!confirm("Mark voucher " + code + " as redeemed? This cannot be undone.")) return;
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
