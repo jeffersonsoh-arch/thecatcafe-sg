@@ -264,5 +264,19 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-artjam-unguided-40-qty2-1786598228585"
+  },
+  {
+    "code": "TCC-4J4Y-WMVQ-9URS",
+    "type": "standard-22",
+    "label": "Standard Entrance Ticket",
+    "amount": "112.75",
+    "buyer_name": "jefferson",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jefferson",
+    "issued_at": "2026-08-13T14:31:31.549Z",
+    "expires_at": "2027-08-13T14:31:31.549Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty2-1786631462103"
   }
 ]
