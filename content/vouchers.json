@@ -239,8 +239,8 @@
   },
   {
     "code": "TCC-PWY8-442X-3XZH",
-    "type": "standard-22",
-    "label": "Standard Entrance Ticket",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
     "amount": "112.75",
     "buyer_name": "jefferson",
     "buyer_email": "jefferson.soh@gmail.com",
@@ -253,8 +253,8 @@
   },
   {
     "code": "TCC-J3GM-ZZHB-XC3M",
-    "type": "standard-22",
-    "label": "Standard Entrance Ticket",
+    "type": "artjam-unguided-40",
+    "label": "Unguided Art Jamming Session",
     "amount": "82.00",
     "buyer_name": "jefferson",
     "buyer_email": "jefferson.soh@gmail.com",
