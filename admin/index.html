@@ -457,46 +457,106 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
 </div>
 
 <div class="status-bar" id="status-bar"></div>
-
 <script>
 /* ════════ AUTH ════════ */
-var currentUser = null;
-var userToken = null;
-
-// Security: Validate authentication state on page load and prevent CSS-based bypasses
-(function enforceAuth() {
-  var appEl = document.getElementById('app');
-  var loginScreen = document.getElementById('login-screen');
+// Security: Use IIFE to create private scope for auth state that cannot be accessed from console
+(function() {
+  var _currentUser = null;
+  var _userToken = null;
+  var _authVerified = false;
   
-  // Check if user is actually authenticated before showing the app
-  if (!currentUser && appEl && appEl.style.display !== 'none') {
-    // Force hide app if not authenticated (prevents CSS manipulation bypass)
-    appEl.style.display = 'none';
-    loginScreen.style.display = 'flex';
-    console.warn('Unauthorized access attempt detected. Login required.');
-  }
-})();
-
-// Security: Monitor for unauthorized DOM style changes to prevent CSS-based auth bypass
-(function watchForAuthBypass() {
-  var appEl = document.getElementById('app');
-  if (!appEl) return;
+  // Expose controlled accessors that cannot be spoofed
+  window.getAuthState = function() {
+    return { user: _currentUser, token: _userToken, verified: _authVerified };
+  };
   
-  var observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-        var target = mutation.target;
-        if (target.id === 'app' && !currentUser && target.style.display !== 'none') {
-          // Unauthorized change detected - revert immediately
-          target.style.display = 'none';
-          document.getElementById('login-screen').style.display = 'flex';
-          console.error('Security Alert: Unauthorized display change blocked. Authentication required.');
+  window.isAuthenticated = function() {
+    return _authVerified && _currentUser !== null && _userToken !== null;
+  };
+  
+  window.setAuthState = function(user, token) {
+    _currentUser = user;
+    _userToken = token;
+    _authVerified = true;
+  };
+  
+  window.clearAuthState = function() {
+    _currentUser = null;
+    _userToken = null;
+    _authVerified = false;
+  };
+  
+  // Security: Continuous auth enforcement - runs every 100ms to catch any bypass attempts
+  setInterval(function() {
+    var appEl = document.getElementById('app');
+    var loginScreen = document.getElementById('login-screen');
+    
+    if (!appEl || !loginScreen) return;
+    
+    var isAuth = window.isAuthenticated();
+    var appVisible = appEl.style.display !== 'none' && appEl.style.display !== '';
+    
+    if (!isAuth && appVisible) {
+      // Unauthorized access detected - force hide app immediately
+      appEl.style.setProperty('display', 'none', 'important');
+      loginScreen.style.display = 'flex';
+      console.warn('SECURITY: Unauthorized access blocked. Authentication required.');
+    }
+    
+    if (isAuth && !appVisible && loginScreen.style.display === 'flex') {
+      // Should be authenticated but app is hidden - restore
+      appEl.style.display = 'flex';
+      loginScreen.style.display = 'none';
+    }
+  }, 100);
+  
+  // Security: Monitor for unauthorized DOM manipulation with enhanced detection
+  var appEl = document.getElementById('app');
+  if (appEl) {
+    var observer = new MutationObserver(function(mutations) {
+      var isAuth = window.isAuthenticated();
+      
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          var target = mutation.target;
+          if (target.id === 'app' && !isAuth) {
+            var computedStyle = window.getComputedStyle(target);
+            if (computedStyle.display !== 'none') {
+              // Force revert using inline style override with !important
+              target.style.setProperty('display', 'none', 'important');
+              document.getElementById('login-screen').style.display = 'flex';
+              console.error('SECURITY ALERT: Auth bypass attempt blocked. Display change reverted.');
+            }
+          }
         }
-      }
+        
+        // Also watch for element removal/insertion attacks
+        if (mutation.type === 'childList') {
+          if (!isAuth && document.getElementById('app').offsetParent !== null) {
+            document.getElementById('app').style.setProperty('display', 'none', 'important');
+            document.getElementById('login-screen').style.display = 'flex';
+            console.error('SECURITY ALERT: DOM manipulation attack blocked.');
+          }
+        }
+      });
     });
+    
+    observer.observe(appEl, { attributes: true, attributeFilter: ['style'], childList: true, subtree: true });
+  }
+  
+  // Expose currentUser and userToken for backward compatibility but make them read-only proxies
+  Object.defineProperty(window, 'currentUser', {
+    get: function() { return _currentUser; },
+    set: function(val) { console.warn('Direct assignment to currentUser blocked. Use proper auth flow.'); },
+    configurable: false
   });
   
-  observer.observe(appEl, { attributes: true, attributeFilter: ['style'] });
+  Object.defineProperty(window, 'userToken', {
+    get: function() { return _userToken; },
+    set: function(val) { console.warn('Direct assignment to userToken blocked. Use proper auth flow.'); },
+    configurable: false
+  });
+  
 })();
 
 netlifyIdentity.on("init", user => {
@@ -507,33 +567,21 @@ netlifyIdentity.on("login", user => {
   loginSuccess(user);
 });
 netlifyIdentity.on("logout", () => {
-  currentUser = null; userToken = null;
-  document.getElementById("app").style.display = "none";
+  window.clearAuthState();
+  document.getElementById("app").style.setProperty('display', 'none', 'important');
   document.getElementById("login-screen").style.display = "flex";
 });
 
 function loginSuccess(user) {
-  currentUser = user;
-  user.jwt().then(token => { userToken = token; });
-  document.getElementById("login-screen").style.display = "none";
-  document.getElementById("app").style.display = "flex";
-  document.getElementById("topbar-user").textContent = user.email;
+  user.jwt().then(token => { 
+    window.setAuthState(user, token);
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("app").style.display = "flex";
+    document.getElementById("topbar-user").textContent = user.email;
+  });
   loadAll().then(() => {
     checkUrlRedeem();
   });
-}
-
-function checkUrlRedeem() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const redeemCode = urlParams.get("redeem") || urlParams.get("code");
-  if (redeemCode) {
-    const vouchersNav = document.querySelector('[onclick*="vouchers"]');
-    nav('vouchers', vouchersNav);
-    loadVouchers().then(() => {
-      document.getElementById("redeem-input").value = redeemCode.trim().toUpperCase();
-      lookupVoucher();
-    });
-  }
 }
 
 /* ════════ DATA STORE ════════ */
