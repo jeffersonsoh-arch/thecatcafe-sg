@@ -840,7 +840,7 @@ exports.handler = async (event) => {
 
     const ref = params.reference_number || "";
     const typeMatch = ref.match(/^VC-(standard-22|premium-30|ultimate-40|artjam-unguided-40|artjam-semi-55)(?:-qty(\d+))?-\d+$/);
-    const voucherType = typeMatch ? typeMatch[1] : "standard-22";
+    const voucherType = typeMatch ? typeMatch[1] : (ref.includes("artjam-semi") ? "artjam-semi-55" : ref.includes("artjam-unguided") ? "artjam-unguided-40" : "standard-22");
     const qty         = typeMatch && typeMatch[2] ? parseInt(typeMatch[2], 10) : 1;
     const def         = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
     const label       = def.label;
