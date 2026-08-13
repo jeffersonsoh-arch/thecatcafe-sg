@@ -30,21 +30,24 @@ function generateCode() {
 
 async function getVouchers() {
   return new Promise((resolve) => {
-    // First, try to read from local file (works in development and as fallback)
-    const localPath = path.join(__dirname, "../../content/vouchers.json");
+    // Use absolute path that works in both local development and Netlify deployment
+    const localPath = path.resolve(__dirname, '../../content/vouchers.json');
     let localVouchers = [];
     try {
       if (fs.existsSync(localPath)) {
         const content = fs.readFileSync(localPath, "utf8");
         localVouchers = JSON.parse(content);
+        console.log("Loaded", localVouchers.length, "vouchers from local file");
+      } else {
+        console.warn("Local vouchers.json not found at:", localPath);
       }
     } catch(e) {
-      console.warn("Could not read local vouchers.json:", e.message);
+      console.error("Could not read local vouchers.json:", e.message);
     }
     
     // If GitHub credentials are configured, fetch from GitHub (source of truth)
     if (!GITHUB_REPO || !GITHUB_TOKEN) {
-      console.warn("GITHUB_REPO or GITHUB_TOKEN not configured in Netlify env vars, using local file");
+      console.log("GitHub credentials not configured, using local file with", localVouchers.length, "vouchers");
       return resolve({ sha: null, vouchers: localVouchers });
     }
     const options = {
@@ -74,19 +77,19 @@ async function getVouchers() {
 
 async function saveVouchers(vouchers, sha) {
   const content = JSON.stringify(vouchers, null, 2);
-  const localPath = path.join(__dirname, "../../content/vouchers.json");
+  const localPath = path.resolve(__dirname, '../../content/vouchers.json');
   
   // Always save to local file first (for immediate effect and as backup)
   try {
     fs.writeFileSync(localPath, content, "utf8");
-    console.log("Vouchers saved to local file:", localPath);
+    console.log("Vouchers saved to local file:", localPath, "- Total:", vouchers.length);
   } catch(e) {
     console.error("Failed to save local vouchers.json:", e.message);
   }
   
   // If GitHub credentials are configured, also push to GitHub
   if (!GITHUB_REPO || !GITHUB_TOKEN) {
-    console.warn("GITHUB_REPO or GITHUB_TOKEN not configured - vouchers saved locally only");
+    console.log("GitHub credentials not configured - vouchers saved locally only");
     return { saved: true, local: true };
   }
   
