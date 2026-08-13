@@ -110,5 +110,19 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-ultimate-40-qty3-1786592338040"
+  },
+  {
+    "code": "TCC-R7Z5-7YKB-49K4",
+    "type": "ultimate-40",
+    "label": "Ultimate Entrance Ticket",
+    "amount": "41.00",
+    "buyer_name": "jefferson",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jefferson",
+    "issued_at": "2026-08-13T04:48:29.371Z",
+    "expires_at": "2027-08-13T04:48:29.371Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-ultimate-40-qty1-1786596483204"
   }
 ]
