@@ -569,11 +569,11 @@ function renderDash() {
 function renderCatsList() {
   document.getElementById("cats-list").innerHTML = DATA.cats.map((cat, idx) => `
     <div class="item-row">
-      <img class="item-row-thumb" src="${cat.img}" alt="${cat.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <img class="item-row-thumb" src="${escapeHTML(cat.img)}" alt="${escapeHTML(cat.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="item-row-thumb-placeholder" style="display:none;">🐱</div>
       <div class="item-row-body">
-        <div class="item-row-name">${cat.name}</div>
-        <div class="item-row-meta">${cat.tags.join(", ")} · ${cat.desc.slice(0,60)}…</div>
+        <div class="item-row-name">${escapeHTML(cat.name)}</div>
+        <div class="item-row-meta">${cat.tags.map(escapeHTML).join(", ")} · ${escapeHTML(cat.desc.slice(0,60))}…</div>
       </div>
       <div class="item-row-actions">
         <button class="btn-sm btn-indigo" onclick="openCatModal(${idx})">Edit</button>
@@ -660,12 +660,12 @@ function renderMenuList() {
   document.getElementById("menu-list").innerHTML = list.map(item => {
     const idx = DATA.menu.indexOf(item);
     return `<div class="item-row">
-      <div class="item-row-thumb-placeholder">${item.emoji}</div>
+      <div class="item-row-thumb-placeholder">${escapeHTML(item.emoji)}</div>
       <div class="item-row-body">
-        <div class="item-row-name">${item.name}</div>
-        <div class="item-row-meta">${catLabels[item.cat]} · ${item.desc}</div>
+        <div class="item-row-name">${escapeHTML(item.name)}</div>
+        <div class="item-row-meta">${catLabels[item.cat]} · ${escapeHTML(item.desc)}</div>
       </div>
-      <div class="item-row-price">${item.price}</div>
+      <div class="item-row-price">${escapeHTML(item.price)}</div>
       <div class="item-row-actions">
         <button class="btn-sm btn-indigo" onclick="openMenuModal(${idx})">Edit</button>
         <button class="btn-sm btn-danger" onclick="deleteMenuItem(${idx})">Delete</button>
@@ -727,9 +727,9 @@ function renderHours() {
     `<tr><th>Day</th><th>Opens</th><th>Closes</th><th>Closed</th></tr>` +
     (DATA.settings.hours||[]).map((h, i) => `
       <tr>
-        <td><span class="day-name">${h.day}</span></td>
-        <td><input type="time" id="h-open-${i}" value="${h.open}" ${h.closed?"disabled":""}></td>
-        <td><input type="time" id="h-close-${i}" value="${h.close}" ${h.closed?"disabled":""}></td>
+        <td><span class="day-name">${escapeHTML(h.day)}</span></td>
+        <td><input type="time" id="h-open-${i}" value="${escapeHTML(h.open)}" ${h.closed?"disabled":""}></td>
+        <td><input type="time" id="h-close-${i}" value="${escapeHTML(h.close)}" ${h.closed?"disabled":""}></td>
         <td>
           <label class="toggle">
             <input type="checkbox" id="h-closed-${i}" ${h.closed?"checked":""} onchange="toggleDay(${i},this.checked)">
@@ -763,10 +763,10 @@ function renderPricing() {
     (DATA.settings.pricing||[]).map((p, i) => `
       <div class="item-row" style="margin-bottom:8px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
-          <input type="text" id="p-label-${i}" value="${p.label}" placeholder="Label">
-          <input type="text" id="p-note-${i}" value="${p.note}" placeholder="Note (optional)">
+          <input type="text" id="p-label-${i}" value="${escapeHTML(p.label)}" placeholder="Label">
+          <input type="text" id="p-note-${i}" value="${escapeHTML(p.note)}" placeholder="Note (optional)">
         </div>
-        <input type="text" id="p-price-${i}" value="${p.price}" placeholder="Price" style="width:90px;flex-shrink:0;">
+        <input type="text" id="p-price-${i}" value="${escapeHTML(p.price)}" placeholder="Price" style="width:90px;flex-shrink:0;">
         <button class="btn-sm btn-danger" onclick="deletePricingRow(${i})">Delete</button>
       </div>`).join("");
 }
@@ -798,20 +798,20 @@ function renderInfo() {
   const info = DATA.settings.info || {};
   document.getElementById("info-form").innerHTML = `
     <div class="fg2">
-      <div class="field"><label>Cafe name</label><input type="text" id="inf-name" value="${info.name||""}"></div>
-      <div class="field"><label>Phone</label><input type="text" id="inf-phone" value="${info.phone||""}"></div>
+      <div class="field"><label>Cafe name</label><input type="text" id="inf-name" value="${escapeHTML(info.name)||""}"></div>
+      <div class="field"><label>Phone</label><input type="text" id="inf-phone" value="${escapeHTML(info.phone)||""}"></div>
     </div>
-    <div class="field"><label>Address</label><input type="text" id="inf-address" value="${info.address||""}"></div>
+    <div class="field"><label>Address</label><input type="text" id="inf-address" value="${escapeHTML(info.address)||""}"></div>
     <div class="fg2">
-      <div class="field"><label>Email</label><input type="email" id="inf-email" value="${info.email||""}"></div>
-      <div class="field"><label>WhatsApp number (digits only)</label><input type="text" id="inf-wa" value="${info.whatsapp||""}"></div>
+      <div class="field"><label>Email</label><input type="email" id="inf-email" value="${escapeHTML(info.email)||""}"></div>
+      <div class="field"><label>WhatsApp number (digits only)</label><input type="text" id="inf-wa" value="${escapeHTML(info.whatsapp)||""}"></div>
     </div>
     <div class="fg2">
-      <div class="field"><label>Instagram URL</label><input type="url" id="inf-ig" value="${info.instagram||""}"></div>
-      <div class="field"><label>Facebook URL</label><input type="url" id="inf-fb" value="${info.facebook||""}"></div>
+      <div class="field"><label>Instagram URL</label><input type="url" id="inf-ig" value="${escapeHTML(info.instagram)||""}"></div>
+      <div class="field"><label>Facebook URL</label><input type="url" id="inf-fb" value="${escapeHTML(info.facebook)||""}"></div>
     </div>
-    <div class="field"><label>Booking URL</label><input type="url" id="inf-booking" value="${info.booking_url||""}"></div>
-    <div class="field"><label>Google Maps URL</label><input type="url" id="inf-maps" value="${info.maps_url||""}"></div>`;
+    <div class="field"><label>Booking URL</label><input type="url" id="inf-booking" value="${escapeHTML(info.booking_url)||""}"></div>
+    <div class="field"><label>Google Maps URL</label><input type="url" id="inf-maps" value="${escapeHTML(info.maps_url)||""}"></div>`;
 }
 
 async function saveInfo() {
@@ -899,6 +899,13 @@ async function uploadImage() {
 }
 
 /* ════════ HELPERS ════════ */
+function escapeHTML(str) {
+  if (typeof str !== 'string') return str;
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 function closeModal(id) { document.getElementById(id).classList.remove("open"); }
 
 document.querySelectorAll(".modal-bg").forEach(el => {
@@ -1001,13 +1008,13 @@ function renderVouchersTable() {
         const status = v.redeemed ? "redeemed" : expired ? "expired" : "active";
         const statusLabel = v.redeemed ? "Redeemed" : expired ? "Expired" : "Active";
         return `<tr>
-          <td><span class="v-code" style="font-family:monospace;font-weight:700;letter-spacing:0.06em;background:var(--bg-3);padding:2px 6px;border-radius:4px;">${v.code}</span></td>
-          <td>${v.label} <span style="color:var(--rust);font-weight:600;">S$${v.amount}</span></td>
-          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v.buyer_name}<br><span style="color:var(--text-3);font-size:11px;">${v.buyer_email}</span></td>
+          <td><span class="v-code" style="font-family:monospace;font-weight:700;letter-spacing:0.06em;background:var(--bg-3);padding:2px 6px;border-radius:4px;">${escapeHTML(v.code)}</span></td>
+          <td>${escapeHTML(v.label)} <span style="color:var(--rust);font-weight:600;">S$${escapeHTML(v.amount)}</span></td>
+          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHTML(v.buyer_name)}<br><span style="color:var(--text-3);font-size:11px;">${escapeHTML(v.buyer_email)}</span></td>
           <td style="white-space:nowrap;font-size:12px;">${new Date(v.issued_at).toLocaleDateString("en-SG")}</td>
           <td style="white-space:nowrap;font-size:12px;">${new Date(v.expires_at).toLocaleDateString("en-SG")}</td>
           <td><span class="v-badge ${status}">${statusLabel}${v.redeemed ? "<br><span style='font-size:10px;font-weight:400;'>"+new Date(v.redeemed_at).toLocaleDateString("en-SG")+"</span>" : ""}</span></td>
-          <td>${status === "active" ? `<button class="btn-sm btn-success" onclick="redeemVoucher('${v.code}')">Redeem</button>` : ""}</td>
+          <td>${status === "active" ? `<button class="btn-sm btn-success" onclick="redeemVoucher('${escapeHTML(v.code.replace(/'/g, "\\'"))}')">Redeem</button>` : ""}</td>
         </tr>`;
       }).join("")}
     </table></div>`;
@@ -1121,10 +1128,10 @@ async function lookupVoucher() {
       } else {
         resultEl.className = "voucher-result ok";
         resultEl.innerHTML = `&#x2713; Valid voucher<br>
-          <strong>${v.label} — S$${v.amount}</strong><br>
-          Issued to: ${v.buyer_name} (${v.buyer_email})<br>
+          <strong>${escapeHTML(v.label)} — S$${escapeHTML(v.amount)}</strong><br>
+          Issued to: ${escapeHTML(v.buyer_name)} (${escapeHTML(v.buyer_email)})<br>
           Expires: ${new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}<br><br>
-          <button class="btn-sm btn-success" onclick="redeemVoucher('${v.code}')">&#x2713; Mark as redeemed</button>`;
+          <button class="btn-sm btn-success" onclick="redeemVoucher('${escapeHTML(v.code.replace(/'/g, "\\'"))}')">&#x2713; Mark as redeemed</button>`;
       }
     }
     resultEl.style.display = "block";
