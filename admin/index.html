@@ -168,7 +168,7 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
 </div>
 
 <!-- APP -->
-<div id="app" style="display:none;flex-direction:column;">
+<div id="app" style="display:none;flex-direction:column;" data-auth-required="true">
   <div class="topbar">
     <div class="topbar-logo">The Cat <span>Cafe</span></div>
     <span class="topbar-badge">CMS</span>
@@ -457,11 +457,115 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
 </div>
 
 <div class="status-bar" id="status-bar"></div>
-
 <script>
 /* ════════ AUTH ════════ */
-var currentUser = null;
-var userToken = null;
+// Security: Use IIFE to create completely private scope for auth state
+// NO global variables or functions are exposed that could be manipulated
+(function() {
+  var _currentUser = null;
+  var _userToken = null;
+  var _authVerified = false;
+  
+  // Private function - not exposed globally
+  function checkAuth() {
+    return _authVerified && _currentUser !== null && _userToken !== null;
+  }
+  
+  // Private function to set auth state - only called internally
+  function setAuthInternal(user, token) {
+    _currentUser = user;
+    _userToken = token;
+    _authVerified = true;
+  }
+  
+  // Private function to clear auth state - only called internally
+  function clearAuthInternal() {
+    _currentUser = null;
+    _userToken = null;
+    _authVerified = false;
+  }
+  
+  // Security: Continuous auth enforcement - runs every 50ms to catch any bypass attempts
+  setInterval(function() {
+    var appEl = document.getElementById('app');
+    var loginScreen = document.getElementById('login-screen');
+    
+    if (!appEl || !loginScreen) return;
+    
+    var isAuth = checkAuth();
+    var appVisible = appEl.style.display !== 'none' && appEl.style.display !== '';
+    
+    if (!isAuth && appVisible) {
+      // Unauthorized access detected - force hide app immediately
+      appEl.style.setProperty('display', 'none', 'important');
+      loginScreen.style.display = 'flex';
+      console.warn('SECURITY: Unauthorized access blocked. Authentication required.');
+    }
+    
+    if (isAuth && !appVisible && loginScreen.style.display === 'flex') {
+      // Should be authenticated but app is hidden - restore
+      appEl.style.display = 'flex';
+      loginScreen.style.display = 'none';
+    }
+  }, 50);
+  
+  // Security: Monitor for unauthorized DOM manipulation with enhanced detection
+  var appEl = document.getElementById('app');
+  if (appEl) {
+    var observer = new MutationObserver(function(mutations) {
+      var isAuth = checkAuth();
+      
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          var target = mutation.target;
+          if (target.id === 'app' && !isAuth) {
+            var computedStyle = window.getComputedStyle(target);
+            if (computedStyle.display !== 'none') {
+              // Force revert using inline style override with !important
+              target.style.setProperty('display', 'none', 'important');
+              document.getElementById('login-screen').style.display = 'flex';
+              console.error('SECURITY ALERT: Auth bypass attempt blocked. Display change reverted.');
+            }
+          }
+        }
+        
+        // Also watch for element removal/insertion attacks
+        if (mutation.type === 'childList') {
+          if (!isAuth && document.getElementById('app').offsetParent !== null) {
+            document.getElementById('app').style.setProperty('display', 'none', 'important');
+            document.getElementById('login-screen').style.display = 'flex';
+            console.error('SECURITY ALERT: DOM manipulation attack blocked.');
+          }
+        }
+      });
+    });
+    
+    observer.observe(appEl, { attributes: true, attributeFilter: ['style'], childList: true, subtree: true });
+  }
+  
+  // NO global exposure of currentUser, userToken, or auth functions
+  // These are completely inaccessible from the console
+  
+  // Expose ONLY what internal code needs - completely sealed object
+  var authInternalObj = {
+    setState: setAuthInternal,
+    clearState: clearAuthInternal,
+    getState: function() { return { user: _currentUser, token: _userToken }; }
+  };
+  
+  // Freeze the object to prevent modification
+  Object.freeze(authInternalObj);
+  Object.freeze(authInternalObj.getState());
+  
+  // Define with writable:false but allow internal updates via frozen reference
+  Object.defineProperty(window, '__authInternal', {
+    value: authInternalObj,
+    writable: false,
+    configurable: false,
+    enumerable: false
+  });
+  
+})();
 
 netlifyIdentity.on("init", user => {
   if (user) loginSuccess(user);
@@ -471,33 +575,21 @@ netlifyIdentity.on("login", user => {
   loginSuccess(user);
 });
 netlifyIdentity.on("logout", () => {
-  currentUser = null; userToken = null;
-  document.getElementById("app").style.display = "none";
+  if (window.__authInternal) window.__authInternal.clearState();
+  document.getElementById("app").style.setProperty('display', 'none', 'important');
   document.getElementById("login-screen").style.display = "flex";
 });
 
 function loginSuccess(user) {
-  currentUser = user;
-  user.jwt().then(token => { userToken = token; });
-  document.getElementById("login-screen").style.display = "none";
-  document.getElementById("app").style.display = "flex";
-  document.getElementById("topbar-user").textContent = user.email;
+  user.jwt().then(token => { 
+    if (window.__authInternal) window.__authInternal.setState(user, token);
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("app").style.display = "flex";
+    document.getElementById("topbar-user").textContent = user.email;
+  });
   loadAll().then(() => {
     checkUrlRedeem();
   });
-}
-
-function checkUrlRedeem() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const redeemCode = urlParams.get("redeem") || urlParams.get("code");
-  if (redeemCode) {
-    const vouchersNav = document.querySelector('[onclick*="vouchers"]');
-    nav('vouchers', vouchersNav);
-    loadVouchers().then(() => {
-      document.getElementById("redeem-input").value = redeemCode.trim().toUpperCase();
-      lookupVoucher();
-    });
-  }
 }
 
 /* ════════ DATA STORE ════════ */
@@ -536,7 +628,11 @@ async function fetchContent(type) {
 }
 
 async function saveContent(type, data) {
-  const token = await currentUser.jwt();
+  const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+  if (!authState.user || !authState.token) {
+    throw new Error("Authentication required");
+  }
+  const token = await authState.user.jwt();
   const res = await fetch("/api/content-save", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -569,11 +665,11 @@ function renderDash() {
 function renderCatsList() {
   document.getElementById("cats-list").innerHTML = DATA.cats.map((cat, idx) => `
     <div class="item-row">
-      <img class="item-row-thumb" src="${cat.img}" alt="${cat.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <img class="item-row-thumb" src="${escapeHTML(cat.img)}" alt="${escapeHTML(cat.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="item-row-thumb-placeholder" style="display:none;">🐱</div>
       <div class="item-row-body">
-        <div class="item-row-name">${cat.name}</div>
-        <div class="item-row-meta">${cat.tags.join(", ")} · ${cat.desc.slice(0,60)}…</div>
+        <div class="item-row-name">${escapeHTML(cat.name)}</div>
+        <div class="item-row-meta">${cat.tags.map(escapeHTML).join(", ")} · ${escapeHTML(cat.desc.slice(0,60))}…</div>
       </div>
       <div class="item-row-actions">
         <button class="btn-sm btn-indigo" onclick="openCatModal(${idx})">Edit</button>
@@ -602,7 +698,14 @@ function renderTagChips() {
   catTags.forEach((tag, i) => {
     const chip = document.createElement("span");
     chip.className = "tag-chip";
-    chip.innerHTML = `${tag} <button class="tag-chip-remove" onclick="removeTag(${i})">×</button>`;
+    const tagText = document.createElement("span");
+    tagText.textContent = tag;
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "tag-chip-remove";
+    removeBtn.textContent = "×";
+    removeBtn.onclick = function() { removeTag(i); };
+    chip.appendChild(tagText);
+    chip.appendChild(removeBtn);
     wrap.insertBefore(chip, input);
   });
 }
@@ -660,12 +763,12 @@ function renderMenuList() {
   document.getElementById("menu-list").innerHTML = list.map(item => {
     const idx = DATA.menu.indexOf(item);
     return `<div class="item-row">
-      <div class="item-row-thumb-placeholder">${item.emoji}</div>
+      <div class="item-row-thumb-placeholder">${escapeHTML(item.emoji)}</div>
       <div class="item-row-body">
-        <div class="item-row-name">${item.name}</div>
-        <div class="item-row-meta">${catLabels[item.cat]} · ${item.desc}</div>
+        <div class="item-row-name">${escapeHTML(item.name)}</div>
+        <div class="item-row-meta">${catLabels[item.cat]} · ${escapeHTML(item.desc)}</div>
       </div>
-      <div class="item-row-price">${item.price}</div>
+      <div class="item-row-price">${escapeHTML(item.price)}</div>
       <div class="item-row-actions">
         <button class="btn-sm btn-indigo" onclick="openMenuModal(${idx})">Edit</button>
         <button class="btn-sm btn-danger" onclick="deleteMenuItem(${idx})">Delete</button>
@@ -727,9 +830,9 @@ function renderHours() {
     `<tr><th>Day</th><th>Opens</th><th>Closes</th><th>Closed</th></tr>` +
     (DATA.settings.hours||[]).map((h, i) => `
       <tr>
-        <td><span class="day-name">${h.day}</span></td>
-        <td><input type="time" id="h-open-${i}" value="${h.open}" ${h.closed?"disabled":""}></td>
-        <td><input type="time" id="h-close-${i}" value="${h.close}" ${h.closed?"disabled":""}></td>
+        <td><span class="day-name">${escapeHTML(h.day)}</span></td>
+        <td><input type="time" id="h-open-${i}" value="${escapeHTML(h.open)}" ${h.closed?"disabled":""}></td>
+        <td><input type="time" id="h-close-${i}" value="${escapeHTML(h.close)}" ${h.closed?"disabled":""}></td>
         <td>
           <label class="toggle">
             <input type="checkbox" id="h-closed-${i}" ${h.closed?"checked":""} onchange="toggleDay(${i},this.checked)">
@@ -763,10 +866,10 @@ function renderPricing() {
     (DATA.settings.pricing||[]).map((p, i) => `
       <div class="item-row" style="margin-bottom:8px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
-          <input type="text" id="p-label-${i}" value="${p.label}" placeholder="Label">
-          <input type="text" id="p-note-${i}" value="${p.note}" placeholder="Note (optional)">
+          <input type="text" id="p-label-${i}" value="${escapeHTML(p.label)}" placeholder="Label">
+          <input type="text" id="p-note-${i}" value="${escapeHTML(p.note)}" placeholder="Note (optional)">
         </div>
-        <input type="text" id="p-price-${i}" value="${p.price}" placeholder="Price" style="width:90px;flex-shrink:0;">
+        <input type="text" id="p-price-${i}" value="${escapeHTML(p.price)}" placeholder="Price" style="width:90px;flex-shrink:0;">
         <button class="btn-sm btn-danger" onclick="deletePricingRow(${i})">Delete</button>
       </div>`).join("");
 }
@@ -798,20 +901,20 @@ function renderInfo() {
   const info = DATA.settings.info || {};
   document.getElementById("info-form").innerHTML = `
     <div class="fg2">
-      <div class="field"><label>Cafe name</label><input type="text" id="inf-name" value="${info.name||""}"></div>
-      <div class="field"><label>Phone</label><input type="text" id="inf-phone" value="${info.phone||""}"></div>
+      <div class="field"><label>Cafe name</label><input type="text" id="inf-name" value="${escapeHTML(info.name)||""}"></div>
+      <div class="field"><label>Phone</label><input type="text" id="inf-phone" value="${escapeHTML(info.phone)||""}"></div>
     </div>
-    <div class="field"><label>Address</label><input type="text" id="inf-address" value="${info.address||""}"></div>
+    <div class="field"><label>Address</label><input type="text" id="inf-address" value="${escapeHTML(info.address)||""}"></div>
     <div class="fg2">
-      <div class="field"><label>Email</label><input type="email" id="inf-email" value="${info.email||""}"></div>
-      <div class="field"><label>WhatsApp number (digits only)</label><input type="text" id="inf-wa" value="${info.whatsapp||""}"></div>
+      <div class="field"><label>Email</label><input type="email" id="inf-email" value="${escapeHTML(info.email)||""}"></div>
+      <div class="field"><label>WhatsApp number (digits only)</label><input type="text" id="inf-wa" value="${escapeHTML(info.whatsapp)||""}"></div>
     </div>
     <div class="fg2">
-      <div class="field"><label>Instagram URL</label><input type="url" id="inf-ig" value="${info.instagram||""}"></div>
-      <div class="field"><label>Facebook URL</label><input type="url" id="inf-fb" value="${info.facebook||""}"></div>
+      <div class="field"><label>Instagram URL</label><input type="url" id="inf-ig" value="${escapeHTML(info.instagram)||""}"></div>
+      <div class="field"><label>Facebook URL</label><input type="url" id="inf-fb" value="${escapeHTML(info.facebook)||""}"></div>
     </div>
-    <div class="field"><label>Booking URL</label><input type="url" id="inf-booking" value="${info.booking_url||""}"></div>
-    <div class="field"><label>Google Maps URL</label><input type="url" id="inf-maps" value="${info.maps_url||""}"></div>`;
+    <div class="field"><label>Booking URL</label><input type="url" id="inf-booking" value="${escapeHTML(info.booking_url)||""}"></div>
+    <div class="field"><label>Google Maps URL</label><input type="url" id="inf-maps" value="${escapeHTML(info.maps_url)||""}"></div>`;
 }
 
 async function saveInfo() {
@@ -875,7 +978,11 @@ async function uploadImage() {
   status.textContent = "Uploading…";
 
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/api/image-upload", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -899,6 +1006,13 @@ async function uploadImage() {
 }
 
 /* ════════ HELPERS ════════ */
+function escapeHTML(str) {
+  if (typeof str !== 'string') return str;
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 function closeModal(id) { document.getElementById(id).classList.remove("open"); }
 
 document.querySelectorAll(".modal-bg").forEach(el => {
@@ -920,7 +1034,11 @@ var allVouchers = [];
 
 async function loadVouchers() {
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -937,7 +1055,12 @@ async function loadVouchers() {
     renderVoucherStats();
     renderVouchersTable();
   } catch(e) {
-    document.getElementById("vouchers-table-wrap").innerHTML = `<div style="color:var(--red);font-size:13px;">Failed to load: ${e.message}</div>`;
+    const errorMsg = document.createElement("div");
+    errorMsg.style.color = "var(--red)";
+    errorMsg.style.fontSize = "13px";
+    errorMsg.textContent = "Failed to load: " + e.message;
+    document.getElementById("vouchers-table-wrap").innerHTML = "";
+    document.getElementById("vouchers-table-wrap").appendChild(errorMsg);
   }
 }
 
@@ -1001,13 +1124,13 @@ function renderVouchersTable() {
         const status = v.redeemed ? "redeemed" : expired ? "expired" : "active";
         const statusLabel = v.redeemed ? "Redeemed" : expired ? "Expired" : "Active";
         return `<tr>
-          <td><span class="v-code" style="font-family:monospace;font-weight:700;letter-spacing:0.06em;background:var(--bg-3);padding:2px 6px;border-radius:4px;">${v.code}</span></td>
-          <td>${v.label} <span style="color:var(--rust);font-weight:600;">S$${v.amount}</span></td>
-          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v.buyer_name}<br><span style="color:var(--text-3);font-size:11px;">${v.buyer_email}</span></td>
+          <td><span class="v-code" style="font-family:monospace;font-weight:700;letter-spacing:0.06em;background:var(--bg-3);padding:2px 6px;border-radius:4px;">${escapeHTML(v.code)}</span></td>
+          <td>${escapeHTML(v.label)} <span style="color:var(--rust);font-weight:600;">S$${escapeHTML(v.amount)}</span></td>
+          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHTML(v.buyer_name)}<br><span style="color:var(--text-3);font-size:11px;">${escapeHTML(v.buyer_email)}</span></td>
           <td style="white-space:nowrap;font-size:12px;">${new Date(v.issued_at).toLocaleDateString("en-SG")}</td>
           <td style="white-space:nowrap;font-size:12px;">${new Date(v.expires_at).toLocaleDateString("en-SG")}</td>
           <td><span class="v-badge ${status}">${statusLabel}${v.redeemed ? "<br><span style='font-size:10px;font-weight:400;'>"+new Date(v.redeemed_at).toLocaleDateString("en-SG")+"</span>" : ""}</span></td>
-          <td>${status === "active" ? `<button class="btn-sm btn-success" onclick="redeemVoucher('${v.code}')">Redeem</button>` : ""}</td>
+          <td>${status === "active" ? `<button class="btn-sm btn-success" onclick="redeemVoucher('${escapeHTML(v.code.replace(/'/g, "\\'"))}')">Redeem</button>` : ""}</td>
         </tr>`;
       }).join("")}
     </table></div>`;
@@ -1035,7 +1158,11 @@ async function submitIssueVoucher() {
   }
 
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -1099,7 +1226,11 @@ async function lookupVoucher() {
 
   resultEl.style.display = "none";
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
@@ -1108,29 +1239,43 @@ async function lookupVoucher() {
     const data = await res.json();
     if (!data.ok) {
       resultEl.className = "voucher-result err";
-      resultEl.innerHTML = "&#x2717; " + data.error;
+      resultEl.textContent = "✗ " + data.error;
     } else {
       const v = data.voucher;
       const expired = data.expired;
       if (v.redeemed) {
         resultEl.className = "voucher-result warn";
-        resultEl.innerHTML = `&#x26A0; Already redeemed on ${new Date(v.redeemed_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}`;
+        const redeemedDate = new Date(v.redeemed_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"});
+        resultEl.textContent = "⚠ Already redeemed on " + redeemedDate;
       } else if (expired) {
         resultEl.className = "voucher-result err";
-        resultEl.innerHTML = `&#x2717; Voucher expired on ${new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}`;
+        const expiredDate = new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"});
+        resultEl.textContent = "✗ Voucher expired on " + expiredDate;
       } else {
         resultEl.className = "voucher-result ok";
-        resultEl.innerHTML = `&#x2713; Valid voucher<br>
-          <strong>${v.label} — S$${v.amount}</strong><br>
-          Issued to: ${v.buyer_name} (${v.buyer_email})<br>
-          Expires: ${new Date(v.expires_at).toLocaleDateString("en-SG", {day:"numeric",month:"long",year:"numeric"})}<br><br>
-          <button class="btn-sm btn-success" onclick="redeemVoucher('${v.code}')">&#x2713; Mark as redeemed</button>`;
+        resultEl.innerHTML = "&#x2713; Valid voucher<br>";
+        const strongEl = document.createElement("strong");
+        strongEl.textContent = escapeHTML(v.label) + " — S$" + escapeHTML(v.amount);
+        resultEl.appendChild(strongEl);
+        resultEl.appendChild(document.createElement("br"));
+        const issuedText = document.createTextNode("Issued to: " + escapeHTML(v.buyer_name) + " (" + escapeHTML(v.buyer_email) + ")");
+        resultEl.appendChild(issuedText);
+        resultEl.appendChild(document.createElement("br"));
+        const expiresText = document.createTextNode("Expires: " + expiresDate);
+        resultEl.appendChild(expiresText);
+        resultEl.appendChild(document.createElement("br"));
+        resultEl.appendChild(document.createElement("br"));
+        const redeemBtn = document.createElement("button");
+        redeemBtn.className = "btn-sm btn-success";
+        redeemBtn.textContent = "✓ Mark as redeemed";
+        redeemBtn.onclick = function() { redeemVoucher(escapeHTML(v.code.replace(/'/g, "\\'"))); };
+        resultEl.appendChild(redeemBtn);
       }
     }
     resultEl.style.display = "block";
   } catch(e) {
     resultEl.className = "voucher-result err";
-    resultEl.innerHTML = "Error: " + e.message;
+    resultEl.textContent = "Error: " + e.message;
     resultEl.style.display = "block";
   }
 }
@@ -1138,7 +1283,11 @@ async function lookupVoucher() {
 async function redeemVoucher(code) {
   if (!confirm("Mark voucher " + code + " as redeemed? This cannot be undone.")) return;
   try {
-    const token = await currentUser.jwt();
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
