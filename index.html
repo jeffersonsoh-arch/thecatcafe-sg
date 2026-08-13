@@ -415,10 +415,52 @@
     <div class="section-eyebrow">Art jamming</div>
     <div class="section-title">Paint with cats</div>
     <div class="section-sub">A uniquely relaxing creative session alongside our resident cats. No experience needed.</div>
+    
+    <div class="pricing-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+      <div class="pricing-card" style="background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+        <div class="price-row" style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:0.5px solid var(--border-light);">
+          <div>
+            <div class="price-label" style="font-size:14px; color:var(--text); font-weight:500;">Unguided Art-jam sessions with cats</div>
+            <div class="price-note" style="font-size:12px; color:var(--text-3); margin-top:2px;">$40 for 2 hours</div>
+          </div>
+          <div class="price-val" style="font-size:20px; font-weight:600; color:var(--rust);">$40</div>
+        </div>
+        <div style="padding:16px 24px;">
+          <ul style="list-style:none; margin:0; padding:0;">
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> Unguided art jamming</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> 1 drink of your choice</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> 1 canvas (30×40)</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> Art tools and supplies</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; display:flex; gap:8px;"><span>&#10003;</span> Extension at $10 per hour</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="pricing-card" style="background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+        <div class="price-row" style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:0.5px solid var(--border-light);">
+          <div>
+            <div class="price-label" style="font-size:14px; color:var(--text); font-weight:500;">Semi-guided Art Jamming session with cats</div>
+            <div class="price-note" style="font-size:12px; color:var(--text-3); margin-top:2px;">$55 for 3 hours (selected dates only)</div>
+          </div>
+          <div class="price-val" style="font-size:20px; font-weight:600; color:var(--rust);">$55</div>
+        </div>
+        <div style="padding:16px 24px;">
+          <ul style="list-style:none; margin:0; padding:0;">
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> Semi-guided art jamming</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> 1 drink of your choice</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> 10% off food menu</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> 1 canvas (30×40)</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>&#10003;</span> Art tools and supplies</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; display:flex; gap:8px;"><span>&#10003;</span> Photo taking session (with your devices) with the cats</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
     <div class="art-banner">
       <div>
-        <h3>Art jamming with cats &#x1F3A8;</h3>
-        <p>Unguided sessions S$40 &middot; Semi-guided (selected dates) S$55. Includes 1 drink, 1 canvas (30x40cm), all art tools. WhatsApp us at 8080 8719 to book.</p>
+        <h3>Ready to paint? &#x1F3A8;</h3>
+        <p>WhatsApp us at 8080 8719 to book your session.</p>
       </div>
       <a href="https://wa.me/6580808719" target="_blank"><button class="art-btn">Book via WhatsApp</button></a>
     </div>
@@ -766,13 +808,13 @@ var GITHUB = "images/cats/";
 var BOOK_URL = "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4";
 
 var CATS_DEFAULT = [
-  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","lapcat"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
+  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og"],              desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
   {id:2,  name:"Jimmy",       img:GITHUB+"jimmy.jpg",       full:GITHUB+"jimmy.jpg",       tags:["senior","og"],              desc:"A domestic long-fur rescued from breeders, Jimmy is around 16 years old. Once wary of handling, he has blossomed in his later years. Catch him most active in the mornings, often spotted on the cat bridge."},
   {id:3,  name:"Tommy",       img:GITHUB+"tommy.jpg",       full:GITHUB+"tommy.jpg",       tags:["senior","og","lapcat"],     desc:"A full black Singapore cat and an original since 2014, Tommy is around 13 years old. Currently on palliative care for nasal cancer, he still enjoys a gentle pet and the company of his humans."},
   {id:4,  name:"Oreo",        img:GITHUB+"oreo.jpg",        full:GITHUB+"oreo.jpg",        tags:["senior","og","playful"],    desc:"Named after his black-and-white coat, Oreo is around 12 years old. Gentle and great with children, he will happily do a high-five for a treat."},
   {id:5,  name:"Marshmellow", img:GITHUB+"marshmellow.jpg", full:GITHUB+"marshmellow.jpg", tags:["young","lapcat"],           desc:"A fluffy all-white Singapore short-fur of around 7, Marshmellow joined us after the Rail Mall cafe closed. Affectionate and laid-back, he is most often found sleeping beside his best friend Marmite."},
-  {id:6,  name:"Marmite",     img:GITHUB+"marmite.jpg",     full:GITHUB+"marmite.jpg",     tags:["young","lapcat"],           desc:"An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and loves a gentle butt pat."},
-  {id:7,  name:"Bobo",        img:GITHUB+"bobo.jpg",        full:GITHUB+"bobo.jpg",        tags:["young","lapcat"],           desc:"A gentle Siamese of around 7-8 years, Bobo meows softly and loves human company. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow."},
+  {id:6,  name:"Marmite",     img:GITHUB+"marmite.jpg",     full:GITHUB+"marmite.jpg",     tags:["young"],                    desc:"An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and loves a gentle butt pat."},
+  {id:7,  name:"Bobo",        img:GITHUB+"bobo.jpg",        full:GITHUB+"bobo.jpg",        tags:["young"],                    desc:"A gentle Siamese of around 7-8 years, Bobo meows softly and loves human company. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow."},
   {id:8,  name:"Mochi",       img:GITHUB+"mochi.jpg",       full:GITHUB+"mochi.jpg",       tags:["young","playful"],          desc:"Our biggest cat at 6-7 kg, Mochi is around 9 years old and is our cafe mascot - he looks just like our logo! Most active in the mornings and very hard to miss."},
   {id:9,  name:"Sushi",       img:GITHUB+"sushi.jpg",       full:GITHUB+"sushi.jpg",       tags:["young","lapcat"],           desc:"A slightly plump black-and-white cat, Sushi once lived beside a kopitiam. These days she has traded street life for laps and loves nothing more than resting on a customer."},
   {id:10, name:"Miso",        img:GITHUB+"miso.jpg",        full:GITHUB+"miso.jpg",        tags:["young","playful"],          desc:"Sister to Shoyu and around 4 years old, Miso is named for the warm tinge in her undercoat. She loves teaser toys and is often found in a game of catch with Toby, Shoyu and Momo."},
