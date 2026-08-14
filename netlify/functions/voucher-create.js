@@ -94,7 +94,8 @@ exports.handler = async (event) => {
       redirect_url:            `${SITE_URL}/voucher-success.html`,
       webhook:                 `${SITE_URL}/.netlify/functions/voucher-webhook`,
       send_sms:                "false",
-      allow_repeated_payments: "false"
+      allow_repeated_payments: "false",
+      custom_fields:           JSON.stringify({ recipient_name, recipient_email, message })
     });
 
     if (result.status === 200 || result.status === 201) {

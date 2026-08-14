@@ -732,6 +732,10 @@
             <label>Recipient name <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
             <input type="text" id="vf-recipient" placeholder="Leave blank if for yourself">
           </div>
+          <div class="vf-field">
+            <label>Recipient email <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
+            <input type="email" id="vf-recipient-email" placeholder="recipient@example.com">
+          </div>
           <div class="vf-field full">
             <label>Personal message <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
             <textarea id="vf-message" placeholder="Add a personal note to the voucher..."></textarea>
@@ -1168,6 +1172,7 @@ async function purchaseVoucher() {
         buyer_name:       buyerName,
         buyer_email:      buyerEmail,
         recipient_name:   document.getElementById("vf-recipient").value.trim() || buyerName,
+        recipient_email:  document.getElementById("vf-recipient-email").value.trim(),
         message:          document.getElementById("vf-message").value.trim()
       })
     });

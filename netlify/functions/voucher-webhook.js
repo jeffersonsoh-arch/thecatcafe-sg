@@ -887,7 +887,22 @@ exports.handler = async (event) => {
 
     const buyerEmail    = params.email || (params.payments && params.payments[0] && params.payments[0].buyer_email) || "";
     const buyerName     = params.name  || (params.payments && params.payments[0] && params.payments[0].buyer_name)  || "Customer";
-    const recipientName = buyerName;
+    
+    // Extract custom fields from HitPay webhook
+    let recipientName = buyerName;
+    let recipientEmail = "";
+    let personalMessage = "";
+    
+    try {
+      if (params.custom_fields) {
+        const customData = JSON.parse(params.custom_fields);
+        if (customData.recipient_name) recipientName = customData.recipient_name;
+        if (customData.recipient_email) recipientEmail = customData.recipient_email;
+        if (customData.message) personalMessage = customData.message;
+      }
+    } catch(e) {
+      console.log("No custom fields or failed to parse:", e.message);
+    }
 
     console.log(`Generating ${qty} ticket(s) of type "${voucherType}"...`);
 
@@ -907,18 +922,20 @@ exports.handler = async (event) => {
 
     // 2. Save all N voucher records to GitHub in one write
     const voucherRecords = tickets.map(t => ({
-      code:           t.code,
-      type:           voucherType,
+      code:             t.code,
+      type:             voucherType,
       label,
       amount,
-      buyer_name:     buyerName,
-      buyer_email:    buyerEmail,
-      recipient_name: recipientName,
-      issued_at:      now.toISOString(),
-      expires_at:     expiry.toISOString(),
-      redeemed:       false,
-      redeemed_at:    null,
-      payment_id:     params.payment_request_id || ref
+      buyer_name:       buyerName,
+      buyer_email:      buyerEmail,
+      recipient_name:   recipientName,
+      recipient_email:  recipientEmail,
+      personal_message: personalMessage,
+      issued_at:        now.toISOString(),
+      expires_at:       expiry.toISOString(),
+      redeemed:         false,
+      redeemed_at:      null,
+      payment_id:       params.payment_request_id || ref
     }));
 
     try {
@@ -944,9 +961,18 @@ exports.handler = async (event) => {
         });
       });
 
-      const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, "");
+      const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage);
+      
+      // Send email to buyer
       await sendEmail(buyerEmail, def.emailSubject, html, attachments);
       console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
+      
+      // If recipient email is different from buyer email, also send to recipient
+      if (recipientEmail && recipientEmail !== buyerEmail) {
+        const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage);
+        await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
+        console.log(`Gift voucher email sent to recipient ${recipientEmail}`);
+      }
     } else {
       console.warn("Resend not configured or no buyer email — skipping customer email");
     }
