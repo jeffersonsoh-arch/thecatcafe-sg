@@ -460,5 +460,47 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-standard-22-qty1-1786641609418"
+  },
+  {
+    "code": "TCC-3XV3-M5KG-K6VM",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
+    "amount": "169.13",
+    "buyer_name": "jefferons soh",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jefferons soh",
+    "issued_at": "2026-08-14T02:36:39.351Z",
+    "expires_at": "2027-08-14T02:36:39.351Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty3-1786674971114"
+  },
+  {
+    "code": "TCC-MFPU-XL9T-GTWU",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
+    "amount": "169.13",
+    "buyer_name": "jefferons soh",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jefferons soh",
+    "issued_at": "2026-08-14T02:36:39.351Z",
+    "expires_at": "2027-08-14T02:36:39.351Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty3-1786674971114"
+  },
+  {
+    "code": "TCC-J43X-D3DE-SUQS",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
+    "amount": "169.13",
+    "buyer_name": "jefferons soh",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jefferons soh",
+    "issued_at": "2026-08-14T02:36:39.351Z",
+    "expires_at": "2027-08-14T02:36:39.351Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty3-1786674971114"
   }
 ]
