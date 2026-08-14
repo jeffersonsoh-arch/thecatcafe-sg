@@ -4,7 +4,6 @@
   "description": "The Cat Cafe Singapore – website and CMS",
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
-    "jwk-to-pem": "^2.0.5",
     "pdfkit": "^0.15.0",
     "qrcode": "^1.5.3"
   }
