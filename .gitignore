@@ -1,1 +1,27 @@
-Nothing needs to be added to the .gitignore file based on the provided file changes. The only modified file is 'admin/index.html', which is a source code file and should not be ignored. There are no build artifacts, dependencies, or temporary files in the change list that would require adding ignore rules.
+```
+# Dependencies
+node_modules/
+
+# Functions/build artifacts
+netlify/functions/.netlify/
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# Editors
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+```

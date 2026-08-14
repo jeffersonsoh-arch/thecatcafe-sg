@@ -207,22 +207,22 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
       <!-- DASHBOARD -->
       <div class="panel active" id="panel-dashboard">
         <div class="panel-header">
-          <div><div class="panel-title">Dashboard</div><div class="panel-sub">Welcome back. Your site is live on Netlify.</div></div>
+          <div><div class="panel-title">Dashboard</div><div class="panel-sub">Voucher overview and quick actions.</div></div>
+          <div class="panel-actions">
+            <button class="btn-sm btn-primary" onclick="nav('vouchers',document.querySelector('[onclick*=vouchers]'));loadVouchers()">Manage Vouchers</button>
+          </div>
         </div>
         <div class="stats-row" id="dash-stats"></div>
         <div class="card">
-          <div class="card-title">How the CMS works</div>
-          <div style="font-size:13px;color:var(--text-2);line-height:1.8;">
-            <p>1. Edit content in any section using the sidebar.</p>
-            <p>2. Click <strong>Save</strong> — changes are written directly to your GitHub repo (<code>content/*.json</code>).</p>
-            <p>3. Netlify detects the commit and rebuilds your site automatically — usually live within 30 seconds.</p>
-          </div>
+          <div class="card-title">Recent Vouchers</div>
+          <div id="dash-recent-vouchers" style="font-size:13px;color:var(--text-2);">Loading...</div>
         </div>
         <div class="card">
           <div class="card-title">Quick actions</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-sm btn-primary" onclick="nav('cats',document.querySelector('[onclick*=cats]'))">+ Add cat</button>
-            <button class="btn-sm btn-primary" onclick="nav('menu',document.querySelector('[onclick*=menu]'))">+ Add menu item</button>
+            <button class="btn-sm btn-primary" onclick="openIssueVoucherModal()">+ Issue voucher</button>
+            <button class="btn-sm btn-indigo" onclick="nav('cats',document.querySelector('[onclick*=cats]'))">Manage cats</button>
+            <button class="btn-sm btn-indigo" onclick="nav('menu',document.querySelector('[onclick*=menu]'))">Manage menu</button>
             <button class="btn-sm btn-indigo" onclick="window.open('/','_blank')">View live site ↗</button>
           </div>
         </div>
@@ -454,13 +454,19 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
         <option value="standard-22">Standard Entrance Ticket (S$22)</option>
         <option value="premium-30">Premium Entrance Ticket (S$30)</option>
         <option value="ultimate-40">Ultimate Entrance Ticket (S$40)</option>
+        <option value="artjam-unguided-40">Unguided Art Jamming Session (S$40)</option>
+        <option value="artjam-semi-55">Semi-Guided Art Jamming Session (S$55)</option>
       </select>
     </div>
     <div class="fg2">
       <div class="field"><label>Buyer / Customer Name</label><input type="text" id="iv-name" placeholder="e.g. Jane Doe"></div>
       <div class="field"><label>Buyer Email</label><input type="email" id="iv-email" placeholder="e.g. jane@example.com"></div>
     </div>
-    <div class="field"><label>Recipient Name (optional, defaults to Buyer Name)</label><input type="text" id="iv-recipient" placeholder="Leave blank if same as buyer"></div>
+    <div class="fg2">
+      <div class="field"><label>Recipient Name (optional, defaults to Buyer Name)</label><input type="text" id="iv-recipient" placeholder="Leave blank if same as buyer"></div>
+      <div class="field"><label>Recipient Email (for sending voucher)</label><input type="email" id="iv-recipient-email" placeholder="e.g. recipient@example.com"></div>
+    </div>
+    <div class="field"><label>Personal Message (optional)</label><textarea id="iv-message" placeholder="Add a personal message to include in the voucher email..." style="min-height:60px;"></textarea></div>
     <div class="field"><label>Custom Amount (optional)</label><input type="text" id="iv-amount" placeholder="Leave blank for tier default"></div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeModal('modal-issue-voucher')">Cancel</button>
@@ -666,11 +672,16 @@ function nav(id, el) {
 
 /* ════════ DASHBOARD ════════ */
 function renderDash() {
+  const totalVouchers = allVouchers.length;
+  const activeVouchers = allVouchers.filter(v => !v.redeemed && new Date(v.expires_at) > new Date()).length;
+  const redeemedVouchers = allVouchers.filter(v => v.redeemed).length;
+  const expiredVouchers = allVouchers.filter(v => new Date(v.expires_at) < new Date() && !v.redeemed).length;
+  
   document.getElementById("dash-stats").innerHTML = [
-    [DATA.cats.length, "Cats"],
-    [DATA.menu.length, "Menu items"],
-    [(DATA.settings.hours||[]).filter(h=>!h.closed).length, "Open days/week"],
-    [(DATA.settings.pricing||[]).length, "Pricing tiers"]
+    [totalVouchers, "Total Vouchers"],
+    [activeVouchers, "Active"],
+    [redeemedVouchers, "Redeemed"],
+    [expiredVouchers, "Expired"]
   ].map(([n,l]) => `<div class="stat-card"><div class="stat-n">${n}</div><div class="stat-l">${l}</div></div>`).join("");
 }
 
@@ -1067,6 +1078,8 @@ async function loadVouchers() {
 
     renderVoucherStats();
     renderVouchersTable();
+    renderDashRecentVouchers();
+    renderDash();
   } catch(e) {
     const errorMsg = document.createElement("div");
     errorMsg.style.color = "var(--red)";
@@ -1075,6 +1088,37 @@ async function loadVouchers() {
     document.getElementById("vouchers-table-wrap").innerHTML = "";
     document.getElementById("vouchers-table-wrap").appendChild(errorMsg);
   }
+}
+
+function renderDashRecentVouchers() {
+  const recentEl = document.getElementById("dash-recent-vouchers");
+  if (!recentEl) return;
+  
+  if (!allVouchers.length) {
+    recentEl.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:8px 0;">No vouchers issued yet.</div>';
+    return;
+  }
+  
+  const sorted = [...allVouchers].sort((a,b) => new Date(b.issued_at) - new Date(a.issued_at)).slice(0, 5);
+  
+  recentEl.innerHTML = sorted.map(v => {
+    const expired = !v.redeemed && new Date(v.expires_at) < new Date();
+    let statusClass = 'active';
+    let statusText = 'Active';
+    if (v.redeemed) { statusClass = 'redeemed'; statusText = 'Redeemed'; }
+    else if (expired) { statusClass = 'expired'; statusText = 'Expired'; }
+    
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-light);gap:10px;">
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:13px;"><span class="v-code">${escapeHTML(v.code)}</span></div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px;">${escapeHTML(v.recipient_name || v.buyer_name)} · ${escapeHTML(v.label)}</div>
+      </div>
+      <div style="text-align:right;">
+        <span class="v-badge ${statusClass}">${statusText}</span>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px;">S$${v.amount}</div>
+      </div>
+    </div>`;
+  }).join("");
 }
 
 function renderVoucherStats() {
@@ -1153,6 +1197,8 @@ function openIssueVoucherModal() {
   document.getElementById("iv-name").value = "";
   document.getElementById("iv-email").value = "";
   document.getElementById("iv-recipient").value = "";
+  document.getElementById("iv-recipient-email").value = "";
+  document.getElementById("iv-message").value = "";
   document.getElementById("iv-amount").value = "";
   document.getElementById("modal-issue-voucher").classList.add("open");
   document.getElementById("iv-name").focus();
@@ -1163,6 +1209,8 @@ async function submitIssueVoucher() {
   const buyer_name = document.getElementById("iv-name").value.trim();
   const buyer_email = document.getElementById("iv-email").value.trim();
   const recipient_name = document.getElementById("iv-recipient").value.trim();
+  const recipient_email = document.getElementById("iv-recipient-email").value.trim();
+  const personal_message = document.getElementById("iv-message").value.trim();
   const custom_amount = document.getElementById("iv-amount").value.trim();
 
   if (!buyer_name) {
@@ -1179,7 +1227,7 @@ async function submitIssueVoucher() {
     const res = await fetch("/.netlify/functions/voucher-manage", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
-      body: JSON.stringify({ action: "create", voucher_type, buyer_name, buyer_email, recipient_name, custom_amount })
+      body: JSON.stringify({ action: "create", voucher_type, buyer_name, buyer_email, recipient_name, recipient_email, personal_message, custom_amount })
     });
     const data = await res.json();
     if (data.ok) {
