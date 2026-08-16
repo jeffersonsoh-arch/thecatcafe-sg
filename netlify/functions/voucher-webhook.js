@@ -964,18 +964,36 @@ exports.handler = async (event) => {
       // Determine if this is a gift based on recipient email being provided and different from buyer email
       const isGift = recipientEmail && recipientEmail !== buyerEmail;
       
-      // Send email to buyer if buyer email exists
-      if (buyerEmail) {
-        const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, isGift);
-        await sendEmail(buyerEmail, def.emailSubject, html, attachments);
-        console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
-      }
-      
-      // If recipient email is provided and different from buyer email, also send to recipient
-      if (isGift && recipientEmail) {
-        const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, true);
-        await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
-        console.log(`Gift voucher email sent to recipient ${recipientEmail}`);
+      if (isGift) {
+        // Send receipt-only email to buyer (without voucher PDFs)
+        if (buyerEmail) {
+          const receiptHtml = `
+            <h2>Thank you for your gift voucher purchase!</h2>
+            <p>Hi ${buyerName},</p>
+            <p>Your gift voucher purchase has been confirmed.</p>
+            <p><strong>Voucher Type:</strong> ${voucherType}</p>
+            <p><strong>Recipient:</strong> ${recipientName} (${recipientEmail})</p>
+            <p>${personalMessage ? `<p><strong>Message:</strong> ${personalMessage}</p>` : ''}
+            <p>The voucher has been sent directly to ${recipientName}.</p>
+            <p>Thank you for your purchase!</p>
+          `;
+          await sendEmail(buyerEmail, `Order Confirmation - Gift Voucher Purchase`, receiptHtml, []);
+          console.log(`Receipt email sent to buyer ${buyerEmail}`);
+        }
+        
+        // Send full voucher email to recipient
+        if (recipientEmail) {
+          const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, true);
+          await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
+          console.log(`Gift voucher email sent to recipient ${recipientEmail}`);
+        }
+      } else {
+        // Not a gift - send voucher to buyer only
+        if (buyerEmail) {
+          const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, false);
+          await sendEmail(buyerEmail, def.emailSubject, html, attachments);
+          console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
+        }
       }
     } else {
       console.warn("Resend not configured — skipping customer email");
