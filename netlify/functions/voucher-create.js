@@ -92,7 +92,7 @@ exports.handler = async (event) => {
       purpose:                 `${voucher.label} (${qty}x S$${amt.toFixed(2)}) - The Cat Cafe Singapore`,
       reference_number:        reference,
       redirect_url:            `${SITE_URL}/voucher-success.html`,
-      cancel_url:              `${SITE_URL}/index.html#vouchers`,
+      cancel_url:              `${SITE_URL}/index.html`,
       webhook:                 `${SITE_URL}/.netlify/functions/voucher-webhook`,
       send_sms:                "false",
       allow_repeated_payments: "false",
