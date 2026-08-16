@@ -558,5 +558,21 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-artjam-semi-55-qty1-1786891053377"
+  },
+  {
+    "code": "TCC-T9TC-2RPD-GB3K",
+    "type": "standard-22",
+    "label": "Standard Entrance Ticket",
+    "amount": "22.55",
+    "buyer_name": "jefferson",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jefferson",
+    "recipient_email": "",
+    "personal_message": "",
+    "issued_at": "2026-08-16T14:41:44.623Z",
+    "expires_at": "2027-08-16T14:41:44.623Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-standard-22-qty1-1786891278684"
   }
 ]
