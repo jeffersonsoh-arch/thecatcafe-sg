@@ -894,15 +894,21 @@ exports.handler = async (event) => {
     let personalMessage = "";
     
     try {
+      console.log("Raw custom_fields from HitPay:", params.custom_fields);
       if (params.custom_fields) {
         const customData = JSON.parse(params.custom_fields);
+        console.log("Parsed custom_data:", customData);
         if (customData.recipient_name) recipientName = customData.recipient_name;
-        if (customData.recipient_email) recipientEmail = customData.recipient_email;
+        if (customData.recipient_email) recipientEmail = customData.recipient_email.trim();
         if (customData.message) personalMessage = customData.message;
+      } else {
+        console.warn("custom_fields is missing or empty in webhook payload");
       }
     } catch(e) {
-      console.log("No custom fields or failed to parse:", e.message);
+      console.error("Failed to parse custom_fields:", e.message, "Raw value:", params.custom_fields);
     }
+    
+    console.log(`Extracted - recipientName: "${recipientName}", recipientEmail: "${recipientEmail}", personalMessage: "${personalMessage}"`);
 
     console.log(`Generating ${qty} ticket(s) of type "${voucherType}"...`);
 
