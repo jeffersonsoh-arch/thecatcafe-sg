@@ -65,8 +65,8 @@
     "recipient_name": "Jefferson",
     "issued_at": "2026-08-12T14:38:15.883Z",
     "expires_at": "2027-08-12T14:38:15.883Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-08-16T14:08:41.904Z",
     "payment_id": "VC-standard-22-qty5-1786545467822"
   },
   {
