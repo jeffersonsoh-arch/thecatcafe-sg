@@ -574,5 +574,21 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-standard-22-qty1-1786891278684"
+  },
+  {
+    "code": "TCC-5AFK-DVL3-6BDN",
+    "type": "artjam-unguided-40",
+    "label": "Unguided Art Jamming Session",
+    "amount": "41.00",
+    "buyer_name": "jefferson soh",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jefferson soh",
+    "recipient_email": "",
+    "personal_message": "",
+    "issued_at": "2026-08-16T14:45:48.812Z",
+    "expires_at": "2027-08-16T14:45:48.812Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-unguided-40-qty1-1786891523320"
   }
 ]
