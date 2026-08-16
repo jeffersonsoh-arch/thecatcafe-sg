@@ -947,7 +947,7 @@ exports.handler = async (event) => {
     }
 
     // 3. Send customer email with PDF attachments (no inline QR codes as they don't render in emails)
-    if (RESEND_API_KEY && buyerEmail) {
+    if (RESEND_API_KEY) {
       // Build attachments array: PDF files only (QR codes kept in PDFs, not as separate inline images)
       const attachments = [];
       
@@ -964,20 +964,21 @@ exports.handler = async (event) => {
       // Determine if this is a gift based on recipient email being provided and different from buyer email
       const isGift = recipientEmail && recipientEmail !== buyerEmail;
       
-      const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, isGift);
+      // Send email to buyer if buyer email exists
+      if (buyerEmail) {
+        const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, isGift);
+        await sendEmail(buyerEmail, def.emailSubject, html, attachments);
+        console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
+      }
       
-      // Send email to buyer
-      await sendEmail(buyerEmail, def.emailSubject, html, attachments);
-      console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
-      
-      // If recipient email is different from buyer email, also send to recipient
-      if (isGift) {
+      // If recipient email is provided and different from buyer email, also send to recipient
+      if (isGift && recipientEmail) {
         const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, true);
         await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
         console.log(`Gift voucher email sent to recipient ${recipientEmail}`);
       }
     } else {
-      console.warn("Resend not configured or no buyer email — skipping customer email");
+      console.warn("Resend not configured — skipping customer email");
     }
 
     // 4. Internal cafe notification
