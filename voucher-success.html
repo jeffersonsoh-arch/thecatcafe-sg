@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Voucher Purchased – The Cat Cafe Singapore</title>
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('status');
+  
+  if (status === 'canceled' || status === 'cancelled') {
+    // Immediately redirect to vouchers section, replacing this page in history
+    window.location.replace('/#vouchers');
+  }
+})();
+</script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5efe8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
@@ -32,18 +43,5 @@
   <a class="btn" href="/">Back to The Cat Cafe</a>
   <div class="sub">Questions? <a href="https://wa.me/6580808719">WhatsApp us at 8080 8719</a></div>
 </div>
-<script>
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const status = params.get('status');
-  const reference = params.get('reference');
-  
-  if (status === 'canceled' || status === 'cancelled') {
-    // Replace the entire history to go back to vouchers, preventing back button from returning here
-    window.location.replace('/#vouchers');
-    return;
-  }
-})();
-</script>
 </body>
 </html>
