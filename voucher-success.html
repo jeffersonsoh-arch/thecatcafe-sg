@@ -39,6 +39,9 @@
   const reference = params.get('reference');
   
   if (status === 'canceled' || status === 'cancelled') {
+    // Replace the current history entry so back button doesn't return here
+    window.history.replaceState(null, '', '/#vouchers');
+    
     document.title = 'Payment Canceled – The Cat Cafe Singapore';
     document.getElementById('content').innerHTML = 
       '<div class="icon cancel">&#x2715;</div>' +
