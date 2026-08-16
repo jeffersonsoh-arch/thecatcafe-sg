@@ -334,9 +334,9 @@ function generateTicketPDF(code, voucherType, recipientName, expiry, qrBuffer) {
 }
 
 // ── Build Standard tier email ──
-function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message) {
+function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const { accentColor, accentLight, badgeGradient, headerBg, label, ribbonLabel } = def;
-  const isGift = buyerName !== recipientName;
+  const isGift = isGiftOverride !== null ? isGiftOverride : buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
@@ -417,9 +417,9 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
 }
 
 // ── Build Premium tier email ──
-function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message) {
+function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
-  const isGift = buyerName !== recipientName;
+  const isGift = isGiftOverride !== null ? isGiftOverride : buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
@@ -508,9 +508,9 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
 }
 
 // ── Build Ultimate tier email ──
-function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message) {
+function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
-  const isGift = buyerName !== recipientName;
+  const isGift = isGiftOverride !== null ? isGiftOverride : buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
@@ -598,9 +598,9 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
 }
 
 // ── Build Art Jamming email ──
-function buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message) {
+function buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
-  const isGift = buyerName !== recipientName;
+  const isGift = isGiftOverride !== null ? isGiftOverride : buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
@@ -682,14 +682,14 @@ function buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, messag
 }
 
 // ── Route to correct email builder ──
-function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry, message) {
+function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const def = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
-  if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message);
-  if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message);
-  if (voucherType === "artjam-semi-55") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message);
-  if (voucherType === "artjam-unguided-40") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message);
+  if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
+  if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
+  if (voucherType === "artjam-semi-55") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
+  if (voucherType === "artjam-unguided-40") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
   // Standard vouchers use the standard email template
-  return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message);
+  return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
 }
 
 // ── Send email via Resend ──
@@ -894,15 +894,27 @@ exports.handler = async (event) => {
     let personalMessage = "";
     
     try {
+      console.log("Raw custom_fields from HitPay:", params.custom_fields);
       if (params.custom_fields) {
         const customData = JSON.parse(params.custom_fields);
-        if (customData.recipient_name) recipientName = customData.recipient_name;
-        if (customData.recipient_email) recipientEmail = customData.recipient_email;
-        if (customData.message) personalMessage = customData.message;
+        console.log("Parsed custom_data:", customData);
+        if (customData.recipient_name && customData.recipient_name.trim() !== "") {
+          recipientName = customData.recipient_name.trim();
+        }
+        if (customData.recipient_email && customData.recipient_email.trim() !== "") {
+          recipientEmail = customData.recipient_email.trim();
+        }
+        if (customData.message && customData.message.trim() !== "") {
+          personalMessage = customData.message.trim();
+        }
+      } else {
+        console.warn("custom_fields is missing or empty in webhook payload");
       }
     } catch(e) {
-      console.log("No custom fields or failed to parse:", e.message);
+      console.error("Failed to parse custom_fields:", e.message, "Raw value:", params.custom_fields);
     }
+    
+    console.log(`Extracted - recipientName: "${recipientName}", recipientEmail: "${recipientEmail}", personalMessage: "${personalMessage}"`);
 
     console.log(`Generating ${qty} ticket(s) of type "${voucherType}"...`);
 
@@ -947,7 +959,7 @@ exports.handler = async (event) => {
     }
 
     // 3. Send customer email with PDF attachments (no inline QR codes as they don't render in emails)
-    if (RESEND_API_KEY && buyerEmail) {
+    if (RESEND_API_KEY) {
       // Build attachments array: PDF files only (QR codes kept in PDFs, not as separate inline images)
       const attachments = [];
       
@@ -961,20 +973,51 @@ exports.handler = async (event) => {
         });
       });
 
-      const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage);
+      // Determine if this is a gift based on recipient email being provided and different from buyer email
+      const isGift = recipientEmail && recipientEmail.trim() !== "" && (!buyerEmail || recipientEmail.trim() !== buyerEmail.trim());
       
-      // Send email to buyer
-      await sendEmail(buyerEmail, def.emailSubject, html, attachments);
-      console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
+      console.log(`Gift check: buyerEmail="${buyerEmail}", recipientEmail="${recipientEmail}", isGift=${isGift}`);
       
-      // If recipient email is different from buyer email, also send to recipient
-      if (recipientEmail && recipientEmail !== buyerEmail) {
-        const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage);
-        await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
-        console.log(`Gift voucher email sent to recipient ${recipientEmail}`);
+      if (isGift) {
+        // Send receipt-only email to buyer (without voucher PDFs)
+        if (buyerEmail) {
+          const receiptHtml = `
+            <h2>Thank you for your gift voucher purchase!</h2>
+            <p>Hi ${buyerName},</p>
+            <p>Your gift voucher purchase has been confirmed.</p>
+            <p><strong>Voucher Type:</strong> ${voucherType}</p>
+            <p><strong>Recipient:</strong> ${recipientName} (${recipientEmail})</p>
+            <p>${personalMessage ? `<p><strong>Message:</strong> ${personalMessage}</p>` : ''}
+            <p>The voucher has been sent directly to ${recipientName}.</p>
+            <p>Thank you for your purchase!</p>
+          `;
+          await sendEmail(buyerEmail, `Order Confirmation - Gift Voucher Purchase`, receiptHtml, []);
+          console.log(`Receipt email sent to buyer ${buyerEmail}`);
+        }
+        
+        // Send full voucher email to recipient
+        if (recipientEmail && recipientEmail.trim() !== "") {
+          console.log(`Sending gift voucher email to recipient ${recipientEmail} with ${attachments.length} PDF(s)`);
+          const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, true);
+          try {
+            const result = await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
+            console.log(`Gift voucher email sent to recipient ${recipientEmail}. Resend response:`, result);
+          } catch (err) {
+            console.error(`Failed to send gift voucher email to ${recipientEmail}:`, err);
+          }
+        } else {
+          console.warn(`Recipient email is empty or invalid, skipping recipient email`);
+        }
+      } else {
+        // Not a gift - send voucher to buyer only
+        if (buyerEmail) {
+          const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, false);
+          await sendEmail(buyerEmail, def.emailSubject, html, attachments);
+          console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
+        }
       }
     } else {
-      console.warn("Resend not configured or no buyer email — skipping customer email");
+      console.warn("Resend not configured — skipping customer email");
     }
 
     // 4. Internal cafe notification
