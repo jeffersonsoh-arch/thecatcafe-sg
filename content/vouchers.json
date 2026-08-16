@@ -542,5 +542,21 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-artjam-unguided-40-qty1-1786890387227"
+  },
+  {
+    "code": "TCC-4M32-E2CK-REB5",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
+    "amount": "56.38",
+    "buyer_name": "Jefferson soh",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "Jefferson soh",
+    "recipient_email": "",
+    "personal_message": "",
+    "issued_at": "2026-08-16T14:38:01.039Z",
+    "expires_at": "2027-08-16T14:38:01.039Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty1-1786891053377"
   }
 ]
