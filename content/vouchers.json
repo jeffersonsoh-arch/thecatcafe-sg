@@ -622,5 +622,21 @@
     "redeemed": false,
     "redeemed_at": null,
     "payment_id": "VC-artjam-semi-55-qty1-1786892403771"
+  },
+  {
+    "code": "TCC-UWHG-D2SS-35PG",
+    "type": "artjam-unguided-40",
+    "label": "Unguided Art Jamming Session",
+    "amount": "41.00",
+    "buyer_name": "Jefferson",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "Jefferson",
+    "recipient_email": "",
+    "personal_message": "",
+    "issued_at": "2026-08-16T15:06:24.899Z",
+    "expires_at": "2027-08-16T15:06:24.899Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-unguided-40-qty1-1786892760133"
   }
 ]
