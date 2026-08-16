@@ -39,17 +39,9 @@
   const reference = params.get('reference');
   
   if (status === 'canceled' || status === 'cancelled') {
-    // Replace the current history entry so back button doesn't return here
-    window.history.replaceState(null, '', '/#vouchers');
-    
-    document.title = 'Payment Canceled – The Cat Cafe Singapore';
-    document.getElementById('content').innerHTML = 
-      '<div class="icon cancel">&#x2715;</div>' +
-      '<h1>Payment Canceled</h1>' +
-      '<p>Your payment was not completed. No charges were made to your account.</p>' +
-      '<p>If you encountered any issues during checkout, feel free to try again or contact us for assistance.</p>' +
-      '<a class="btn" href="/#vouchers">Back to Vouchers</a>' +
-      '<div class="sub">Questions? <a href="https://wa.me/6580808719">WhatsApp us at 8080 8719</a></div>';
+    // Replace the entire history to go back to vouchers, preventing back button from returning here
+    window.location.replace('/#vouchers');
+    return;
   }
 })();
 </script>
