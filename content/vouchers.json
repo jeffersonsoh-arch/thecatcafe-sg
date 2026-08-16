@@ -11,7 +11,9 @@
     "expires_at": "2027-08-12T14:38:15.883Z",
     "redeemed": true,
     "redeemed_at": "2026-08-12T14:39:31.559Z",
-    "payment_id": "VC-standard-22-qty5-1786545467822"
+    "payment_id": "VC-standard-22-qty5-1786545467822",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-38PD-U2XJ-59QD",
@@ -23,9 +25,11 @@
     "recipient_name": "Jefferson",
     "issued_at": "2026-08-12T14:38:15.883Z",
     "expires_at": "2027-08-12T14:38:15.883Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:32.330Z",
-    "payment_id": "VC-standard-22-qty5-1786545467822"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-standard-22-qty5-1786545467822",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-ZPMC-GSXD-HTX5",
@@ -37,9 +41,11 @@
     "recipient_name": "Jefferson",
     "issued_at": "2026-08-12T14:38:15.883Z",
     "expires_at": "2027-08-12T14:38:15.883Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:35.644Z",
-    "payment_id": "VC-standard-22-qty5-1786545467822"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-standard-22-qty5-1786545467822",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-W7T9-AEV5-V2DE",
@@ -51,9 +57,11 @@
     "recipient_name": "Jefferson",
     "issued_at": "2026-08-12T14:38:15.883Z",
     "expires_at": "2027-08-12T14:38:15.883Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:38.801Z",
-    "payment_id": "VC-standard-22-qty5-1786545467822"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-standard-22-qty5-1786545467822",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-4WY7-E88C-W2DA",
@@ -65,9 +73,11 @@
     "recipient_name": "Jefferson",
     "issued_at": "2026-08-12T14:38:15.883Z",
     "expires_at": "2027-08-12T14:38:15.883Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:41.904Z",
-    "payment_id": "VC-standard-22-qty5-1786545467822"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-standard-22-qty5-1786545467822",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-CN3D-T6BE-BGC3",
@@ -81,7 +91,9 @@
     "expires_at": "2027-08-13T03:39:28.687Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-ultimate-40-qty3-1786592338040"
+    "payment_id": "VC-ultimate-40-qty3-1786592338040",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-Z2C2-6E7X-FFBZ",
@@ -95,7 +107,9 @@
     "expires_at": "2027-08-13T03:39:28.687Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-ultimate-40-qty3-1786592338040"
+    "payment_id": "VC-ultimate-40-qty3-1786592338040",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-KU9P-Y59Z-V56Y",
@@ -109,7 +123,9 @@
     "expires_at": "2027-08-13T03:39:28.687Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-ultimate-40-qty3-1786592338040"
+    "payment_id": "VC-ultimate-40-qty3-1786592338040",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-R7Z5-7YKB-49K4",
@@ -123,7 +139,9 @@
     "expires_at": "2027-08-13T04:48:29.371Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-ultimate-40-qty1-1786596483204"
+    "payment_id": "VC-ultimate-40-qty1-1786596483204",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-FXC4-6MU5-VUSN",
@@ -137,7 +155,9 @@
     "expires_at": "2027-08-13T04:49:38.923Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-standard-22-qty5-1786596554079"
+    "payment_id": "VC-standard-22-qty5-1786596554079",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-6DPD-KSQQ-9TVL",
@@ -151,7 +171,9 @@
     "expires_at": "2027-08-13T04:49:38.923Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-standard-22-qty5-1786596554079"
+    "payment_id": "VC-standard-22-qty5-1786596554079",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-R9C8-SU5P-LR8P",
@@ -165,7 +187,9 @@
     "expires_at": "2027-08-13T04:49:38.923Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-standard-22-qty5-1786596554079"
+    "payment_id": "VC-standard-22-qty5-1786596554079",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-B6PF-UBRW-LGRN",
@@ -179,7 +203,9 @@
     "expires_at": "2027-08-13T04:49:38.923Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-standard-22-qty5-1786596554079"
+    "payment_id": "VC-standard-22-qty5-1786596554079",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-BP8P-3A7J-H84D",
@@ -193,7 +219,9 @@
     "expires_at": "2027-08-13T04:49:38.923Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-standard-22-qty5-1786596554079"
+    "payment_id": "VC-standard-22-qty5-1786596554079",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-MVPS-8CML-4FRX",
@@ -207,7 +235,9 @@
     "expires_at": "2027-08-13T05:08:26.511Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-ultimate-40-qty3-1786597683156"
+    "payment_id": "VC-ultimate-40-qty3-1786597683156",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-VNT2-88RX-EWEB",
@@ -221,7 +251,9 @@
     "expires_at": "2027-08-13T05:08:26.511Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-ultimate-40-qty3-1786597683156"
+    "payment_id": "VC-ultimate-40-qty3-1786597683156",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-Y9NV-NWS8-QDB7",
@@ -235,7 +267,9 @@
     "expires_at": "2027-08-13T05:08:26.511Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-ultimate-40-qty3-1786597683156"
+    "payment_id": "VC-ultimate-40-qty3-1786597683156",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-PWY8-442X-3XZH",
@@ -249,7 +283,9 @@
     "expires_at": "2027-08-13T05:14:59.013Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-semi-55-qty2-1786598074538"
+    "payment_id": "VC-artjam-semi-55-qty2-1786598074538",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-J3GM-ZZHB-XC3M",
@@ -263,7 +299,9 @@
     "expires_at": "2027-08-13T05:17:32.110Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-unguided-40-qty2-1786598228585"
+    "payment_id": "VC-artjam-unguided-40-qty2-1786598228585",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-4J4Y-WMVQ-9URS",
@@ -277,7 +315,9 @@
     "expires_at": "2027-08-13T14:31:31.549Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-semi-55-qty2-1786631462103"
+    "payment_id": "VC-artjam-semi-55-qty2-1786631462103",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-YBJJ-7FTA-5G44",
@@ -291,7 +331,9 @@
     "expires_at": "2027-08-13T14:41:11.784Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-semi-55-qty3-1786632043662"
+    "payment_id": "VC-artjam-semi-55-qty3-1786632043662",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-AHKS-RZ8N-35GF",
@@ -305,7 +347,9 @@
     "expires_at": "2027-08-13T14:41:11.784Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-semi-55-qty3-1786632043662"
+    "payment_id": "VC-artjam-semi-55-qty3-1786632043662",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-BRCD-AEWW-3NTB",
@@ -319,7 +363,9 @@
     "expires_at": "2027-08-13T14:41:11.784Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-semi-55-qty3-1786632043662"
+    "payment_id": "VC-artjam-semi-55-qty3-1786632043662",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-SYJH-L7PT-AWCF",
@@ -333,7 +379,9 @@
     "expires_at": "2027-08-13T14:51:30.397Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-unguided-40-qty3-1786632656740"
+    "payment_id": "VC-artjam-unguided-40-qty3-1786632656740",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-V4ZD-MCBK-3ZXD",
@@ -347,7 +395,9 @@
     "expires_at": "2027-08-13T14:51:30.397Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-unguided-40-qty3-1786632656740"
+    "payment_id": "VC-artjam-unguided-40-qty3-1786632656740",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-GXH3-ZSEE-JU6Q",
@@ -361,7 +411,9 @@
     "expires_at": "2027-08-13T14:51:30.397Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-unguided-40-qty3-1786632656740"
+    "payment_id": "VC-artjam-unguided-40-qty3-1786632656740",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-WTPS-QJKM-HRCE",
@@ -375,7 +427,9 @@
     "expires_at": "2027-08-13T14:56:56.026Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-semi-55-qty1-1786632988496"
+    "payment_id": "VC-artjam-semi-55-qty1-1786632988496",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-VP8V-P9B3-VQYS",
@@ -387,9 +441,11 @@
     "recipient_name": "Jeff",
     "issued_at": "2026-08-13T15:02:11.751Z",
     "expires_at": "2027-08-13T15:02:11.751Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:14.731Z",
-    "payment_id": "VC-artjam-semi-55-qty5-1786633306482"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty5-1786633306482",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-DKKC-29R9-54F3",
@@ -401,9 +457,11 @@
     "recipient_name": "Jeff",
     "issued_at": "2026-08-13T15:02:11.751Z",
     "expires_at": "2027-08-13T15:02:11.751Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:20.693Z",
-    "payment_id": "VC-artjam-semi-55-qty5-1786633306482"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty5-1786633306482",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-9YNB-JPEV-72NY",
@@ -415,9 +473,11 @@
     "recipient_name": "Jeff",
     "issued_at": "2026-08-13T15:02:11.751Z",
     "expires_at": "2027-08-13T15:02:11.751Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:23.511Z",
-    "payment_id": "VC-artjam-semi-55-qty5-1786633306482"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty5-1786633306482",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-58V5-V9BY-3MZP",
@@ -431,7 +491,9 @@
     "expires_at": "2027-08-13T15:02:11.751Z",
     "redeemed": false,
     "redeemed_at": null,
-    "payment_id": "VC-artjam-semi-55-qty5-1786633306482"
+    "payment_id": "VC-artjam-semi-55-qty5-1786633306482",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-AWTS-NSKW-3NNF",
@@ -443,9 +505,11 @@
     "recipient_name": "Jeff",
     "issued_at": "2026-08-13T15:02:11.751Z",
     "expires_at": "2027-08-13T15:02:11.751Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:49.050Z",
-    "payment_id": "VC-artjam-semi-55-qty5-1786633306482"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty5-1786633306482",
+    "recipient_email": "",
+    "personal_message": ""
   },
   {
     "code": "TCC-Q5KA-P636-JZT6",
@@ -457,50 +521,10 @@
     "recipient_name": "hwe",
     "issued_at": "2026-08-13T17:20:33.858Z",
     "expires_at": "2027-08-13T17:20:33.858Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:11.065Z",
-    "payment_id": "VC-standard-22-qty1-1786641609418"
-  },
-  {
-    "code": "TCC-3XV3-M5KG-K6VM",
-    "type": "artjam-semi-55",
-    "label": "Semi-Guided Art Jamming Session",
-    "amount": "169.13",
-    "buyer_name": "jefferons soh",
-    "buyer_email": "jefferson.soh@gmail.com",
-    "recipient_name": "jefferons soh",
-    "issued_at": "2026-08-14T02:36:39.351Z",
-    "expires_at": "2027-08-14T02:36:39.351Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:00.390Z",
-    "payment_id": "VC-artjam-semi-55-qty3-1786674971114"
-  },
-  {
-    "code": "TCC-MFPU-XL9T-GTWU",
-    "type": "artjam-semi-55",
-    "label": "Semi-Guided Art Jamming Session",
-    "amount": "169.13",
-    "buyer_name": "jefferons soh",
-    "buyer_email": "jefferson.soh@gmail.com",
-    "recipient_name": "jefferons soh",
-    "issued_at": "2026-08-14T02:36:39.351Z",
-    "expires_at": "2027-08-14T02:36:39.351Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:04.023Z",
-    "payment_id": "VC-artjam-semi-55-qty3-1786674971114"
-  },
-  {
-    "code": "TCC-J43X-D3DE-SUQS",
-    "type": "artjam-semi-55",
-    "label": "Semi-Guided Art Jamming Session",
-    "amount": "169.13",
-    "buyer_name": "jefferons soh",
-    "buyer_email": "jefferson.soh@gmail.com",
-    "recipient_name": "jefferons soh",
-    "issued_at": "2026-08-14T02:36:39.351Z",
-    "expires_at": "2027-08-14T02:36:39.351Z",
-    "redeemed": true,
-    "redeemed_at": "2026-08-16T14:08:07.900Z",
-    "payment_id": "VC-artjam-semi-55-qty3-1786674971114"
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-standard-22-qty1-1786641609418",
+    "recipient_email": "",
+    "personal_message": ""
   }
 ]
