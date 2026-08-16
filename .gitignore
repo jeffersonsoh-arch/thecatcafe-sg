@@ -2,18 +2,22 @@
 # Dependencies
 node_modules/
 
-# Logs and temp files
-*.log
-*.tmp
-
-# Environment
+# Environment variables
 .env
 .env.local
-*.env.*
+.env.*
 
-# Editors
-.vscode/
-.idea/
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# Build artifacts
+dist/
+build/
+target/
 
 # Python
 __pycache__/
@@ -21,7 +25,85 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+env/
 venv/
 .venv/
-.env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/modules/
+.DS_Store
+.hg/
+.svn/
+.TVS/
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Icon?
+Thumbs.db
+.travis.yml
+appveyor.yml
+circle.yml
+.isort.cfg
+.python-version
+.pytest_cache/
+.mypy_cache/
+.coverage/
+htmlcov/
+.nyc_output/
+istanbul/
+.jscs.json
+.jshintignore
+.jshintrc
+.editorconfig
+.eslintignore
+.eslintrc
+.stylelintrc
+.babelrc
+.postcssrc
+.prettierrc
+.remarkrc
+.vimrc
+.vscode/
+.idea/
+.settings/
+.project
+.classpath
+.metadata
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+.git/
+.svn/
+.hg/
+.npm/
+.yarn-cache/
+bower_components/
+jspm_packages/
+node_modules/
+npm-debug.log
+yarn-error.log
+*.min.js
+*.min.css
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/keybindings.json
+*.local/share/Trash/
 ```

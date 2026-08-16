@@ -962,7 +962,9 @@ exports.handler = async (event) => {
       });
 
       // Determine if this is a gift based on recipient email being provided and different from buyer email
-      const isGift = recipientEmail && recipientEmail !== buyerEmail;
+      const isGift = recipientEmail && recipientEmail.trim() !== "" && (!buyerEmail || recipientEmail.trim() !== buyerEmail.trim());
+      
+      console.log(`Gift check: buyerEmail="${buyerEmail}", recipientEmail="${recipientEmail}", isGift=${isGift}`);
       
       if (isGift) {
         // Send receipt-only email to buyer (without voucher PDFs)
@@ -982,10 +984,17 @@ exports.handler = async (event) => {
         }
         
         // Send full voucher email to recipient
-        if (recipientEmail) {
+        if (recipientEmail && recipientEmail.trim() !== "") {
+          console.log(`Sending gift voucher email to recipient ${recipientEmail} with ${attachments.length} PDF(s)`);
           const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, true);
-          await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
-          console.log(`Gift voucher email sent to recipient ${recipientEmail}`);
+          try {
+            const result = await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
+            console.log(`Gift voucher email sent to recipient ${recipientEmail}. Resend response:`, result);
+          } catch (err) {
+            console.error(`Failed to send gift voucher email to ${recipientEmail}:`, err);
+          }
+        } else {
+          console.warn(`Recipient email is empty or invalid, skipping recipient email`);
         }
       } else {
         // Not a gift - send voucher to buyer only
