@@ -898,9 +898,15 @@ exports.handler = async (event) => {
       if (params.custom_fields) {
         const customData = JSON.parse(params.custom_fields);
         console.log("Parsed custom_data:", customData);
-        if (customData.recipient_name) recipientName = customData.recipient_name;
-        if (customData.recipient_email) recipientEmail = customData.recipient_email.trim();
-        if (customData.message) personalMessage = customData.message;
+        if (customData.recipient_name && customData.recipient_name.trim() !== "") {
+          recipientName = customData.recipient_name.trim();
+        }
+        if (customData.recipient_email && customData.recipient_email.trim() !== "") {
+          recipientEmail = customData.recipient_email.trim();
+        }
+        if (customData.message && customData.message.trim() !== "") {
+          personalMessage = customData.message.trim();
+        }
       } else {
         console.warn("custom_fields is missing or empty in webhook payload");
       }
