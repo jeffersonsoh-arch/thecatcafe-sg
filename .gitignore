@@ -10,27 +10,44 @@ node_modules/
 # Logs
 *.log
 
+# Temporary files
+*.tmp
+*.swp
+
+# IDE specific
+.vscode/
+.idea/
+
 # Build outputs
 dist/
 build/
 target/
 
-# Cache directories
-.cache/
-.nyc_output/
-.coverage/
-
-# OS generated files
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/modules/
 .DS_Store
-Thumbs.db
-
-# Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Temporary files
-*.tmp
-*.temp
+.hg/
+.svn/
+.wafpickle-N
+.lock-wscript
+.pytest_cache/
+.mypy_cache/
 ```

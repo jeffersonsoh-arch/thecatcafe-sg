@@ -334,9 +334,9 @@ function generateTicketPDF(code, voucherType, recipientName, expiry, qrBuffer) {
 }
 
 // ── Build Standard tier email ──
-function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message) {
+function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const { accentColor, accentLight, badgeGradient, headerBg, label, ribbonLabel } = def;
-  const isGift = buyerName !== recipientName;
+  const isGift = isGiftOverride !== null ? isGiftOverride : buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
@@ -417,9 +417,9 @@ function buildStandardEmail(tickets, def, recipientName, buyerName, expiry, mess
 }
 
 // ── Build Premium tier email ──
-function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message) {
+function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
-  const isGift = buyerName !== recipientName;
+  const isGift = isGiftOverride !== null ? isGiftOverride : buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
@@ -508,9 +508,9 @@ function buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, messa
 }
 
 // ── Build Ultimate tier email ──
-function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message) {
+function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
-  const isGift = buyerName !== recipientName;
+  const isGift = isGiftOverride !== null ? isGiftOverride : buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
@@ -598,9 +598,9 @@ function buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, mess
 }
 
 // ── Build Art Jamming email ──
-function buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message) {
+function buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const { accentColor, accentLight, badgeGradient, headerBg } = def;
-  const isGift = buyerName !== recipientName;
+  const isGift = isGiftOverride !== null ? isGiftOverride : buyerName !== recipientName;
   const isMulti = tickets.length > 1;
   const perksHTML = def.perks.map(p =>
     `<tr>
@@ -682,14 +682,14 @@ function buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, messag
 }
 
 // ── Route to correct email builder ──
-function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry, message) {
+function buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiry, message, isGiftOverride = null) {
   const def = VOUCHER_DEFS[voucherType] || VOUCHER_DEFS["standard-22"];
-  if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message);
-  if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message);
-  if (voucherType === "artjam-semi-55") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message);
-  if (voucherType === "artjam-unguided-40") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message);
+  if (voucherType === "ultimate-40") return buildUltimateEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
+  if (voucherType === "premium-30")  return buildPremiumEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
+  if (voucherType === "artjam-semi-55") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
+  if (voucherType === "artjam-unguided-40") return buildArtjamEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
   // Standard vouchers use the standard email template
-  return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message);
+  return buildStandardEmail(tickets, def, recipientName, buyerName, expiry, message, isGiftOverride);
 }
 
 // ── Send email via Resend ──
@@ -961,15 +961,18 @@ exports.handler = async (event) => {
         });
       });
 
-      const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage);
+      // Determine if this is a gift based on recipient email being provided and different from buyer email
+      const isGift = recipientEmail && recipientEmail !== buyerEmail;
+      
+      const html = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, isGift);
       
       // Send email to buyer
       await sendEmail(buyerEmail, def.emailSubject, html, attachments);
       console.log(`Customer email sent to ${buyerEmail} with ${attachments.length} PDF attachment(s)`);
       
       // If recipient email is different from buyer email, also send to recipient
-      if (recipientEmail && recipientEmail !== buyerEmail) {
-        const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage);
+      if (isGift) {
+        const recipientHtml = buildVoucherHTML(tickets, voucherType, recipientName, buyerName, expiryStr, personalMessage, true);
         await sendEmail(recipientEmail, `You've received a gift voucher from ${buyerName}!`, recipientHtml, attachments);
         console.log(`Gift voucher email sent to recipient ${recipientEmail}`);
       }
