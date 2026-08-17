@@ -484,10 +484,11 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
   <div class="modal" style="max-width:480px;">
     <div class="modal-title">📷 Scan Voucher QR Code</div>
     <div style="margin-bottom:12px;font-size:13px;color:var(--text-2);">Position the QR code within the camera frame to scan.</div>
-    <div id="qr-reader" style="width:100%;"></div>
+    <div id="qr-reader" style="width:100%;min-height:250px;background:#f5f5f5;border-radius:8px;display:flex;align-items:center;justify-content:center;"></div>
     <div class="voucher-result" id="qr-result" style="margin-top:12px;"></div>
     <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeQRScanner()">Close Scanner</button>
+      <button class="btn-sm btn-primary" onclick="startQRScanner()" id="btn-start-scan">Start Camera</button>
+      <button class="btn-cancel" onclick="closeQRScanner()">Close</button>
     </div>
   </div>
 </div>
@@ -1414,6 +1415,13 @@ function openQRScanner() {
   document.getElementById("modal-qr-scanner").classList.add("open");
   document.getElementById("qr-result").innerHTML = "";
   document.getElementById("qr-result").style.display = "none";
+  document.getElementById("btn-start-scan").style.display = "inline-block";
+  document.getElementById("qr-reader").innerHTML = '<div style="color:#999;font-size:13px;">Click "Start Camera" to begin scanning</div>';
+}
+
+function startQRScanner() {
+  document.getElementById("btn-start-scan").style.display = "none";
+  document.getElementById("qr-reader").innerHTML = '';
   
   // Initialize the QR scanner
   html5QrCode = new Html5Qrcode("qr-reader");
@@ -1427,8 +1435,9 @@ function openQRScanner() {
     onScanFailure
   ).catch(err => {
     console.error("Failed to start QR scanner:", err);
-    document.getElementById("qr-result").innerHTML = '<div style="color:var(--red);font-size:13px;">Unable to access camera. Please ensure camera permissions are granted.</div>';
+    document.getElementById("qr-result").innerHTML = '<div style="color:var(--red);font-size:13px;">Unable to access camera. Please ensure camera permissions are granted and you are using HTTPS.</div>';
     document.getElementById("qr-result").style.display = "block";
+    document.getElementById("btn-start-scan").style.display = "inline-block";
   });
 }
 
@@ -1466,6 +1475,8 @@ function closeQRScanner() {
     }).catch(err => console.error("Failed to stop scanner:", err));
   }
   document.getElementById("modal-qr-scanner").classList.remove("open");
+  // Reset the button visibility for next time
+  document.getElementById("btn-start-scan").style.display = "inline-block";
 }
 
 // Bulk voucher selection functions
