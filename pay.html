@@ -20,8 +20,10 @@
 
   /* HEADER */
   .header { background:var(--bg); border-bottom:0.5px solid var(--border); padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; }
-  .header-logo { font-size:15px; font-weight:600; }
-  .header-logo span { color:var(--rust); }
+  .nav-logo{display:flex;align-items:center;text-decoration:none;}
+  .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
+  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
+  .nav-logo-text span{color:var(--rust);}
   .header-back { font-size:13px; color:var(--text-3); display:flex; align-items:center; gap:4px; }
   .header-back:hover { color:var(--text); }
 
@@ -92,7 +94,10 @@
 <body>
 
 <div class="header">
-  <div class="header-logo">The Cat <span>Cafe</span></div>
+  <a class="nav-logo" href="/" style="text-decoration:none;">
+    <img src="images/logo.png" alt="The Cat Cafe Singapore" class="nav-logo-img" fetchpriority="high" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="nav-logo-text" style="display:none;">The Cat <span>Cafe</span></span>
+  </a>
   <a class="header-back" href="/">&#8592; Back to site</a>
 </div>
 
@@ -255,12 +260,6 @@ function showError(msg) {
   el.textContent = msg;
   el.style.display = "block";
   el.scrollIntoView({ behavior:"smooth", block:"nearest" });
-}
-
-// Show success if redirected back
-if (window.location.search.includes("status=success") || window.location.hash === "#success") {
-  document.getElementById("payment-card").style.display = "none";
-  document.getElementById("success-card").style.display = "block";
 }
 </script>
 </body>

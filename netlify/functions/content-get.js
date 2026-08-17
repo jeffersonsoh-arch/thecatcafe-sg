@@ -32,6 +32,9 @@ exports.handler = async (event) => {
     "Content-Type": "application/json"
   };
 
+  // content-get is read-only and used by public site, so no auth required
+  // But if called from admin panel with token, that's fine too
+  
   try {
     const type = event.queryStringParameters && event.queryStringParameters.type;
     if (!type) return { statusCode: 400, headers, body: JSON.stringify({ error: "Missing type param" }) };

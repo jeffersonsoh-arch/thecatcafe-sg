@@ -6,9 +6,28 @@ const HITPAY_HOST    = process.env.HITPAY_ENV === "live"
   ? "api.hit-pay.com"
   : "api.sandbox.hit-pay.com";
 
+// Use sandbox or live based on env var
+const HITPAY_HOST = process.env.HITPAY_ENV === "live"
+  ? "api.hit-pay.com"
+  : "api.sandbox.hit-pay.com";
+
+const VOUCHERS = {
+  "standard-22": { amount: "22.00", label: "Standard Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 complimentary drink at The Cat Cafe Singapore" },
+  "premium-30":  { amount: "30.00", label: "Premium Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 upgraded drink and a choice of dessert at The Cat Cafe Singapore" },
+  "ultimate-40": { amount: "40.00", label: "Ultimate Entrance Ticket", desc: "Entry ticket (2 hrs) incl. 1 upgraded drink, dessert and 1 main course at The Cat Cafe Singapore" },
+  "artjam-unguided-40": { amount: "40.00", label: "Unguided Art Jamming Session", desc: "2 hours art jamming with free upgraded drinks and all materials at The Cat Cafe Singapore" },
+  "artjam-semi-55": { amount: "55.00", label: "Semi-Guided Art Jamming Session", desc: "3 hours guided art jamming with free upgraded drinks, slice of cake and all materials at The Cat Cafe Singapore" }
+};
+
 const VOUCHER_LABELS = {
   "gift-10":  "Gift Voucher",
-  "entry-22": "Entry Ticket"
+  "entry-22": "Entry Ticket",
+  "standard-22": "Standard Entrance Ticket",
+  "premium-30": "Premium Entrance Ticket",
+  "ultimate-40": "Ultimate Entrance Ticket",
+  "artjam-unguided-40": "Unguided Art Jamming Session",
+  "artjam-semi-55": "Semi-Guided Art Jamming Session"
+};
 };
 
 function hitpayPost(params) {
@@ -53,7 +72,7 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { voucher_type, quantity = 1, unit_amount, total_amount, buyer_name, buyer_email, recipient_name, message } = body;
+const { voucher_type, buyer_name, buyer_email, recipient_name, recipient_email, message, quantity = 1, unit_amount, total_amount } = body;
 
     if (!VOUCHER_LABELS[voucher_type]) return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid voucher type" }) };
     if (!buyer_email || !buyer_name)   return { statusCode: 400, headers, body: JSON.stringify({ error: "Name and email required" }) };
@@ -71,22 +90,42 @@ exports.handler = async (event) => {
       chargeAmount = ((voucher_type === "entry-22" ? 22 : 10) * qty).toFixed(2);
     }
 
-    console.log(`Voucher: ${qty}x ${label} total=S$${chargeAmount}`);
+// Determine quantity, unit amount and total; support both new VOUCHERS and legacy VOUCHER_LABELS
+const qty = quantity || 1;
+let amountNum;
+let label;
+if (VOUCHERS && VOUCHERS[voucher_type]) {
+  const unit = unit_amount ? parseFloat(unit_amount) : parseFloat(VOUCHERS[voucher_type].amount);
+  amountNum = total_amount ? parseFloat(total_amount) : (unit * qty);
+  label = VOUCHERS[voucher_type].label;
+} else {
+  // fallback to legacy behaviour
+  const legacyUnit = (voucher_type === "entry-22" ? 22 : 10);
+  amountNum = total_amount ? parseFloat(total_amount) : (legacyUnit * qty);
+  label = VOUCHER_LABELS[voucher_type] || voucher_type;
+}
+const chargeAmount = amountNum.toFixed(2);
 
-    const reference = `VC-${voucher_type}-${Date.now()}`;
-    const purpose   = `${qty > 1 ? qty + "x " : ""}${label} - The Cat Cafe Singapore`;
+console.log(`Voucher: ${qty}x ${label} total=S$${chargeAmount}`);
 
-    const result = await hitpayPost({
-      amount:                  chargeAmount,
-      currency:                "SGD",
-      email:                   buyer_email,
-      name:                    buyer_name,
-      purpose,
+const reference = `VC-${voucher_type}-qty${qty}-${Date.now()}`;
+const purpose = (VOUCHERS && VOUCHERS[voucher_type])
+  ? `${label} (${qty}x S$${(unit_amount ? parseFloat(unit_amount).toFixed(2) : parseFloat(VOUCHERS[voucher_type].amount).toFixed(2))}) - The Cat Cafe Singapore`
+  : `${qty > 1 ? qty + "x " : ""}${label} - The Cat Cafe Singapore`;
+
+const result = await hitpayPost({
+  amount:                  chargeAmount,
+  currency:                "SGD",
+  email:                   buyer_email,
+  name:                    buyer_name,
+  purpose,
       reference_number:        reference,
       redirect_url:            `${SITE_URL}/voucher-success.html`,
+      cancel_url:              `${SITE_URL}/index.html`,
       webhook:                 `${SITE_URL}/.netlify/functions/voucher-webhook`,
       send_sms:                "false",
-      allow_repeated_payments: "false"
+      allow_repeated_payments: "false",
+      custom_fields:           JSON.stringify({ recipient_name, recipient_email, message })
     });
 
     if (result.status === 200 || result.status === 201) {

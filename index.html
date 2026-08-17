@@ -7,15 +7,23 @@
 <meta name="description" content="Visit Singapore's original cat cafe since 2014 at Bugis. Meet 13 rescued cats, enjoy coffee, food and art jamming. Book your visit today!">
 <meta name="keywords" content="cat cafe Singapore, cat cafe Bugis, Singapore cat cafe, rescue cats Singapore, art jamming cat cafe, things to do Bugis, pet cafe Singapore">
 <meta name="robots" content="index, follow">
+<meta name="theme-color" content="#D85A30">
 <meta property="og:title" content="The Cat Cafe Singapore | Bugis">
 <meta property="og:description" content="Singapore's original cat cafe since 2014. Meet 13 rescued cats, enjoy coffee, food and art jamming at Bugis.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.thecatcafe.sg">
+<meta property="og:image" content="https://www.thecatcafe.sg/images/logo.png">
+<meta property="og:locale" content="en_SG">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://www.thecatcafe.sg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="//www.thecatcafe.sg">
+<link rel="dns-prefetch" href="//images.thecatcafe.sg">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"The Cat Cafe Singapore","description":"Singapore's original cat cafe since 2014 at Bugis.","url":"https://www.thecatcafe.sg","telephone":"+6563386815","email":"info@thecatcafe.sg","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street, Level 3","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"},"priceRange":"S$22-S$50"}
+{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"The Cat Cafe Singapore","description":"Singapore's original cat cafe since 2014 at Bugis.","url":"https://www.thecatcafe.sg","telephone":"+6563386815","email":"info@thecatcafe.sg","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street, Level 3","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"},"priceRange":"S$22-S$50","openingHours":"Mo-Su 12:00-20:00","servesCuisine":"Cafe","hasMenu":"https://www.thecatcafe.sg/#menu"}
 </script>
 <script>if(typeof CC_DATA==="undefined"){window.CC_DATA=undefined;}</script>
+<link rel="preload" as="image" href="images/logo.png" fetchpriority="high">
 <style>
   :root {
     --cream:#f5efe8; --rust:#D85A30; --rust-dark:#993C1D; --rust-pale:#FAECE7;
@@ -32,27 +40,34 @@
   button{font-family:inherit;font-size:14px;}
   /* NAV */
   nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border);}
-  .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px;}
-  .nav-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
+.nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px;}
+@media(max-width:700px){
+  .nav-inner{justify-content:space-between;}
+  .nav-links{display:none !important;}
+  .nav-mobile-cta{display:flex !important;gap:8px;align-items:center;}
+  .nav-desktop-only{display:none !important;}
+}
+.nav-mobile-cta{display:none;}
+.nav-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
   .nav-logo-link{display:flex;align-items:center;text-decoration:none;}
   .nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;}
   .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
-  .nav-logo-text{font-size:15px;font-weight:600;color:var(--text);}
   .nav-logo-text span{color:var(--rust);}
-  .nav-logo span{color:var(--rust);}
-  .nav-links{display:flex;gap:20px;align-items:center;}
+.nav-logo span{color:var(--rust);}
+.nav-links{display:flex;gap:20px;align-items:center;}
   .nav-links a{font-size:13px;color:var(--text-2);}
   .nav-links a:hover{color:var(--text);}
-  .nav-pay-link{background:#1a56db;color:#fff !important;font-weight:700;padding:8px 20px;border-radius:20px;font-size:13px;letter-spacing:0.03em;box-shadow:0 2px 12px rgba(26,86,219,0.4);transition:all 0.2s;display:inline-flex;align-items:center;gap:5px;}
-  .nav-pay-link:hover{background:#1e40af !important;color:#fff !important;box-shadow:0 4px 18px rgba(26,86,219,0.55);transform:translateY(-2px);}
+  .nav-pay-link{color:var(--indigo) !important;font-weight:700;font-size:13px;letter-spacing:0.03em;transition:all 0.2s;display:inline-flex;align-items:center;margin-left:12px;white-space:nowrap;}
+  .nav-pay-link:hover{opacity:0.8;}
+  .nav-mobile-cta .nav-pay-link{margin-left:0;}
   .nav-cta{background:var(--rust);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;display:inline-block;}
   .nav-cta:hover{opacity:0.88;}
   /* LAYOUT */
   .page{max-width:900px;margin:0 auto;padding:0 24px;}
   section{padding:56px 0;border-bottom:0.5px solid var(--border-light);}
   section:last-of-type{border-bottom:none;}
-  .section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:8px;}
-  .section-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em;line-height:1.25;}
+  .section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:12px;}
+  .section-title{font-size:26px;font-weight:500;color:var(--text);margin-bottom:12px;letter-spacing:-0.02em;line-height:1.25;}
   .section-sub{font-size:15px;color:var(--text-2);max-width:560px;line-height:1.7;margin-bottom:28px;}
   /* HERO */
   .hero{background:var(--cream);border-radius:var(--radius);padding:56px 40px 44px;text-align:center;margin:32px 0 0;position:relative;overflow:hidden;}
@@ -140,7 +155,7 @@
   .tsenior{background:var(--indigo-pale);color:var(--indigo);}
   .tyoung{background:var(--rust-pale);color:var(--rust-dark);}
   .tog{background:#F5F0E8;color:#5C4A1E;}
-  .tcuddly{background:#FCE8F3;color:#8B1558;}
+  .tlapcat{background:#FCE8F3;color:#8B1558;}
   .tplayful{background:#E1F5EE;color:#0F6E56;}
   .tshy{background:#FEF3E7;color:#8A5200;}
   .cat-desc-short{font-size:12px;color:var(--text-2);line-height:1.5;}
@@ -199,15 +214,18 @@
 
   @media(max-width:700px){
 
-    .event-block { grid-template-columns:1fr; }
-    .event-block-flip .event-gallery { order:-1; }
+    .event-block { grid-template-columns:1fr; gap:32px; margin-bottom:56px; padding-bottom:56px; display:flex !important; flex-direction:column !important; }
+    .event-block-content { order:1 !important; }
+    .event-gallery { order:2 !important; aspect-ratio:16/9; }
+    .event-block-title { font-size:20px; }
+    .event-meta-row { flex-direction:row; flex-wrap:wrap; gap:12px; }
+    .event-meta-item { flex:1 1 auto; min-width:140px; }
 
     .hero{padding:40px 24px 36px;}
     .hero h1{font-size:32px;}
     .cat-grid{grid-template-columns:repeat(2,1fr);}
     .features,.events-grid,.art-photos{grid-template-columns:1fr;}
     .hours-grid{grid-template-columns:1fr;}
-    .nav-links{display:none;}
     .art-banner{flex-direction:column;text-align:center;}
     .footer-inner{flex-direction:column;text-align:center;}
   }
@@ -215,9 +233,8 @@
   /* ── EVENTS ── */
   .event-block { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; margin-bottom:60px; padding-bottom:60px; border-bottom:0.5px solid var(--border-light); }
   .event-block:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-  .event-block-flip { }
-  .event-block-content { display:flex; flex-direction:column; gap:16px; }
-  .event-block-title { font-size:22px; font-weight:600; color:var(--text); line-height:1.3; }
+  .event-block-content { display:flex; flex-direction:column; gap:20px; }
+  .event-block-title { font-size:22px; font-weight:600; color:var(--text); line-height:1.3; margin-top:8px; }
   .event-block-desc { font-size:14px; color:var(--text-2); line-height:1.8; }
   .event-meta-row { display:flex; flex-direction:column; gap:8px; }
   .event-meta-item { display:flex; align-items:flex-start; gap:10px; }
@@ -228,9 +245,9 @@
 
   /* Gallery */
   .event-gallery { position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:4/3; background:var(--cream); flex-shrink:0; }
-  .gallery-viewport { width:100%; height:100%; overflow:hidden; border-radius:var(--radius); }
+  .gallery-viewport { width:100%; height:100%; overflow:hidden; position:relative; }
   .gallery-track { display:flex; height:100%; transition:transform 0.45s cubic-bezier(0.4,0,0.2,1); }
-  .gallery-slide { min-width:100%; height:100%; flex-shrink:0; }
+  .gallery-slide { min-width:100%; width:100%; height:100%; flex-shrink:0; }
   .gallery-slide img { width:100%; height:100%; object-fit:cover; display:block; }
   .gallery-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:48px; background:var(--cream); }
   .gallery-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.92); border:none; border-radius:50%; width:36px; height:36px; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text); box-shadow:0 2px 10px rgba(0,0,0,0.15); z-index:2; line-height:1; transition:background 0.15s; }
@@ -314,7 +331,7 @@
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="/">
-      <img src="images/logo.png" alt="The Cat Cafe Singapore" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <img src="images/logo.png" alt="The Cat Cafe Singapore" class="nav-logo-img" fetchpriority="high" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="nav-logo-text" style="display:none;">The Cat <span>Cafe</span></span>
     </a>
     <div class="nav-links">
@@ -324,9 +341,15 @@
       <a href="#events">Events</a>
       <a href="#vouchers">Gift vouchers</a>
       <a href="#visit">Visit</a>
-      <a href="pay.html" target="_blank" class="nav-pay-link">&#x1F4B3;&nbsp;Pay</a>
     </div>
-    <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+    <div class="nav-mobile-cta">
+      <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
+      <a class="nav-cta" id="book-link-mobile" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+    </div>
+    <div class="nav-desktop-only" style="display:flex;gap:12px;align-items:center;">
+      <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
+      <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+    </div>
   </div>
 </nav>
 
@@ -393,24 +416,66 @@
     <div class="section-eyebrow">Art jamming</div>
     <div class="section-title">Paint with cats</div>
     <div class="section-sub">A uniquely relaxing creative session alongside our resident cats. No experience needed.</div>
+    
+    <div class="pricing-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+      <div class="pricing-card" style="background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+        <div class="price-row" style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:0.5px solid var(--border-light);">
+          <div>
+            <div class="price-label" style="font-size:14px; color:var(--text); font-weight:500;">Unguided Art-jam sessions with cats</div>
+            <div class="price-note" style="font-size:12px; color:var(--text-3); margin-top:2px;">$40 for 2 hours</div>
+          </div>
+          <div class="price-val" style="font-size:20px; font-weight:600; color:var(--rust);">$40</div>
+        </div>
+        <div style="padding:16px 24px;">
+          <ul style="list-style:none; margin:0; padding:0;">
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🎨</span> Unguided art jamming</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🥤</span> 1 drink of your choice</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🖼️</span> 1 canvas (30×40)</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🖌️</span> Art tools and supplies</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; display:flex; gap:8px;"><span>⏱️</span> Extension at $10 per hour</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="pricing-card" style="background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+        <div class="price-row" style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:0.5px solid var(--border-light);">
+          <div>
+            <div class="price-label" style="font-size:14px; color:var(--text); font-weight:500;">Semi-guided Art Jamming session with cats</div>
+            <div class="price-note" style="font-size:12px; color:var(--text-3); margin-top:2px;">$55 for 3 hours (selected dates only)</div>
+          </div>
+          <div class="price-val" style="font-size:20px; font-weight:600; color:var(--rust);">$55</div>
+        </div>
+        <div style="padding:16px 24px;">
+          <ul style="list-style:none; margin:0; padding:0;">
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🎨</span> Semi-guided art jamming</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🥤</span> 1 drink of your choice</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🍰</span> 10% off food menu</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🖼️</span> 1 canvas (30×40)</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; border-bottom:0.5px solid var(--border-light); display:flex; gap:8px;"><span>🖌️</span> Art tools and supplies</li>
+            <li style="font-size:13px; color:var(--text-2); padding:6px 0; display:flex; gap:8px;"><span>📸</span> Photo taking session (with your devices) with the cats</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
     <div class="art-banner">
       <div>
-        <h3>Art jamming with cats &#x1F3A8;</h3>
-        <p>Unguided sessions S$40 &middot; Semi-guided (selected dates) S$55. Includes 1 drink, 1 canvas (30x40cm), all art tools. WhatsApp us at 8080 8719 to book.</p>
+        <h3>Ready to paint? &#x1F3A8;</h3>
+        <p>WhatsApp us at 8080 8719 to book your session.</p>
       </div>
       <a href="https://wa.me/6580808719" target="_blank"><button class="art-btn">Book via WhatsApp</button></a>
     </div>
     <div class="art-photos">
       <div class="art-photo-card">
-        <div class="art-photo-wrap"><img src="images/artjam/artjam1.jpg" alt="Art jamming with cats at The Cat Cafe Singapore Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F3A8;</div>'"></div>
+        <div class="art-photo-wrap"><img src="images/artjam/artjam1.jpg" alt="Art jamming with cats at The Cat Cafe Singapore Bugis" loading="eager" fetchpriority="high" decoding="async" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F3A8;</div>'"></div>
         <div class="art-photo-label">Paint while the cats wander by</div>
       </div>
       <div class="art-photo-card">
-        <div class="art-photo-wrap"><img src="images/artjam/artjam2.jpg" alt="Canvas art jamming session cat cafe Bugis Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F58C;&#xFE0F;</div>'"></div>
+        <div class="art-photo-wrap"><img src="images/artjam/artjam2.jpg" alt="Canvas art jamming session cat cafe Bugis Singapore" loading="eager" fetchpriority="high" decoding="async" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F58C;&#xFE0F;</div>'"></div>
         <div class="art-photo-label">All materials included, no experience needed</div>
       </div>
       <div class="art-photo-card">
-        <div class="art-photo-wrap"><img src="images/artjam/artjam3.jpg" alt="Group art jamming at cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F431;</div>'"></div>
+        <div class="art-photo-wrap"><img src="images/artjam/artjam3.jpg" alt="Group art jamming at cat cafe Singapore" loading="eager" fetchpriority="high" decoding="async" onerror="this.parentNode.innerHTML='<div class=art-photo-placeholder>&#x1F431;</div>'"></div>
         <div class="art-photo-label">Great for groups, dates &amp; team bonding</div>
       </div>
     </div>
@@ -440,7 +505,7 @@
       <button class="fbtn" onclick="filterCats('og',this)">OG since '14</button>
       <button class="fbtn" onclick="filterCats('senior',this)">Senior</button>
       <button class="fbtn" onclick="filterCats('young',this)">Young</button>
-      <button class="fbtn" onclick="filterCats('cuddly',this)">Cuddly</button>
+      <button class="fbtn" onclick="filterCats('lapcat',this)">Lap cat</button>
       <button class="fbtn" onclick="filterCats('playful',this)">Playful</button>
       <button class="fbtn" onclick="filterCats('shy',this)">Shy</button>
     </div>
@@ -456,6 +521,18 @@
 
       <!-- BIRTHDAY -->
       <div class="event-block">
+        <div class="event-gallery">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="track-birthday">
+              <div class="gallery-slide"><img src="images/events/birthday1.jpg" alt="Birthday party at The Cat Cafe Singapore" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F382;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/birthday2.jpg" alt="Birthday celebration with cats" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F431;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/birthday3.jpg" alt="Cat cafe birthday party Bugis" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F389;</div>'"></div>
+            </div>
+          </div>
+          <button class="gallery-btn gallery-prev" onclick="gallerySt('birthday',-1)">&#8249;</button>
+          <button class="gallery-btn gallery-next" onclick="gallerySt('birthday',1)">&#8250;</button>
+          <div class="gallery-dots" id="dots-birthday"></div>
+        </div>
         <div class="event-block-content">
           <div class="event-tag">Birthday parties</div>
           <div class="event-block-title">Celebrate your birthday with 13 cats</div>
@@ -467,28 +544,16 @@
           </div>
           <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20a%20birthday%20party%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
         </div>
-        <div class="event-gallery">
-          <div class="gallery-viewport">
-            <div class="gallery-track" id="track-birthday">
-              <div class="gallery-slide"><img src="images/events/birthday1.jpg" alt="Birthday party at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F382;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/birthday2.jpg" alt="Birthday celebration with cats" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F431;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/birthday3.jpg" alt="Cat cafe birthday party Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F389;</div>'"></div>
-            </div>
-          </div>
-          <button class="gallery-btn gallery-prev" onclick="gallerySt('birthday',-1)">&#8249;</button>
-          <button class="gallery-btn gallery-next" onclick="gallerySt('birthday',1)">&#8250;</button>
-          <div class="gallery-dots" id="dots-birthday"></div>
-        </div>
       </div>
 
       <!-- PROPOSAL -->
-      <div class="event-block event-block-flip">
+      <div class="event-block">
         <div class="event-gallery">
           <div class="gallery-viewport">
             <div class="gallery-track" id="track-proposal">
-              <div class="gallery-slide"><img src="images/events/proposal1.jpg" alt="Proposal at The Cat Cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F48D;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/proposal2.jpg" alt="Solemnisation cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F490;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/proposal3.jpg" alt="Wedding ceremony with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F338;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/proposal1.jpg" alt="Proposal at The Cat Cafe Singapore" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F48D;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/proposal2.jpg" alt="Solemnisation cat cafe Singapore" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F490;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/proposal3.jpg" alt="Wedding ceremony with cats Singapore" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F338;</div>'"></div>
             </div>
           </div>
           <button class="gallery-btn gallery-prev" onclick="gallerySt('proposal',-1)">&#8249;</button>
@@ -509,6 +574,18 @@
 
       <!-- PRIVATE HIRE -->
       <div class="event-block">
+        <div class="event-gallery">
+          <div class="gallery-viewport">
+            <div class="gallery-track" id="track-private">
+              <div class="gallery-slide"><img src="images/events/private1.jpg" alt="Private hire cat cafe Singapore" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F3AC;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/private2.jpg" alt="Video shoot at cat cafe Bugis" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F4F8;</div>'"></div>
+              <div class="gallery-slide"><img src="images/events/private3.jpg" alt="Commercial event with cats Singapore" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x2728;</div>'"></div>
+            </div>
+          </div>
+          <button class="gallery-btn gallery-prev" onclick="gallerySt('private',-1)">&#8249;</button>
+          <button class="gallery-btn gallery-next" onclick="gallerySt('private',1)">&#8250;</button>
+          <div class="gallery-dots" id="dots-private"></div>
+        </div>
         <div class="event-block-content">
           <div class="event-tag">Private hire</div>
           <div class="event-block-title">Have something special in mind?</div>
@@ -519,18 +596,6 @@
             <div class="event-meta-item"><span class="event-meta-icon">🕐</span><div><strong>Duration</strong><span>Half or full day</span></div></div>
           </div>
           <a class="event-cta" href="https://wa.me/6580808719?text=Hi!%20I'd%20like%20to%20enquire%20about%20private%20hire%20at%20The%20Cat%20Cafe." target="_blank">Enquire via WhatsApp</a>
-        </div>
-        <div class="event-gallery">
-          <div class="gallery-viewport">
-            <div class="gallery-track" id="track-private">
-              <div class="gallery-slide"><img src="images/events/private1.jpg" alt="Private hire cat cafe Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F3AC;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/private2.jpg" alt="Video shoot at cat cafe Bugis" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x1F4F8;</div>'"></div>
-              <div class="gallery-slide"><img src="images/events/private3.jpg" alt="Commercial event with cats Singapore" loading="lazy" onerror="this.parentNode.innerHTML='<div class=gallery-placeholder>&#x2728;</div>'"></div>
-            </div>
-          </div>
-          <button class="gallery-btn gallery-prev" onclick="gallerySt('private',-1)">&#8249;</button>
-          <button class="gallery-btn gallery-next" onclick="gallerySt('private',1)">&#8250;</button>
-          <div class="gallery-dots" id="dots-private"></div>
         </div>
       </div>
 
@@ -564,53 +629,90 @@
   <div class="page">
     <div class="section-eyebrow">Gift vouchers</div>
     <div class="section-title">Give the gift of cats</div>
-    <div class="section-sub">Purchase a gift voucher or entry ticket online. A beautifully designed voucher with a unique code will be emailed instantly after payment.</div>
+    <div class="section-sub">Purchase an entrance ticket online. A beautifully designed voucher with a unique code will be emailed instantly after payment.</div>
 
     <div class="voucher-grid">
 
-      <!-- GIFT VOUCHER -->
-      <div class="voucher-card" id="vc-gift-10" onclick="selectVoucher('gift-10')">
-        <div class="voucher-emoji">🎁</div>
-        <div class="voucher-name">Gift Voucher</div>
-        <div class="voucher-desc">Credit redeemable on any visit. Perfect as a gift for cat lovers.</div>
-        <div class="voucher-amount-wrap" onclick="event.stopPropagation()">
-          <label class="voucher-field-label">Amount (S$)</label>
-          <div class="voucher-amount-row">
-            <span class="voucher-currency">S$</span>
-            <input type="number" id="gift-amount" class="voucher-amount-input" value="10" min="1" step="1" oninput="updateVoucherTotal('gift-10')" onclick="selectVoucher('gift-10')">
-          </div>
-          <div class="voucher-presets">
-            <button onclick="setGiftAmount(10)">S$10</button>
-            <button onclick="setGiftAmount(20)">S$20</button>
-            <button onclick="setGiftAmount(50)">S$50</button>
-          </div>
-        </div>
-        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
-          <label class="voucher-field-label">Quantity</label>
-          <div class="voucher-qty-row">
-            <button class="voucher-qty-btn" onclick="changeQty('gift-10',-1)">&#8722;</button>
-            <span class="voucher-qty" id="qty-gift-10">1</span>
-            <button class="voucher-qty-btn" onclick="changeQty('gift-10',1)">&#43;</button>
-          </div>
-        </div>
-        <div class="voucher-total" id="total-gift-10">Total: S$10</div>
-      </div>
-
-      <!-- ENTRY TICKET -->
-      <div class="voucher-card" id="vc-entry-22" onclick="selectVoucher('entry-22')">
-        <div class="voucher-popular">Most popular</div>
-        <div class="voucher-emoji">🐱</div>
-        <div class="voucher-name">Entry Ticket</div>
-        <div class="voucher-desc">2-hour entry with 1 complimentary drink. S$22 per person.</div>
+      <!-- STANDARD ENTRANCE TICKET -->
+      <div class="voucher-card" id="vc-standard-22" onclick="selectVoucher('standard-22')">
+        <div class="voucher-emoji">🎫</div>
+        <div class="voucher-name">Standard Entrance Ticket</div>
+        <div class="voucher-desc">2-hour entry with 1 complimentary drink.</div>
         <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
           <label class="voucher-field-label">Number of tickets</label>
           <div class="voucher-qty-row">
-            <button class="voucher-qty-btn" onclick="changeQty('entry-22',-1)">&#8722;</button>
-            <span class="voucher-qty" id="qty-entry-22">1</span>
-            <button class="voucher-qty-btn" onclick="changeQty('entry-22',1)">&#43;</button>
+            <button class="voucher-qty-btn" onclick="changeQty('standard-22',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-standard-22">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('standard-22',1)">&#43;</button>
           </div>
         </div>
-        <div class="voucher-total" id="total-entry-22">Total: S$22</div>
+        <div class="voucher-total" id="total-standard-22">Total: S$22</div>
+      </div>
+
+      <!-- PREMIUM ENTRANCE TICKET -->
+      <div class="voucher-card" id="vc-premium-30" onclick="selectVoucher('premium-30')">
+        <div class="voucher-popular">Best value</div>
+        <div class="voucher-emoji">🍰</div>
+        <div class="voucher-name">Premium Entrance Ticket</div>
+        <div class="voucher-desc">2-hour entry with 1 upgraded drink and a choice of dessert.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('premium-30',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-premium-30">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('premium-30',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-premium-30">Total: S$30</div>
+      </div>
+
+      <!-- ULTIMATE ENTRANCE TICKET -->
+      <div class="voucher-card" id="vc-ultimate-40" onclick="selectVoucher('ultimate-40')">
+        <div class="voucher-emoji">👑</div>
+        <div class="voucher-name">Ultimate Entrance Ticket</div>
+        <div class="voucher-desc">2-hour entry with 1 upgraded drink, dessert and 1 main course.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('ultimate-40',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-ultimate-40">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('ultimate-40',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-ultimate-40">Total: S$40</div>
+      </div>
+
+      <!-- UNGUIDED ART JAMMING -->
+      <div class="voucher-card" id="vc-artjam-unguided-40" onclick="selectVoucher('artjam-unguided-40')">
+        <div class="voucher-emoji">🎨</div>
+        <div class="voucher-name">Unguided Art Jamming Session</div>
+        <div class="voucher-desc">2 hours art jamming with free upgraded drinks and all materials.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-unguided-40',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-artjam-unguided-40">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-unguided-40',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-artjam-unguided-40">Total: S$40</div>
+      </div>
+
+      <!-- SEMI-GUIDED ART JAMMING -->
+      <div class="voucher-card" id="vc-artjam-semi-55" onclick="selectVoucher('artjam-semi-55')">
+        <div class="voucher-popular">Includes cake</div>
+        <div class="voucher-emoji">🖌️</div>
+        <div class="voucher-name">Semi-Guided Art Jamming Session</div>
+        <div class="voucher-desc">3 hours guided art jamming with free upgraded drinks, slice of cake and all materials.</div>
+        <div class="voucher-qty-wrap" onclick="event.stopPropagation()">
+          <label class="voucher-field-label">Number of tickets</label>
+          <div class="voucher-qty-row">
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-semi-55',-1)">&#8722;</button>
+            <span class="voucher-qty" id="qty-artjam-semi-55">1</span>
+            <button class="voucher-qty-btn" onclick="changeQty('artjam-semi-55',1)">&#43;</button>
+          </div>
+        </div>
+        <div class="voucher-total" id="total-artjam-semi-55">Total: S$55</div>
       </div>
 
     </div>
@@ -627,13 +729,20 @@
             <label>Your email *</label>
             <input type="email" id="vf-buyer-email" placeholder="you@example.com">
           </div>
-          <div class="vf-field">
-            <label>Recipient name <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
-            <input type="text" id="vf-recipient" placeholder="Leave blank if for yourself">
-          </div>
-          <div class="vf-field full">
-            <label>Personal message <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
-            <textarea id="vf-message" placeholder="Add a personal note to the voucher..."></textarea>
+          <!-- Gift fields temporarily disabled -->
+          <div class="vf-field" id="gift-fields-container" style="display:none !important;">
+            <div class="vf-field">
+              <label>Recipient email <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
+              <input type="email" id="vf-recipient-email" placeholder="recipient@example.com" value="">
+            </div>
+            <div class="vf-field">
+              <label>Recipient name <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
+              <input type="text" id="vf-recipient" placeholder="Leave blank if for yourself" value="">
+            </div>
+            <div class="vf-field full">
+              <label>Personal message <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
+              <textarea id="vf-message" placeholder="Add a personal note to the voucher..."></textarea>
+            </div>
           </div>
         </div>
         <button class="voucher-submit" id="voucher-submit-btn" onclick="purchaseVoucher()">
@@ -688,7 +797,7 @@
 
 <div class="modal-overlay" id="cat-modal" onclick="closeCatModal(event)">
   <div class="modal-box">
-    <img class="modal-img" id="modal-img" src="" alt="">
+    <img class="modal-img" id="modal-img" src="" alt="" loading="lazy" decoding="async">
     <div class="modal-body">
       <div class="modal-name" id="modal-name"></div>
       <div class="modal-tags" id="modal-tags"></div>
@@ -703,18 +812,18 @@ var GITHUB = "images/cats/";
 var BOOK_URL = "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4";
 
 var CATS_DEFAULT = [
-  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og","cuddly"],     desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
+  {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og"],              desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
   {id:2,  name:"Jimmy",       img:GITHUB+"jimmy.jpg",       full:GITHUB+"jimmy.jpg",       tags:["senior","og"],              desc:"A domestic long-fur rescued from breeders, Jimmy is around 16 years old. Once wary of handling, he has blossomed in his later years. Catch him most active in the mornings, often spotted on the cat bridge."},
-  {id:3,  name:"Tommy",       img:GITHUB+"tommy.jpg",       full:GITHUB+"tommy.jpg",       tags:["senior","og","cuddly"],     desc:"A full black Singapore cat and an original since 2014, Tommy is around 13 years old. Currently on palliative care for nasal cancer, he still enjoys a gentle pet and the company of his humans."},
+  {id:3,  name:"Tommy",       img:GITHUB+"tommy.jpg",       full:GITHUB+"tommy.jpg",       tags:["senior","og","lapcat"],     desc:"A full black Singapore cat and an original since 2014, Tommy is around 13 years old. Currently on palliative care for nasal cancer, he still enjoys a gentle pet and the company of his humans."},
   {id:4,  name:"Oreo",        img:GITHUB+"oreo.jpg",        full:GITHUB+"oreo.jpg",        tags:["senior","og","playful"],    desc:"Named after his black-and-white coat, Oreo is around 12 years old. Gentle and great with children, he will happily do a high-five for a treat."},
-  {id:5,  name:"Marshmellow", img:GITHUB+"marshmellow.jpg", full:GITHUB+"marshmellow.jpg", tags:["young","cuddly"],           desc:"A fluffy all-white Singapore short-fur of around 7, Marshmellow joined us after the Rail Mall cafe closed. Affectionate and laid-back, he is most often found sleeping beside his best friend Marmite."},
-  {id:6,  name:"Marmite",     img:GITHUB+"marmite.jpg",     full:GITHUB+"marmite.jpg",     tags:["young","cuddly"],           desc:"An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and loves a gentle butt pat."},
-  {id:7,  name:"Bobo",        img:GITHUB+"bobo.jpg",        full:GITHUB+"bobo.jpg",        tags:["young","cuddly"],           desc:"A gentle Siamese of around 7-8 years, Bobo meows softly and loves human company. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow."},
+  {id:5,  name:"Marshmellow", img:GITHUB+"marshmellow.jpg", full:GITHUB+"marshmellow.jpg", tags:["young","lapcat"],           desc:"A fluffy all-white Singapore short-fur of around 7, Marshmellow joined us after the Rail Mall cafe closed. Affectionate and laid-back, he is most often found sleeping beside his best friend Marmite."},
+  {id:6,  name:"Marmite",     img:GITHUB+"marmite.jpg",     full:GITHUB+"marmite.jpg",     tags:["young"],                    desc:"An off-white calico of around 8, Marmite is loud and unashamedly affectionate. She will meow for your attention and loves a gentle butt pat."},
+  {id:7,  name:"Bobo",        img:GITHUB+"bobo.jpg",        full:GITHUB+"bobo.jpg",        tags:["young"],                    desc:"A gentle Siamese of around 7-8 years, Bobo meows softly and loves human company. Before mealtimes he can be found sparring playfully with Mochi and Marshmellow."},
   {id:8,  name:"Mochi",       img:GITHUB+"mochi.jpg",       full:GITHUB+"mochi.jpg",       tags:["young","playful"],          desc:"Our biggest cat at 6-7 kg, Mochi is around 9 years old and is our cafe mascot - he looks just like our logo! Most active in the mornings and very hard to miss."},
-  {id:9,  name:"Sushi",       img:GITHUB+"sushi.jpg",       full:GITHUB+"sushi.jpg",       tags:["young","cuddly"],           desc:"A slightly plump black-and-white cat, Sushi once lived beside a kopitiam. These days she has traded street life for laps and loves nothing more than resting on a customer."},
+  {id:9,  name:"Sushi",       img:GITHUB+"sushi.jpg",       full:GITHUB+"sushi.jpg",       tags:["young","lapcat"],           desc:"A slightly plump black-and-white cat, Sushi once lived beside a kopitiam. These days she has traded street life for laps and loves nothing more than resting on a customer."},
   {id:10, name:"Miso",        img:GITHUB+"miso.jpg",        full:GITHUB+"miso.jpg",        tags:["young","playful"],          desc:"Sister to Shoyu and around 4 years old, Miso is named for the warm tinge in her undercoat. She loves teaser toys and is often found in a game of catch with Toby, Shoyu and Momo."},
   {id:11, name:"Shoyu",       img:GITHUB+"shoyu.jpg",       full:GITHUB+"shoyu.jpg",       tags:["young","playful","shy"],    desc:"Miso's sister at around 3 years old, Shoyu was rescued from a Tuas factory. Once timid and fearful, she has come a long way and now tolerates light pets and chases the other cats with confidence."},
-  {id:12, name:"Momo",        img:GITHUB+"momo.jpg",        full:GITHUB+"momo.jpg",        tags:["young","playful","cuddly"], desc:"An orange female of around 4, Momo is playful and affectionate. She loves light head pets and can often be found in a game of catch with Toby."},
+  {id:12, name:"Momo",        img:GITHUB+"momo.jpg",        full:GITHUB+"momo.jpg",        tags:["young","playful","lapcat"], desc:"An orange female of around 4, Momo is playful and affectionate. She loves light head pets and can often be found in a game of catch with Toby."},
   {id:13, name:"Toby",        img:GITHUB+"toby.jpg",        full:GITHUB+"toby.jpg",        tags:["young","playful"],          desc:"The first face you will likely see - Toby greets visitors at the entrance. Around 3 years old with an unusually dense grey coat, he is gentle with children and endlessly playful."}
 ];
 
@@ -769,8 +878,8 @@ var MENU  = (typeof CC_DATA !== "undefined" && CC_DATA.menu)    ? CC_DATA.menu  
 var PRICING = (typeof CC_DATA !== "undefined" && CC_DATA.pricing) ? CC_DATA.pricing : PRICING_DEFAULT;
 var HOURS   = (typeof CC_DATA !== "undefined" && CC_DATA.hours)   ? CC_DATA.hours   : HOURS_DEFAULT;
 
-var TAG_LABEL = {senior:"Senior", young:"Young", og:"OG since '14", cuddly:"Cuddly", playful:"Playful", shy:"Shy"};
-var TAG_CLASS  = {senior:"tsenior", young:"tyoung", og:"tog", cuddly:"tcuddly", playful:"tplayful", shy:"tshy"};
+var TAG_LABEL = {senior:"Senior", young:"Young", og:"OG since '14", lapcat:"Lap cat", playful:"Playful", shy:"Shy"};
+var TAG_CLASS  = {senior:"tsenior", young:"tyoung", og:"tog", lapcat:"tlapcat", playful:"tplayful", shy:"tshy"};
 
 function makeTags(tags, size) {
   return tags.map(function(t) {
@@ -790,7 +899,7 @@ function renderCatCards(list) {
   document.getElementById("cat-grid").innerHTML = list.map(function(cat) {
     var idx = CATS.indexOf(cat);
     return '<div class="cat-card" onclick="openCatModal(' + idx + ')">'
-      + '<div class="cat-img-wrap"><img src="' + cat.img + '" alt="' + cat.name + ' - cat at The Cat Cafe Singapore Bugis" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=cat-fallback>&#x1F431;</div>\'"></div>'
+      + '<div class="cat-img-wrap"><img src="' + cat.img + '" alt="' + cat.name + ' - cat at The Cat Cafe Singapore Bugis" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML=\'<div class=cat-fallback>&#x1F431;</div>\'"></div>'
       + '<div class="cat-body">'
       + '<div class="cat-name">' + cat.name + '</div>'
       + '<div class="cat-tags">' + makeTags(cat.tags) + '</div>'
@@ -915,6 +1024,7 @@ function initGalleries() {
     // Set each slide to exactly 100% width of viewport
     Array.from(track.children).forEach(function(slide) {
       slide.style.minWidth = '100%';
+      slide.style.width = '100%';
     });
     // Build dots
     var dotsEl = document.getElementById('dots-' + name);
@@ -998,15 +1108,14 @@ if (window.location.search.includes('donated=true')) {
 
 /* ── VOUCHERS ── */
 var selectedVoucher = null;
-var voucherQty = { "gift-10": 1, "entry-22": 1 };
-var giftAmount = 10;
+var voucherQty = { "standard-22": 1, "premium-30": 1, "ultimate-40": 1, "artjam-unguided-40": 1, "artjam-semi-55": 1 };
 
 function selectVoucher(type) {
   selectedVoucher = type;
   document.querySelectorAll(".voucher-card").forEach(function(c) { c.classList.remove("selected"); });
   document.getElementById("vc-" + type).classList.add("selected");
   var total = getVoucherTotal(type);
-  var labels = { "gift-10": "Gift Voucher", "entry-22": "Entry Ticket" };
+  var labels = { "standard-22": "Standard Entrance Ticket", "premium-30": "Premium Entrance Ticket", "ultimate-40": "Ultimate Entrance Ticket", "artjam-unguided-40": "Unguided Art Jamming Session", "artjam-semi-55": "Semi-Guided Art Jamming Session" };
   document.getElementById("voucher-form-title").textContent = "Purchase: " + labels[type];
   document.getElementById("voucher-form-fields").style.display = "block";
   document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
@@ -1014,11 +1123,8 @@ function selectVoucher(type) {
 }
 
 function getVoucherTotal(type) {
-  if (type === "gift-10") {
-    var amt = parseFloat(document.getElementById("gift-amount").value) || 10;
-    return amt * (voucherQty["gift-10"] || 1);
-  }
-  return 22 * (voucherQty["entry-22"] || 1);
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
+  return prices[type] * (voucherQty[type] || 1);
 }
 
 function changeQty(type, dir) {
@@ -1031,23 +1137,38 @@ function changeQty(type, dir) {
   }
 }
 
-function setGiftAmount(val) {
-  document.getElementById("gift-amount").value = val;
-  giftAmount = val;
-  updateVoucherTotal("gift-10");
-  selectVoucher("gift-10");
-}
-
 function updateVoucherTotal(type) {
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
+  var price = prices[type];
   var total = getVoucherTotal(type);
-  var label = type === "entry-22"
-    ? voucherQty[type] + " ticket" + (voucherQty[type] > 1 ? "s" : "") + " × S$22"
-    : voucherQty[type] + " voucher" + (voucherQty[type] > 1 ? "s" : "") + " × S$" + (parseFloat(document.getElementById("gift-amount").value) || 10);
+  var label = voucherQty[type] + " ticket" + (voucherQty[type] > 1 ? "s" : "") + " × S$" + price;
   document.getElementById("total-" + type).textContent = "Total: S$" + total.toFixed(0) + " — " + label;
   if (selectedVoucher === type) {
     document.getElementById("voucher-btn-text").textContent = "Pay S$" + total.toFixed(0) + " with HitPay →";
   }
 }
+
+// Toggle gift fields based on recipient email input
+function toggleGiftFields() {
+  var recipientEmail = document.getElementById("vf-recipient-email").value.trim();
+  var giftContainer = document.getElementById("gift-fields-container");
+  if (recipientEmail) {
+    giftContainer.style.display = "block";
+  } else {
+    giftContainer.style.display = "none";
+    // Clear fields when hiding
+    document.getElementById("vf-recipient").value = "";
+    document.getElementById("vf-message").value = "";
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Add event listener to recipient email field to show/hide gift fields
+  var recipientEmailField = document.getElementById("vf-recipient-email");
+  if (recipientEmailField) {
+    recipientEmailField.addEventListener("input", toggleGiftFields);
+  }
+});
 
 async function purchaseVoucher() {
   if (!selectedVoucher) { alert("Please select a voucher first."); return; }
@@ -1058,9 +1179,8 @@ async function purchaseVoucher() {
 
   var qty   = voucherQty[selectedVoucher] || 1;
   var total = getVoucherTotal(selectedVoucher);
-  var unitAmt = selectedVoucher === "gift-10"
-    ? (parseFloat(document.getElementById("gift-amount").value) || 10)
-    : 22;
+  var prices = { "standard-22": 22, "premium-30": 30, "ultimate-40": 40, "artjam-unguided-40": 40, "artjam-semi-55": 55 };
+  var unitAmt = prices[selectedVoucher];
 
   var btn = document.getElementById("voucher-submit-btn");
   btn.disabled = true;
@@ -1071,14 +1191,15 @@ async function purchaseVoucher() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        voucher_type:   selectedVoucher,
-        quantity:       qty,
-        unit_amount:    unitAmt,
-        total_amount:   total,
-        buyer_name:     buyerName,
-        buyer_email:    buyerEmail,
-        recipient_name: document.getElementById("vf-recipient").value.trim() || buyerName,
-        message:        document.getElementById("vf-message").value.trim()
+        voucher_type:     selectedVoucher,
+        quantity:         qty,
+        unit_amount:      unitAmt,
+        total_amount:     total,
+        buyer_name:       buyerName,
+        buyer_email:      buyerEmail,
+        recipient_name:   "",  // Gift fields temporarily disabled
+        recipient_email:  "",  // Gift fields temporarily disabled
+        message:          ""   // Gift fields temporarily disabled
       })
     });
     var data = await res.json();
