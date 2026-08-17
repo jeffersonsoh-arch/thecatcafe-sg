@@ -1,25 +1,38 @@
-# Examples 1:
-
-# Project with artifacts:
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-*.o
-*.obj
-dist/
-build/
+```
 # Dependencies
-.venv/
-venv/
 node_modules/
-# Logs and temp files
-*.log
-*.tmp
-*.swp
+
 # Environment
 .env
 .env.local
 .env.*
+
+# Logs and temp files
+*.log
+*.tmp
+
 # Editors
 .vscode/
 .idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/refs/original/
+```

@@ -6,11 +6,6 @@ const HITPAY_HOST    = process.env.HITPAY_ENV === "live"
   ? "api.hit-pay.com"
   : "api.sandbox.hit-pay.com";
 
-// Use sandbox or live based on env var
-const HITPAY_HOST = process.env.HITPAY_ENV === "live"
-  ? "api.hit-pay.com"
-  : "api.sandbox.hit-pay.com";
-
 const VOUCHERS = {
   "standard-22": { amount: "22.00", label: "Standard Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 complimentary drink at The Cat Cafe Singapore" },
   "premium-30":  { amount: "30.00", label: "Premium Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 upgraded drink and a choice of dessert at The Cat Cafe Singapore" },
@@ -27,7 +22,6 @@ const VOUCHER_LABELS = {
   "ultimate-40": "Ultimate Entrance Ticket",
   "artjam-unguided-40": "Unguided Art Jamming Session",
   "artjam-semi-55": "Semi-Guided Art Jamming Session"
-};
 };
 
 function hitpayPost(params) {
@@ -72,53 +66,40 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-const { voucher_type, buyer_name, buyer_email, recipient_name, recipient_email, message, quantity = 1, unit_amount, total_amount } = body;
+    const { voucher_type, buyer_name, buyer_email, recipient_name, recipient_email, message, quantity = 1, unit_amount, total_amount } = body;
 
     if (!VOUCHER_LABELS[voucher_type]) return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid voucher type" }) };
     if (!buyer_email || !buyer_name)   return { statusCode: 400, headers, body: JSON.stringify({ error: "Name and email required" }) };
 
-    const label = VOUCHER_LABELS[voucher_type];
-    const qty   = Math.max(1, parseInt(quantity) || 1);
-
-    // Use total_amount from frontend — it already reflects qty × unit price
-    let chargeAmount;
-    if (total_amount && parseFloat(total_amount) > 0) {
-      chargeAmount = parseFloat(total_amount).toFixed(2);
-    } else if (unit_amount && parseFloat(unit_amount) > 0) {
-      chargeAmount = (parseFloat(unit_amount) * qty).toFixed(2);
+    // Determine quantity, unit amount and total; support both new VOUCHERS and legacy VOUCHER_LABELS
+    const qty = Math.max(1, parseInt(quantity) || 1);
+    let amountNum;
+    let label;
+    if (VOUCHERS && VOUCHERS[voucher_type]) {
+      const unit = unit_amount ? parseFloat(unit_amount) : parseFloat(VOUCHERS[voucher_type].amount);
+      amountNum = total_amount ? parseFloat(total_amount) : (unit * qty);
+      label = VOUCHERS[voucher_type].label;
     } else {
-      chargeAmount = ((voucher_type === "entry-22" ? 22 : 10) * qty).toFixed(2);
+      // fallback to legacy behaviour
+      const legacyUnit = (voucher_type === "entry-22" ? 22 : 10);
+      amountNum = total_amount ? parseFloat(total_amount) : (legacyUnit * qty);
+      label = VOUCHER_LABELS[voucher_type] || voucher_type;
     }
+    const chargeAmount = amountNum.toFixed(2);
 
-// Determine quantity, unit amount and total; support both new VOUCHERS and legacy VOUCHER_LABELS
-const qty = quantity || 1;
-let amountNum;
-let label;
-if (VOUCHERS && VOUCHERS[voucher_type]) {
-  const unit = unit_amount ? parseFloat(unit_amount) : parseFloat(VOUCHERS[voucher_type].amount);
-  amountNum = total_amount ? parseFloat(total_amount) : (unit * qty);
-  label = VOUCHERS[voucher_type].label;
-} else {
-  // fallback to legacy behaviour
-  const legacyUnit = (voucher_type === "entry-22" ? 22 : 10);
-  amountNum = total_amount ? parseFloat(total_amount) : (legacyUnit * qty);
-  label = VOUCHER_LABELS[voucher_type] || voucher_type;
-}
-const chargeAmount = amountNum.toFixed(2);
+    console.log(`Voucher: ${qty}x ${label} total=S$${chargeAmount}`);
 
-console.log(`Voucher: ${qty}x ${label} total=S$${chargeAmount}`);
+    const reference = `VC-${voucher_type}-qty${qty}-${Date.now()}`;
+    const purpose = (VOUCHERS && VOUCHERS[voucher_type])
+      ? `${label} (${qty}x S$${(unit_amount ? parseFloat(unit_amount).toFixed(2) : parseFloat(VOUCHERS[voucher_type].amount).toFixed(2))}) - The Cat Cafe Singapore`
+      : `${qty > 1 ? qty + "x " : ""}${label} - The Cat Cafe Singapore`;
 
-const reference = `VC-${voucher_type}-qty${qty}-${Date.now()}`;
-const purpose = (VOUCHERS && VOUCHERS[voucher_type])
-  ? `${label} (${qty}x S$${(unit_amount ? parseFloat(unit_amount).toFixed(2) : parseFloat(VOUCHERS[voucher_type].amount).toFixed(2))}) - The Cat Cafe Singapore`
-  : `${qty > 1 ? qty + "x " : ""}${label} - The Cat Cafe Singapore`;
-
-const result = await hitpayPost({
-  amount:                  chargeAmount,
-  currency:                "SGD",
-  email:                   buyer_email,
-  name:                    buyer_name,
-  purpose,
+    const result = await hitpayPost({
+      amount:                  chargeAmount,
+      currency:                "SGD",
+      email:                   buyer_email,
+      name:                    buyer_name,
+      purpose,
       reference_number:        reference,
       redirect_url:            `${SITE_URL}/voucher-success.html`,
       cancel_url:              `${SITE_URL}/index.html`,
