@@ -730,19 +730,7 @@
             <input type="email" id="vf-buyer-email" placeholder="you@example.com">
           </div>
           <!-- Gift fields temporarily disabled -->
-          <div class="vf-field" id="gift-fields-container" style="display:none !important;">
-            <div class="vf-field">
-              <label>Recipient email <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
-              <input type="email" id="vf-recipient-email" placeholder="recipient@example.com" value="">
-            </div>
-            <div class="vf-field">
-              <label>Recipient name <span style="font-weight:400;color:var(--text-3);">(if gifting)</span></label>
-              <input type="text" id="vf-recipient" placeholder="Leave blank if for yourself" value="">
-            </div>
-            <div class="vf-field full">
-              <label>Personal message <span style="font-weight:400;color:var(--text-3);">(optional)</span></label>
-              <textarea id="vf-message" placeholder="Add a personal note to the voucher..."></textarea>
-            </div>
+          <div class="vf-field" id="gift-fields-container" style="display:none;">
           </div>
         </div>
         <button class="voucher-submit" id="voucher-submit-btn" onclick="purchaseVoucher()">
@@ -1150,24 +1138,13 @@ function updateVoucherTotal(type) {
 
 // Toggle gift fields based on recipient email input
 function toggleGiftFields() {
-  var recipientEmail = document.getElementById("vf-recipient-email").value.trim();
   var giftContainer = document.getElementById("gift-fields-container");
-  if (recipientEmail) {
-    giftContainer.style.display = "block";
-  } else {
-    giftContainer.style.display = "none";
-    // Clear fields when hiding
-    document.getElementById("vf-recipient").value = "";
-    document.getElementById("vf-message").value = "";
-  }
+  // Gift fields are now always hidden since recipient fields were removed
+  giftContainer.style.display = "none";
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Add event listener to recipient email field to show/hide gift fields
-  var recipientEmailField = document.getElementById("vf-recipient-email");
-  if (recipientEmailField) {
-    recipientEmailField.addEventListener("input", toggleGiftFields);
-  }
+  // Recipient email field removed, no event listener needed
 });
 
 async function purchaseVoucher() {
@@ -1197,9 +1174,9 @@ async function purchaseVoucher() {
         total_amount:     total,
         buyer_name:       buyerName,
         buyer_email:      buyerEmail,
-        recipient_name:   "",  // Gift fields temporarily disabled
-        recipient_email:  "",  // Gift fields temporarily disabled
-        message:          ""   // Gift fields temporarily disabled
+        recipient_name:   "",
+        recipient_email:  "",
+        message:          ""
       })
     });
     var data = await res.json();
