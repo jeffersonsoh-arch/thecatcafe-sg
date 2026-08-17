@@ -1454,20 +1454,9 @@ window.startQRScanner = function() {
 };
 
 window.onScanSuccess = function(decodedText, decodedResult) {
-  // Stop scanning
-  if (html5QrCode) {
-    html5QrCode.stop().then(() => {
-      html5QrCode.clear();
-      html5QrCode = null;
-    }).catch(err => console.error("Failed to stop scanner:", err));
-  }
-  
-  // Close the modal
-  closeQRScanner();
-  
-  // Extract the voucher code. Printed voucher QR codes encode a full URL
-  // like https://yoursite.com/admin?redeem=TCC-XXXX-XXXX, so pull the
-  // "redeem" param out of it. Fall back to treating the scanned text as
+  // Extract the voucher code up front. Printed voucher QR codes encode a
+  // full URL like https://yoursite.com/admin?redeem=TCC-XXXX-XXXX, so pull
+  // the "redeem" param out of it. Fall back to treating the scanned text as
   // the raw code if it isn't a URL.
   let code = decodedText.trim();
   try {
@@ -1478,10 +1467,33 @@ window.onScanSuccess = function(decodedText, decodedResult) {
     // Not a URL — use the scanned text as-is
   }
   code = code.toUpperCase();
-  document.getElementById("redeem-input").value = code;
-  
-  // Auto lookup the voucher
-  lookupVoucher();
+
+  // Grab the scanner instance and clear the shared reference immediately
+  // (synchronously) so closeQRScanner() — or any other code — can't call
+  // stop() a second time on it. Calling stop() twice while the first stop()
+  // is still in flight throws synchronously, which was silently aborting
+  // the rest of this function before the code ever reached the input.
+  const scanner = html5QrCode;
+  html5QrCode = null;
+
+  const finishScan = () => {
+    document.getElementById("modal-qr-scanner").classList.remove("open");
+    document.getElementById("btn-start-scan").style.display = "inline-block";
+    document.getElementById("redeem-input").value = code;
+    lookupVoucher();
+  };
+
+  if (scanner) {
+    scanner.stop().then(() => {
+      scanner.clear();
+    }).catch(err => {
+      console.error("Failed to stop scanner:", err);
+    }).finally(() => {
+      finishScan();
+    });
+  } else {
+    finishScan();
+  }
 };
 
 window.onScanFailure = function(error) {
