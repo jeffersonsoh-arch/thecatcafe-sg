@@ -1409,6 +1409,8 @@ async function redeemVoucher(code) {
 }
 
 // QR Scanner functions - expose to global scope
+var html5QrCode = null;
+
 window.openQRScanner = function() {
   document.getElementById("modal-qr-scanner").classList.add("open");
   document.getElementById("qr-result").innerHTML = "";
