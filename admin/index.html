@@ -1408,18 +1408,16 @@ async function redeemVoucher(code) {
   }
 }
 
-// QR Scanner functions
-let html5QrCode = null;
-
-function openQRScanner() {
+// QR Scanner functions - expose to global scope
+window.openQRScanner = function() {
   document.getElementById("modal-qr-scanner").classList.add("open");
   document.getElementById("qr-result").innerHTML = "";
   document.getElementById("qr-result").style.display = "none";
   document.getElementById("btn-start-scan").style.display = "inline-block";
   document.getElementById("qr-reader").innerHTML = '<div style="color:#999;font-size:13px;">Click "Start Camera" to begin scanning</div>';
-}
+};
 
-function startQRScanner() {
+window.startQRScanner = function() {
   document.getElementById("btn-start-scan").style.display = "none";
   document.getElementById("qr-reader").innerHTML = '';
   
@@ -1439,9 +1437,9 @@ function startQRScanner() {
     document.getElementById("qr-result").style.display = "block";
     document.getElementById("btn-start-scan").style.display = "inline-block";
   });
-}
+};
 
-function onScanSuccess(decodedText, decodedResult) {
+window.onScanSuccess = function(decodedText, decodedResult) {
   // Stop scanning
   if (html5QrCode) {
     html5QrCode.stop().then(() => {
@@ -1459,14 +1457,14 @@ function onScanSuccess(decodedText, decodedResult) {
   
   // Auto lookup the voucher
   lookupVoucher();
-}
+};
 
-function onScanFailure(error) {
+window.onScanFailure = function(error) {
   // Handle scan failure silently - this is called repeatedly while scanning
   console.warn("QR Scan error:", error);
-}
+};
 
-function closeQRScanner() {
+window.closeQRScanner = function() {
   // Stop the scanner if running
   if (html5QrCode) {
     html5QrCode.stop().then(() => {
@@ -1477,7 +1475,7 @@ function closeQRScanner() {
   document.getElementById("modal-qr-scanner").classList.remove("open");
   // Reset the button visibility for next time
   document.getElementById("btn-start-scan").style.display = "inline-block";
-}
+};
 
 // Bulk voucher selection functions
 function toggleSelectAllVouchers(checkbox) {
