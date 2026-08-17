@@ -638,5 +638,21 @@
     "redeemed": true,
     "redeemed_at": "2026-08-17T03:33:01.675Z",
     "payment_id": "VC-artjam-unguided-40-qty1-1786892760133"
+  },
+  {
+    "code": "TCC-6FFM-4LHP-7ABS",
+    "type": "artjam-semi-55",
+    "label": "Semi-Guided Art Jamming Session",
+    "amount": "56.38",
+    "buyer_name": "jeff",
+    "buyer_email": "jefferson.soh@gmail.com",
+    "recipient_name": "jeff",
+    "recipient_email": "",
+    "personal_message": "",
+    "issued_at": "2026-08-17T04:02:46.582Z",
+    "expires_at": "2027-08-17T04:02:46.582Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "VC-artjam-semi-55-qty1-1786939329502"
   }
 ]
