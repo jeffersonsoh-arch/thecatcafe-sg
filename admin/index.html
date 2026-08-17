@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Cat Cafe – CMS Admin</title>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
 :root {
   --rust:#D85A30; --rust-pale:#FAECE7; --rust-dark:#993C1D;
@@ -356,7 +357,10 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
         <div class="voucher-stats" id="voucher-stats"></div>
 
         <div class="redeem-box">
-          <div class="card-title" style="margin-bottom:12px;">Redeem a voucher</div>
+          <div class="card-title" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+            <span>Redeem a voucher</span>
+            <button class="btn-sm btn-indigo" onclick="openQRScanner()">📷 Scan QR Code</button>
+          </div>
           <div class="redeem-row">
             <div>
               <label>Enter voucher code</label>
@@ -471,6 +475,20 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeModal('modal-issue-voucher')">Cancel</button>
       <button class="btn-sm btn-primary" onclick="submitIssueVoucher()">Create &amp; Issue Voucher</button>
+    </div>
+  </div>
+</div>
+
+<!-- QR SCANNER MODAL -->
+<div class="modal-bg" id="modal-qr-scanner">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-title">📷 Scan Voucher QR Code</div>
+    <div style="margin-bottom:12px;font-size:13px;color:var(--text-2);">Position the QR code within the camera frame to scan.</div>
+    <div id="qr-reader" style="width:100%;min-height:250px;background:#f5f5f5;border-radius:8px;display:flex;align-items:center;justify-content:center;"></div>
+    <div class="voucher-result" id="qr-result" style="margin-top:12px;"></div>
+    <div class="modal-foot">
+      <button class="btn-sm btn-primary" onclick="startQRScanner()" id="btn-start-scan">Start Camera</button>
+      <button class="btn-cancel" onclick="closeQRScanner()">Close</button>
     </div>
   </div>
 </div>
@@ -1180,13 +1198,14 @@ function renderVouchersTable() {
   document.getElementById("vouchers-table-wrap").innerHTML = `
     <div style="overflow-x:auto;">
     <table class="voucher-table">
-      <tr><th>Code</th><th>Type / Price</th><th>Buyer</th><th>Recipient</th><th>Issued</th><th>Expires</th><th>Status</th><th>Action</th></tr>
+      <tr><th><input type="checkbox" id="select-all-vouchers" onchange="toggleSelectAllVouchers(this)" title="Select all"></th><th>Code</th><th>Type / Price</th><th>Buyer</th><th>Recipient</th><th>Issued</th><th>Expires</th><th>Status</th><th>Action</th></tr>
       ${sorted.map((v) => {
         const expired = !v.redeemed && new Date(v.expires_at) < now;
         const status = v.redeemed ? "redeemed" : expired ? "expired" : "active";
         const statusLabel = v.redeemed ? "Redeemed" : expired ? "Expired" : "Active";
         const recipientInfo = v.recipient_name ? `${escapeHTML(v.recipient_name)}${v.recipient_email ? `<br><span style="color:var(--text-3);font-size:11px;">${escapeHTML(v.recipient_email)}</span>` : ""}` : '<span style="color:var(--text-3);font-size:11px;">Same as buyer</span>';
         return `<tr>
+          <td><input type="checkbox" class="voucher-checkbox" value="${escapeHTML(v.code)}" data-status="${status}" title="Select voucher"></td>
           <td><span class="v-code" style="font-family:monospace;font-weight:700;letter-spacing:0.06em;background:var(--bg-3);padding:2px 6px;border-radius:4px;">${escapeHTML(v.code)}</span></td>
           <td>${escapeHTML(v.label)} <span style="color:var(--rust);font-weight:600;">S$${escapeHTML(v.amount)}</span></td>
           <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHTML(v.buyer_name)}<br><span style="color:var(--text-3);font-size:11px;">${escapeHTML(v.buyer_email)}</span></td>
@@ -1197,7 +1216,18 @@ function renderVouchersTable() {
           <td>${status === "active" ? `<button class="btn-sm btn-success" onclick="redeemVoucher('${escapeHTML(v.code.replace(/'/g, "\\'"))}')">Redeem</button>` : ""}</td>
         </tr>`;
       }).join("")}
-    </table></div>`;
+    </table></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:10px 0;border-top:1px solid var(--border-light);">
+      <div style="font-size:13px;color:var(--text-2);"><span id="selected-count">0</span> voucher(s) selected</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-sm btn-success" id="bulk-redeem-btn" onclick="bulkRedeemVouchers()" disabled>Bulk Redeem Selected</button>
+      </div>
+    </div>`;
+  
+  // Add event listeners to checkboxes
+  document.querySelectorAll('.voucher-checkbox').forEach(cb => {
+    cb.addEventListener('change', updateBulkActionButtons);
+  });
 }
 
 function openIssueVoucherModal() {
@@ -1373,6 +1403,160 @@ async function redeemVoucher(code) {
     } else {
       toast("Error: " + data.error, "error");
     }
+  } catch(e) {
+    toast("Error: " + e.message, "error");
+  }
+}
+
+// QR Scanner functions - expose to global scope
+var html5QrCode = null;
+
+window.openQRScanner = function() {
+  document.getElementById("modal-qr-scanner").classList.add("open");
+  document.getElementById("qr-result").innerHTML = "";
+  document.getElementById("qr-result").style.display = "none";
+  document.getElementById("btn-start-scan").style.display = "inline-block";
+  document.getElementById("qr-reader").innerHTML = '<div style="color:#999;font-size:13px;">Click "Start Camera" to begin scanning</div>';
+};
+
+window.startQRScanner = function() {
+  document.getElementById("btn-start-scan").style.display = "none";
+  document.getElementById("qr-reader").innerHTML = '';
+  
+  // Initialize the QR scanner
+  html5QrCode = new Html5Qrcode("qr-reader");
+  
+  const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+  
+  html5QrCode.start(
+    { facingMode: "environment" },
+    config,
+    onScanSuccess,
+    onScanFailure
+  ).catch(err => {
+    console.error("Failed to start QR scanner:", err);
+    document.getElementById("qr-result").innerHTML = '<div style="color:var(--red);font-size:13px;">Unable to access camera. Please ensure camera permissions are granted and you are using HTTPS.</div>';
+    document.getElementById("qr-result").style.display = "block";
+    document.getElementById("btn-start-scan").style.display = "inline-block";
+  });
+};
+
+window.onScanSuccess = function(decodedText, decodedResult) {
+  // Stop scanning
+  if (html5QrCode) {
+    html5QrCode.stop().then(() => {
+      html5QrCode.clear();
+      html5QrCode = null;
+    }).catch(err => console.error("Failed to stop scanner:", err));
+  }
+  
+  // Close the modal
+  closeQRScanner();
+  
+  // Set the scanned code to the input field
+  const code = decodedText.trim().toUpperCase();
+  document.getElementById("redeem-input").value = code;
+  
+  // Auto lookup the voucher
+  lookupVoucher();
+};
+
+window.onScanFailure = function(error) {
+  // Handle scan failure silently - this is called repeatedly while scanning
+  console.warn("QR Scan error:", error);
+};
+
+window.closeQRScanner = function() {
+  // Stop the scanner if running
+  if (html5QrCode) {
+    html5QrCode.stop().then(() => {
+      html5QrCode.clear();
+      html5QrCode = null;
+    }).catch(err => console.error("Failed to stop scanner:", err));
+  }
+  document.getElementById("modal-qr-scanner").classList.remove("open");
+  // Reset the button visibility for next time
+  document.getElementById("btn-start-scan").style.display = "inline-block";
+};
+
+// Bulk voucher selection functions
+function toggleSelectAllVouchers(checkbox) {
+  const checkboxes = document.querySelectorAll('.voucher-checkbox');
+  checkboxes.forEach(cb => {
+    cb.checked = checkbox.checked;
+  });
+  updateBulkActionButtons();
+}
+
+function updateBulkActionButtons() {
+  const checkedBoxes = document.querySelectorAll('.voucher-checkbox:checked');
+  const activeCount = Array.from(checkedBoxes).filter(cb => cb.dataset.status === 'active').length;
+  const totalCount = checkedBoxes.length;
+  
+  document.getElementById('selected-count').textContent = totalCount;
+  
+  const bulkBtn = document.getElementById('bulk-redeem-btn');
+  if (bulkBtn) {
+    bulkBtn.disabled = activeCount === 0;
+    if (activeCount > 0 && totalCount > activeCount) {
+      bulkBtn.textContent = `Redeem ${activeCount} selected (${totalCount - activeCount} already redeemed/expired)`;
+    } else if (activeCount > 0) {
+      bulkBtn.textContent = `Redeem ${activeCount} selected`;
+    } else {
+      bulkBtn.textContent = 'Bulk Redeem Selected';
+    }
+  }
+}
+
+async function bulkRedeemVouchers() {
+  const checkedBoxes = document.querySelectorAll('.voucher-checkbox:checked[data-status="active"]');
+  const codes = Array.from(checkedBoxes).map(cb => cb.value);
+  
+  if (codes.length === 0) {
+    toast("No active vouchers selected", "error");
+    return;
+  }
+  
+  if (!confirm(`Mark ${codes.length} voucher(s) as redeemed? This cannot be undone.`)) return;
+  
+  let successCount = 0;
+  let errorCount = 0;
+  
+  try {
+    const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+    if (!authState.user || !authState.token) {
+      throw new Error("Authentication required");
+    }
+    const token = await authState.user.jwt();
+    
+    for (const code of codes) {
+      try {
+        const res = await fetch("/.netlify/functions/voucher-manage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+          body: JSON.stringify({ action: "redeem", code })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          successCount++;
+        } else {
+          errorCount++;
+          console.error("Failed to redeem", code, ":", data.error);
+        }
+      } catch(e) {
+        errorCount++;
+        console.error("Failed to redeem", code, ":", e.message);
+      }
+    }
+    
+    if (successCount > 0) {
+      toast(`${successCount} voucher(s) redeemed successfully!`, "success");
+    }
+    if (errorCount > 0) {
+      toast(`${errorCount} voucher(s) failed to redeem`, "error");
+    }
+    
+    await loadVouchers();
   } catch(e) {
     toast("Error: " + e.message, "error");
   }

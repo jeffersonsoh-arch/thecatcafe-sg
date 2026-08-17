@@ -1,56 +1,25 @@
-```
-# Dependencies
-node_modules/
+# Examples 1:
 
-# Build artifacts
+# Project with artifacts:
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
 dist/
 build/
-target/
-
-# Logs
+# Dependencies
+.venv/
+venv/
+node_modules/
+# Logs and temp files
 *.log
-
+*.tmp
+*.swp
 # Environment
 .env
 .env.local
-*.env.*
-
+.env.*
 # Editors
 .vscode/
 .idea/
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-venv/
-.venv/
-.env
-
-# Node.js
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Temporary files
-*.tmp
-*.temp
-*.bak
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# Cache
-.cache/
-.mypy_cache/
-.pytest_cache/
-.gradle/
-```
