@@ -521,8 +521,8 @@
     "recipient_name": "hwe",
     "issued_at": "2026-08-13T17:20:33.858Z",
     "expires_at": "2027-08-13T17:20:33.858Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-08-18T04:24:12.941Z",
     "payment_id": "VC-standard-22-qty1-1786641609418",
     "recipient_email": "",
     "personal_message": ""
