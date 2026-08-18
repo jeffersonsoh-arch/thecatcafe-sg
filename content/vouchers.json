@@ -297,8 +297,8 @@
     "recipient_name": "jefferson",
     "issued_at": "2026-08-13T05:17:32.110Z",
     "expires_at": "2027-08-13T05:17:32.110Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-08-18T04:24:34.355Z",
     "payment_id": "VC-artjam-unguided-40-qty2-1786598228585",
     "recipient_email": "",
     "personal_message": ""
