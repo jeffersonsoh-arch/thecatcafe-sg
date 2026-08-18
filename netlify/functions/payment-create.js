@@ -1,16 +1,22 @@
 const https = require("https");
 
 const HITPAY_API_KEY = process.env.HITPAY_API_KEY;
-// DEPLOY_PRIME_URL is Netlify's own context-aware URL: the deploy-preview/branch
-// subdomain when running there, and the production URL in production. Falling back
-// to SITE_URL/the hardcoded default only for non-Netlify (e.g. local) environments
-// keeps redirects pointing back to whichever site actually served the payment.
-const SITE_URL       = process.env.DEPLOY_PRIME_URL || process.env.SITE_URL || "https://thecatcafe-sg.netlify.app";
 
 // Use sandbox or live based on env var
 const HITPAY_HOST = process.env.HITPAY_ENV === "live"
   ? "api.hit-pay.com"
   : "api.sandbox.hit-pay.com";
+
+// DEPLOY_PRIME_URL/URL are build-time-only Netlify variables and are not injected
+// into Functions at runtime, so they can't be used here. Instead, derive the site's
+// origin from the incoming request's Host header - pay.html calls this function via
+// a relative fetch(), so Host always reflects whichever domain actually served the
+// page (production, a deploy preview, or a branch deploy).
+function resolveSiteUrl(event) {
+  const host = event.headers && (event.headers.host || event.headers.Host);
+  if (host) return `https://${host}`;
+  return process.env.SITE_URL || "https://thecatcafe-sg.netlify.app";
+}
 
 function hitpayPost(params) {
   return new Promise((resolve, reject) => {
@@ -65,6 +71,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "Name and email required" }) };
     }
 
+    const SITE_URL = resolveSiteUrl(event);
     const reference = `PAY-${Date.now()}`;
 
     const result = await hitpayPost({
