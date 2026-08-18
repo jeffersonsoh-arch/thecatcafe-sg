@@ -409,8 +409,8 @@
     "recipient_name": "Jefferson soh",
     "issued_at": "2026-08-13T14:51:30.397Z",
     "expires_at": "2027-08-13T14:51:30.397Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-08-18T04:24:25.019Z",
     "payment_id": "VC-artjam-unguided-40-qty3-1786632656740",
     "recipient_email": "",
     "personal_message": ""
