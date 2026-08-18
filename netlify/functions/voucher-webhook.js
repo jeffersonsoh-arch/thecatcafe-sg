@@ -867,6 +867,16 @@ exports.handler = async (event) => {
     }
 
     const ref = params.reference_number || "";
+
+    // This webhook is only for gift voucher purchases (created via voucher-create.js,
+    // reference numbers always start with "VC-"). Payments from pay.html (plain bill
+    // payments, reference numbers start with "PAY-") must never trigger a voucher
+    // email/PDF, so bail out early for anything that isn't a real voucher reference.
+    if (!ref.startsWith("VC-")) {
+      console.log("Skipping non-voucher payment, reference:", ref);
+      return { statusCode: 200, body: "OK - not a voucher purchase" };
+    }
+
     const typeMatch = ref.match(/^VC-(standard-22|premium-30|ultimate-40|artjam-unguided-40|artjam-semi-55)(?:-qty(\d+))?-\d+$/);
     const voucherType = typeMatch ? typeMatch[1] : (ref.includes("artjam-semi") ? "artjam-semi-55" : ref.includes("artjam-unguided") ? "artjam-unguided-40" : "standard-22");
     const qty         = typeMatch && typeMatch[2] ? parseInt(typeMatch[2], 10) : 1;
