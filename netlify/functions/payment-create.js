@@ -70,7 +70,7 @@ exports.handler = async (event) => {
       name,
       purpose:                 `${purpose || "Cafe payment"} - The Cat Cafe Singapore`,
       reference_number:        reference,
-      redirect_url:            `${SITE_URL}/pay.html?status=success`,
+      redirect_url:            `${SITE_URL}/pay-success.html`,
       webhook:                 `${SITE_URL}/.netlify/functions/payment-webhook`,
       send_sms:                "false",
       allow_repeated_payments: "false"
