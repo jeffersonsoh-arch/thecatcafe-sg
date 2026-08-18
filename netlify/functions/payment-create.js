@@ -1,7 +1,11 @@
 const https = require("https");
 
 const HITPAY_API_KEY = process.env.HITPAY_API_KEY;
-const SITE_URL       = process.env.SITE_URL || "https://thecatcafe-sg.netlify.app";
+// DEPLOY_PRIME_URL is Netlify's own context-aware URL: the deploy-preview/branch
+// subdomain when running there, and the production URL in production. Falling back
+// to SITE_URL/the hardcoded default only for non-Netlify (e.g. local) environments
+// keeps redirects pointing back to whichever site actually served the payment.
+const SITE_URL       = process.env.DEPLOY_PRIME_URL || process.env.SITE_URL || "https://thecatcafe-sg.netlify.app";
 
 // Use sandbox or live based on env var
 const HITPAY_HOST = process.env.HITPAY_ENV === "live"
