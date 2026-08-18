@@ -1083,8 +1083,11 @@ async function submitDonate() {
   }
 }
 
-// Show success if redirected back
-if (window.location.search.includes('donated=true')) {
+// Show success if redirected back. HitPay appends its own "status"/"reference"
+// query params on redirect and does not reliably preserve ours, so check both
+// our own "donated=true" marker and HitPay's "status=completed".
+var _donateParams = new URLSearchParams(window.location.search);
+if (window.location.search.includes('donated=true') || _donateParams.get('status') === 'completed') {
   document.addEventListener('DOMContentLoaded', function() {
     var s = document.getElementById('donate-success');
     if (s) {
