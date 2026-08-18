@@ -281,8 +281,8 @@
     "recipient_name": "jefferson",
     "issued_at": "2026-08-13T05:14:59.013Z",
     "expires_at": "2027-08-13T05:14:59.013Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-08-18T04:24:35.981Z",
     "payment_id": "VC-artjam-semi-55-qty2-1786598074538",
     "recipient_email": "",
     "personal_message": ""
