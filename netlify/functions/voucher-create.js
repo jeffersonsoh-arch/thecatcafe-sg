@@ -1,10 +1,20 @@
 const https = require("https");
 
 const HITPAY_API_KEY = process.env.HITPAY_API_KEY;
-const SITE_URL       = process.env.SITE_URL || "https://thecatcafe-sg.netlify.app";
 const HITPAY_HOST    = process.env.HITPAY_ENV === "live"
   ? "api.hit-pay.com"
   : "api.sandbox.hit-pay.com";
+
+// DEPLOY_PRIME_URL/URL are build-time-only Netlify variables and are not injected
+// into Functions at runtime, so they can't be used here. Instead, derive the site's
+// origin from the incoming request's Host header - the voucher form calls this
+// function via a relative fetch(), so Host always reflects whichever domain actually
+// served the page (production, a deploy preview, or a branch deploy).
+function resolveSiteUrl(event) {
+  const host = event.headers && (event.headers.host || event.headers.Host);
+  if (host) return `https://${host}`;
+  return process.env.SITE_URL || "https://thecatcafe-sg.netlify.app";
+}
 
 const VOUCHERS = {
   "standard-22": { amount: "22.00", label: "Standard Entrance Ticket",  desc: "Entry ticket (2 hrs) incl. 1 complimentary drink at The Cat Cafe Singapore" },
@@ -86,6 +96,7 @@ exports.handler = async (event) => {
       label = VOUCHER_LABELS[voucher_type] || voucher_type;
     }
     const chargeAmount = amountNum.toFixed(2);
+    const SITE_URL = resolveSiteUrl(event);
 
     console.log(`Voucher: ${qty}x ${label} total=S$${chargeAmount}`);
 

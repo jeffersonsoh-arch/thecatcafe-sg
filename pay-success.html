@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Confirmed – The Cat Cafe Singapore</title>
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('status');
+
+  if (status === 'canceled' || status === 'cancelled') {
+    // Immediately redirect back to the payment page, replacing this page in history
+    window.location.replace('/pay.html');
+  }
+})();
+</script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5efe8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .card{background:#fff;border-radius:16px;padding:48px 40px;max-width:460px;width:100%;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);}
+  .icon{width:64px;height:64px;background:#EAF3DE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px;}
+  h1{font-size:24px;font-weight:600;color:#1a1a1a;margin-bottom:10px;}
+  p{font-size:15px;color:#555;line-height:1.7;margin-bottom:24px;}
+  .code-note{background:#f5efe8;border-radius:10px;padding:16px 20px;font-size:14px;color:#555;line-height:1.7;margin-bottom:28px;}
+  .btn{display:inline-block;background:#D85A30;color:#fff;padding:12px 28px;border-radius:24px;font-size:14px;font-weight:600;text-decoration:none;}
+  .btn:hover{opacity:0.88;}
+  .sub{font-size:13px;color:#999;margin-top:16px;}
+  .sub a{color:#D85A30;}
+</style>
+</head>
+<body>
+<div class="card" id="content">
+  <div class="icon">&#x2713;</div>
+  <h1>Payment confirmed!</h1>
+  <p>Thank you — a receipt has been sent to your email.</p>
+  <div class="code-note">
+    &#x1F4E7; <strong>Check your email</strong> for your payment receipt.<br><br>
+    Please show this screen to our staff to confirm your payment.
+  </div>
+  <a class="btn" href="/">Back to The Cat Cafe</a>
+  <div class="sub">Questions? <a href="https://wa.me/6580808719">WhatsApp us at 8080 8719</a></div>
+</div>
+</body>
+</html>
