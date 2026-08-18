@@ -265,8 +265,8 @@
     "recipient_name": "jefferson soh",
     "issued_at": "2026-08-13T05:08:26.511Z",
     "expires_at": "2027-08-13T05:08:26.511Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-08-18T04:24:40.757Z",
     "payment_id": "VC-ultimate-40-qty3-1786597683156",
     "recipient_email": "",
     "personal_message": ""
