@@ -651,8 +651,8 @@
     "personal_message": "",
     "issued_at": "2026-08-17T04:02:46.582Z",
     "expires_at": "2027-08-17T04:02:46.582Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-08-18T04:24:06.811Z",
     "payment_id": "VC-artjam-semi-55-qty1-1786939329502"
   },
   {
