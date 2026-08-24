@@ -16,5 +16,11 @@
     "name": "3",
     "seats": 2,
     "active": true
+  },
+  {
+    "id": "t1787544913818",
+    "name": "4",
+    "seats": 2,
+    "active": true
   }
 ]
