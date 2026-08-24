@@ -19,7 +19,10 @@
     "email":       "info@thecatcafe.sg",
     "instagram":   "https://www.instagram.com/sgcatcafe",
     "facebook":    "https://www.facebook.com/sgcatcafe",
-    "booking_url": "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4",
     "maps_url":    "https://maps.google.com/?q=241B+Victoria+Street+Singapore"
+  },
+  "booking": {
+    "booking_cutoff_minutes": 30,
+    "cancellation_cutoff_minutes": 0
   }
 }
