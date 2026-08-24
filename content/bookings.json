@@ -1,0 +1,16 @@
+[
+  {
+    "id": "562bc7b8-0816-42ac-bd91-e2f4c2303b24",
+    "date": "2026-08-24",
+    "slot_id": "s1600",
+    "guest_name": "Jeffe",
+    "guest_email": "jefferson.soh@gmail.com",
+    "guest_phone": "",
+    "party_size": 2,
+    "notes": "",
+    "status": "confirmed",
+    "manage_token": "f9b48b5b571759f891fc3b04e298f691d7576c2541e0c87d",
+    "created_at": "2026-08-24T04:13:02.843Z",
+    "updated_at": "2026-08-24T04:13:02.843Z"
+  }
+]
