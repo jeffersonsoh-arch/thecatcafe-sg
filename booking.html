@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Visit | The Cat Cafe Singapore</title>
+<meta name="description" content="Reserve your visit to The Cat Cafe Singapore in Bugis. Pick a date and time slot, and book in under a minute.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#D85A30">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  :root {
+    --cream:#f5efe8; --rust:#D85A30; --rust-dark:#993C1D; --rust-pale:#FAECE7;
+    --indigo:#3C3489; --indigo-pale:#EEEDFE;
+    --green:#2E7D32; --green-pale:#E8F5E9;
+    --red:#C62828; --red-pale:#FFEBEE;
+    --text:#1a1a1a; --text-2:#555; --text-3:#999;
+    --border:#e4e0db; --border-light:#f0ede9;
+    --bg:#fff; --bg-2:#faf9f7;
+    --radius:12px; --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--bg);font-size:15px;line-height:1.6;}
+  a{color:inherit;text-decoration:none;}
+  button,input,select,textarea{font-family:inherit;font-size:15px;}
+  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border);}
+  .nav-inner{max-width:640px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav-logo{font-size:15px;font-weight:600;color:var(--text);}
+  .nav-logo span{color:var(--rust);}
+  .nav-back{font-size:13px;color:var(--text-2);}
+  .nav-back:hover{color:var(--text);}
+
+  .page{max-width:640px;margin:0 auto;padding:36px 24px 80px;}
+  .page-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--rust);margin-bottom:10px;}
+  .page-title{font-size:32px;font-weight:500;letter-spacing:-0.02em;margin-bottom:8px;}
+  .page-sub{font-size:14px;color:var(--text-2);margin-bottom:28px;}
+
+  .card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;}
+  .field{margin-bottom:16px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;}
+  .field input,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);outline:none;transition:border-color 0.15s;}
+  .field input:focus,.field textarea:focus{border-color:var(--rust);}
+  .field textarea{resize:vertical;min-height:70px;}
+  .field-hint{font-size:11px;color:var(--text-3);margin-top:5px;}
+  .fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  .slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  @media(max-width:480px){.slot-grid{grid-template-columns:repeat(2,1fr);}}
+  .slot-btn{border:1.5px solid var(--border);background:var(--bg);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;cursor:pointer;transition:all 0.15s;}
+  .slot-btn:hover:not(:disabled){border-color:var(--rust);background:var(--rust-pale);}
+  .slot-btn.selected{border-color:var(--rust);background:var(--rust);color:#fff;}
+  .slot-btn:disabled{opacity:0.4;cursor:not-allowed;background:var(--bg-2);}
+  .slot-time{font-size:14px;font-weight:600;}
+  .slot-seats{font-size:11px;color:var(--text-3);margin-top:3px;}
+  .slot-btn.selected .slot-seats{color:rgba(255,255,255,0.85);}
+
+  .state-msg{text-align:center;padding:32px 16px;color:var(--text-3);font-size:14px;}
+  .state-msg.closed{color:var(--text-2);}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;text-decoration:none;width:100%;}
+  .btn-rust{background:var(--rust);color:#fff;}
+  .btn-rust:hover{opacity:0.88;}
+  .btn-rust:disabled{opacity:0.45;cursor:not-allowed;}
+  .btn-outline{background:#fff;color:var(--text);border:0.5px solid var(--border);}
+
+  .selected-summary{display:flex;align-items:center;justify-content:space-between;background:var(--rust-pale);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:18px;font-size:13px;color:var(--rust-dark);font-weight:600;}
+  .selected-summary button{background:none;border:none;color:var(--rust-dark);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;}
+
+  .error-box{background:var(--red-pale);color:var(--red);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;margin-bottom:16px;display:none;}
+  .error-box.show{display:block;}
+
+  .confirm-box{text-align:center;padding:8px 0 16px;}
+  .confirm-icon{font-size:44px;margin-bottom:12px;}
+  .confirm-title{font-size:22px;font-weight:600;margin-bottom:6px;}
+  .confirm-sub{font-size:14px;color:var(--text-2);margin-bottom:24px;}
+  .confirm-details{background:var(--bg-2);border-radius:var(--radius-sm);padding:18px 20px;text-align:left;margin-bottom:20px;}
+  .confirm-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:0.5px solid var(--border-light);}
+  .confirm-row:last-child{border-bottom:none;}
+  .confirm-row span:first-child{color:var(--text-3);}
+  .confirm-row span:last-child{font-weight:600;text-align:right;}
+
+  .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">The Cat <span>Cafe</span></a>
+    <a href="/" class="nav-back">&larr; Back to site</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div id="step-date">
+    <div class="page-eyebrow">Reserve your visit</div>
+    <div class="page-title">Book a table</div>
+    <div class="page-sub">Pick a date to see available time slots. Confirmation is instant.</div>
+
+    <div class="card">
+      <div class="field">
+        <label for="date-input">Date</label>
+        <input type="date" id="date-input">
+      </div>
+      <div id="availability-wrap"></div>
+    </div>
+  </div>
+
+  <div id="step-form" style="display:none;">
+    <div class="page-eyebrow">Almost there</div>
+    <div class="page-title">Your details</div>
+    <div class="page-sub" id="form-sub"></div>
+
+    <div class="selected-summary">
+      <span id="selected-summary-text"></span>
+      <button type="button" onclick="backToSlots()">Change</button>
+    </div>
+
+    <div class="error-box" id="form-error"></div>
+
+    <div class="card">
+      <form id="booking-form" onsubmit="return submitBooking(event)">
+        <div class="field">
+          <label for="f-name">Full name</label>
+          <input type="text" id="f-name" required placeholder="e.g. Jane Tan">
+        </div>
+        <div class="fg2">
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" required placeholder="you@example.com">
+          </div>
+          <div class="field">
+            <label for="f-phone">Phone (optional)</label>
+            <input type="tel" id="f-phone" placeholder="+65 9123 4567">
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-party">Party size</label>
+          <input type="number" id="f-party" min="1" value="2" required>
+          <div class="field-hint" id="party-hint"></div>
+        </div>
+        <div class="field">
+          <label for="f-notes">Notes (optional)</label>
+          <textarea id="f-notes" placeholder="Any requests? e.g. allergies, celebrations..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-rust" id="submit-btn">Confirm booking</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="step-confirm" style="display:none;">
+    <div class="card confirm-box">
+      <div class="confirm-icon">&#x1F431;</div>
+      <div class="confirm-title">Booking confirmed!</div>
+      <div class="confirm-sub" id="confirm-sub"></div>
+      <div class="confirm-details" id="confirm-details"></div>
+      <a class="btn btn-rust" id="confirm-manage-link" href="#">View or manage booking</a>
+      <div style="height:10px;"></div>
+      <a class="btn btn-outline" href="/">Back to home</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function localDateStr(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function fmtTime(hhmm) {
+  const [h, m] = hhmm.split(":").map(Number);
+  const period = h >= 12 ? "pm" : "am";
+  const h12 = h % 12 || 12;
+  return m === 0 ? `${h12}${period}` : `${h12}:${String(m).padStart(2, "0")}${period}`;
+}
+
+function fmtDateLong(dateStr) {
+  const d = new Date(dateStr + "T12:00:00");
+  return d.toLocaleDateString("en-SG", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+}
+
+function slotLabel(slot) {
+  const endMins = timeToMinutes(slot.start_time) + slot.duration_minutes;
+  return `${fmtTime(slot.start_time)} - ${fmtTime(minutesToTime(endMins))}`;
+}
+function timeToMinutes(hhmm) { const [h, m] = hhmm.split(":").map(Number); return h * 60 + m; }
+function minutesToTime(mins) { const h = Math.floor(mins / 60) % 24, m = mins % 60; return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`; }
+
+function escapeHTML(str) {
+  return String(str == null ? "" : str).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+}
+
+let selectedDate = null;
+let selectedSlot = null;
+
+const dateInput = document.getElementById("date-input");
+const today = localDateStr(new Date());
+dateInput.min = today;
+dateInput.value = today;
+dateInput.addEventListener("change", () => loadAvailability(dateInput.value));
+
+async function loadAvailability(date) {
+  selectedDate = date;
+  const wrap = document.getElementById("availability-wrap");
+  wrap.innerHTML = '<div class="state-msg">Loading available times&hellip;</div>';
+  try {
+    const res = await fetch(`/api/availability?date=${encodeURIComponent(date)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to load availability");
+
+    if (!data.is_open) {
+      wrap.innerHTML = '<div class="state-msg closed">We&rsquo;re closed on this date. Please pick another day.</div>';
+      return;
+    }
+    if (!data.slots.length) {
+      wrap.innerHTML = '<div class="state-msg closed">No bookable time slots on this date.</div>';
+      return;
+    }
+
+    wrap.innerHTML = '<div class="slot-grid">' + data.slots.map((s) => {
+      const full = s.remaining_capacity <= 0;
+      return `<button type="button" class="slot-btn" ${full ? "disabled" : ""} onclick='selectSlot(${JSON.stringify(s)})'>
+        <div class="slot-time">${fmtTime(s.start_time)}</div>
+        <div class="slot-seats">${full ? "Full" : s.remaining_capacity + " seats left"}</div>
+      </button>`;
+    }).join("") + "</div>";
+  } catch (e) {
+    wrap.innerHTML = `<div class="state-msg">Couldn&rsquo;t load availability: ${escapeHTML(e.message)}</div>`;
+  }
+}
+
+function selectSlot(slot) {
+  selectedSlot = slot;
+  document.getElementById("step-date").style.display = "none";
+  document.getElementById("step-form").style.display = "block";
+  document.getElementById("form-sub").textContent = "Fill in your details to confirm your reservation.";
+  document.getElementById("selected-summary-text").textContent = `${fmtDateLong(selectedDate)} · ${slotLabel(slot)}`;
+  document.getElementById("f-party").max = slot.remaining_capacity;
+  document.getElementById("party-hint").textContent = `Up to ${slot.remaining_capacity} seats available for this time.`;
+  document.getElementById("form-error").classList.remove("show");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function backToSlots() {
+  document.getElementById("step-form").style.display = "none";
+  document.getElementById("step-date").style.display = "block";
+  loadAvailability(selectedDate);
+}
+
+async function submitBooking(evt) {
+  evt.preventDefault();
+  const errBox = document.getElementById("form-error");
+  errBox.classList.remove("show");
+
+  const party_size = parseInt(document.getElementById("f-party").value, 10);
+  const payload = {
+    date: selectedDate,
+    slot_id: selectedSlot.id,
+    guest_name: document.getElementById("f-name").value.trim(),
+    guest_email: document.getElementById("f-email").value.trim(),
+    guest_phone: document.getElementById("f-phone").value.trim(),
+    party_size,
+    notes: document.getElementById("f-notes").value.trim()
+  };
+
+  const btn = document.getElementById("submit-btn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Confirming&hellip;';
+
+  try {
+    const res = await fetch("/api/bookings-create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Could not complete booking");
+
+    showConfirmation(data.booking);
+  } catch (e) {
+    errBox.textContent = e.message;
+    errBox.classList.add("show");
+    if (/no longer|full|available/i.test(e.message)) {
+      // Slot capacity likely changed - refresh it before the guest retries.
+      loadAvailability(selectedDate).then(() => {});
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Confirm booking";
+  }
+  return false;
+}
+
+function showConfirmation(booking) {
+  document.getElementById("step-form").style.display = "none";
+  document.getElementById("step-confirm").style.display = "block";
+  document.getElementById("confirm-sub").textContent = `A confirmation email is on its way to ${booking.guest_email}.`;
+  document.getElementById("confirm-details").innerHTML = `
+    <div class="confirm-row"><span>Date</span><span>${escapeHTML(fmtDateLong(booking.date))}</span></div>
+    <div class="confirm-row"><span>Time</span><span>${escapeHTML(slotLabel(selectedSlot))}</span></div>
+    <div class="confirm-row"><span>Party size</span><span>${booking.party_size}</span></div>
+    <div class="confirm-row"><span>Reference</span><span>${booking.id.slice(0, 8).toUpperCase()}</span></div>
+  `;
+  document.getElementById("confirm-manage-link").href = `/booking-manage.html?id=${encodeURIComponent(booking.id)}&token=${encodeURIComponent(booking.manage_token)}`;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+loadAvailability(today);
+</script>
+</body>
+</html>

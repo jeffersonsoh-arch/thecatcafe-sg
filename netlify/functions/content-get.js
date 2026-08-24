@@ -39,7 +39,7 @@ exports.handler = async (event) => {
     const type = event.queryStringParameters && event.queryStringParameters.type;
     if (!type) return { statusCode: 400, headers, body: JSON.stringify({ error: "Missing type param" }) };
 
-    const validTypes = ["cats", "menu", "settings"];
+    const validTypes = ["cats", "menu", "settings", "tables", "timeslots", "schedule", "special-dates"];
     if (!validTypes.includes(type)) return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid type" }) };
 
     const file = await githubGet(`content/${type}.json`);
