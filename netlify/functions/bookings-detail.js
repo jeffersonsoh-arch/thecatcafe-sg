@@ -36,7 +36,9 @@ exports.handler = async (event) => {
       canCancel = Date.now() + cancellationCutoffMinutes * 60000 <= start.getTime();
     }
 
-    const { manage_token, ...publicBooking } = booking;
+    // manage_token and table_ids are internal - the caller already has the token, and the
+    // assigned table is a backend/admin detail, not shown to guests.
+    const { manage_token, table_ids, ...publicBooking } = booking;
     return {
       statusCode: 200,
       headers,

@@ -80,7 +80,8 @@ exports.handler = async (event) => {
       }
     }
 
-    return { statusCode: 200, headers, body: JSON.stringify({ ok: true, booking: finalBooking }) };
+    const { manage_token: _mt, table_ids: _ti, ...guestBooking } = finalBooking;
+    return { statusCode: 200, headers, body: JSON.stringify({ ok: true, booking: guestBooking }) };
   } catch (err) {
     const statusCode = err.statusCode || 500;
     return { statusCode, headers, body: JSON.stringify({ error: err.message }) };

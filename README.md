@@ -162,11 +162,17 @@ run the whole thing from **Admin → Bookings** / **Admin → Booking setup**: w
 special dates (holidays, private events), tables and their seat counts, time slots, booking/
 cancellation cutoffs, the day's booking list, and a weekly booking count.
 
-Capacity is seating-based and venue-wide: a slot's total capacity is the sum of seats across all
-active tables (add/edit tables in **Booking setup**), not a number set per slot. Booking creation
-is safe under concurrent requests — it uses GitHub's file `sha` as an optimistic-concurrency token
-(read `bookings.json`'s current sha, write with that sha, retry from a fresh read if GitHub reports
-a conflict), so two guests racing for the last seat can never both win.
+Capacity is seating-based: every booking is assigned to a specific table (or tables) at creation
+time, editable afterwards from **Admin → Bookings** (each row shows its assigned table and has an
+"Edit" action). All tables are treated as mergeable, so assignment prefers the smallest single free
+table that already fits the party (a party of 3 gets the smallest table seating ≥3 before anything
+is merged), and only merges multiple free tables when no single one is big enough — picking the
+combination with the fewest tables and least wasted seats. A table can only be assigned to one
+confirmed booking per slot. Online bookings are capped at 10 guests; larger groups are shown a
+WhatsApp link (8080 8719) instead of being allowed to book, so staff can arrange seating manually.
+Booking creation is safe under concurrent requests — it uses GitHub's file `sha` as an
+optimistic-concurrency token (read `bookings.json`'s current sha, write with that sha, retry from a
+fresh read if GitHub reports a conflict), so two guests racing for the same table can never both win.
 
 ### Additional content files
 
@@ -194,7 +200,7 @@ netlify/functions/
 ├── admin-booking-stats.js    ← GET weekly booking count (admin)
 └── lib/
     ├── data-store.js         ← GitHub CAS read/write + local dev fallback + retry helper
-    ├── availability.js       ← Schedule/special-date resolution + slot capacity math
+    ├── availability.js       ← Schedule/special-date resolution + table assignment/merge logic
     ├── time-utils.js         ← Singapore-time-aware date/time helpers
     └── booking-mailer.js     ← Confirmation/cancellation/admin-alert emails via Resend
 ```

@@ -1,13 +1,16 @@
 const crypto = require("crypto");
 const { readCollection, updateCollection } = require("./lib/data-store");
-const { isValidDateStr, resolveDayWindow, totalSeats, getSlotById } = require("./lib/availability");
+const {
+  isValidDateStr, resolveDayWindow, getActiveTables, getFreeTables, chooseTables, getSlotById,
+  MAX_PARTY_SIZE, WHATSAPP_NUMBER, WHATSAPP_URL
+} = require("./lib/availability");
 const { timeToMinutes, slotDateTimes } = require("./lib/time-utils");
 const { sendBookingConfirmation, sendAdminBookingAlert } = require("./lib/booking-mailer");
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function badRequest(headers, message) {
-  return { statusCode: 400, headers, body: JSON.stringify({ error: message }) };
+function badRequest(headers, message, extra) {
+  return { statusCode: 400, headers, body: JSON.stringify(Object.assign({ error: message }, extra)) };
 }
 
 exports.handler = async (event) => {
@@ -43,6 +46,13 @@ exports.handler = async (event) => {
   if (!guest_name) return badRequest(headers, "guest_name is required");
   if (!EMAIL_RE.test(guest_email)) return badRequest(headers, "A valid guest_email is required for your confirmation");
   if (!Number.isInteger(party_size) || party_size < 1) return badRequest(headers, "party_size must be a positive number");
+  if (party_size > MAX_PARTY_SIZE) {
+    return badRequest(
+      headers,
+      `Online bookings are limited to ${MAX_PARTY_SIZE} guests. For a larger group, please WhatsApp us at ${WHATSAPP_NUMBER} to arrange your visit.`,
+      { too_large: true, whatsapp_url: WHATSAPP_URL, whatsapp_number: WHATSAPP_NUMBER }
+    );
+  }
 
   try {
     const slot = await getSlotById(slot_id);
@@ -65,16 +75,14 @@ exports.handler = async (event) => {
       return badRequest(headers, `Bookings must be made at least ${cutoffMinutes} minutes before the slot starts`);
     }
 
-    const capacity = await totalSeats();
-    if (party_size > capacity) return badRequest(headers, `Party size exceeds our total seating of ${capacity}`);
+    const activeTables = await getActiveTables();
 
     const booking = await updateCollection("bookings", (items) => {
-      const bookedSoFar = items
-        .filter((b) => b.date === date && b.slot_id === slot_id && b.status === "confirmed")
-        .reduce((sum, b) => sum + Number(b.party_size || 0), 0);
+      const freeTables = getFreeTables(date, slot_id, items, activeTables);
+      const chosen = chooseTables(freeTables, party_size);
 
-      if (party_size > capacity - bookedSoFar) {
-        const err = new Error("That time slot no longer has enough seats available");
+      if (!chosen) {
+        const err = new Error("That time slot no longer has a table free for your party size");
         err.statusCode = 409;
         throw err;
       }
@@ -89,6 +97,7 @@ exports.handler = async (event) => {
         guest_phone,
         party_size,
         notes,
+        table_ids: chosen.map((t) => t.id),
         status: "confirmed",
         manage_token: crypto.randomBytes(24).toString("hex"),
         created_at: now,
@@ -109,7 +118,9 @@ exports.handler = async (event) => {
       console.error("Failed to send booking emails:", emailErr.message);
     }
 
-    return { statusCode: 201, headers, body: JSON.stringify({ ok: true, booking }) };
+    // table_ids is an internal seating detail, not shown to guests (only in the admin dashboard).
+    const { table_ids, ...guestBooking } = booking;
+    return { statusCode: 201, headers, body: JSON.stringify({ ok: true, booking: guestBooking }) };
   } catch (err) {
     const statusCode = err.statusCode || 500;
     return { statusCode, headers, body: JSON.stringify({ error: err.message }) };

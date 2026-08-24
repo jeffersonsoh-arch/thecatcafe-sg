@@ -625,6 +625,19 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
   </div>
 </div>
 
+<!-- REASSIGN TABLE MODAL -->
+<div class="modal-bg" id="modal-reassign">
+  <div class="modal">
+    <div class="modal-title">Assign table(s)</div>
+    <div style="font-size:13px;color:var(--text-2);margin-bottom:14px;" id="reassign-summary"></div>
+    <div id="reassign-tables-list" style="max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;"></div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modal-reassign')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveReassignModal()">Save</button>
+    </div>
+  </div>
+</div>
+
 <div class="status-bar" id="status-bar"></div>
 <script>
 /* ════════ AUTH ════════ */
@@ -1494,6 +1507,8 @@ function todayStr() {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
 
+var lastBookingsList = [];
+
 async function loadBookingsPanel() {
   const dateInput = document.getElementById("bk-date");
   if (!dateInput.value) dateInput.value = todayStr();
@@ -1505,7 +1520,8 @@ async function loadBookingsPanel() {
       adminFetch("/.netlify/functions/admin-bookings?date=" + encodeURIComponent(date)),
       adminFetch("/.netlify/functions/admin-booking-stats?week=" + encodeURIComponent(date))
     ]);
-    renderBookingsTable(bookingsRes.bookings || []);
+    lastBookingsList = bookingsRes.bookings || [];
+    renderBookingsTable(lastBookingsList);
     renderWeeklyStats(statsRes);
   } catch(e) {
     document.getElementById("bookings-table-wrap").innerHTML = `<div style="color:var(--red);font-size:13px;">${escapeHTML(e.message)}</div>`;
@@ -1531,9 +1547,11 @@ function renderBookingsTable(bookings) {
     return;
   }
   wrap.innerHTML = `<div style="overflow-x:auto;"><table class="voucher-table"><tr>
-    <th>Time</th><th>Guest</th><th>Contact</th><th>Party</th><th>Notes</th><th>Status</th><th></th>
+    <th>Time</th><th>Guest</th><th>Contact</th><th>Party</th><th>Table</th><th>Notes</th><th>Status</th><th></th>
   </tr>` + bookings.map(b => {
     const slotTime = b.slot ? fmtTime12(b.slot.start_time) : "?";
+    const tableLabel = (b.tables && b.tables.length) ? b.tables.map(t => escapeHTML(t.name)).join(" + ") : "&mdash;";
+    const editTableBtn = b.status === "confirmed" ? `<button class="btn-sm btn-indigo" onclick="openReassignModal('${b.id}')">Edit</button>` : "";
     const actions = b.status === "confirmed" ? `
       <button class="btn-sm btn-danger" onclick="adminCancelBooking('${b.id}')">Cancel</button>
       <button class="btn-sm btn-secondary" onclick="adminSetBookingStatus('${b.id}','completed')">Completed</button>
@@ -1544,6 +1562,7 @@ function renderBookingsTable(bookings) {
       <td>${escapeHTML(b.guest_name)}</td>
       <td>${escapeHTML(b.guest_email)}${b.guest_phone ? "<br>" + escapeHTML(b.guest_phone) : ""}</td>
       <td>${b.party_size}</td>
+      <td>${tableLabel}${editTableBtn ? " " + editTableBtn : ""}</td>
       <td>${escapeHTML(b.notes || "")}</td>
       <td><span class="v-badge ${BOOKING_STATUS_CLASS[b.status]||""}">${BOOKING_STATUS_LABEL[b.status]||b.status}</span></td>
       <td style="white-space:nowrap;display:flex;gap:4px;">${actions}</td>
@@ -1564,6 +1583,47 @@ async function adminSetBookingStatus(id, status) {
   try {
     await adminFetch("/.netlify/functions/admin-bookings", { method:"POST", body: JSON.stringify({ action:"status", id, status }) });
     toast("Booking marked " + BOOKING_STATUS_LABEL[status], "success");
+    loadBookingsPanel();
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+var reassignBookingId = null;
+
+function openReassignModal(id) {
+  const booking = lastBookingsList.find(b => b.id === id);
+  if (!booking) { toast("Booking not found, try refreshing", "error"); return; }
+  reassignBookingId = id;
+
+  // Tables already taken by a *different* confirmed booking in this same date+slot can't be picked.
+  const takenElsewhere = new Set();
+  lastBookingsList.forEach(b => {
+    if (b.id !== id && b.status === "confirmed" && b.slot_id === booking.slot_id && b.date === booking.date) {
+      (b.table_ids || []).forEach(tid => takenElsewhere.add(tid));
+    }
+  });
+  const currentIds = new Set(booking.table_ids || []);
+
+  document.getElementById("reassign-summary").textContent =
+    `${escapeHTML(booking.guest_name)} · party of ${booking.party_size} · ${booking.slot ? fmtTime12(booking.slot.start_time) : ""}`;
+
+  document.getElementById("reassign-tables-list").innerHTML = (DATA.tables || []).filter(t => t.active).map(t => {
+    const disabled = takenElsewhere.has(t.id) && !currentIds.has(t.id);
+    return `<label style="display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;${disabled?"opacity:0.4;":""}">
+      <input type="checkbox" value="${escapeHTML(t.id)}" ${currentIds.has(t.id)?"checked":""} ${disabled?"disabled":""}>
+      ${escapeHTML(t.name)} (${t.seats} seats)${disabled ? " - taken by another booking" : ""}
+    </label>`;
+  }).join("");
+
+  document.getElementById("modal-reassign").classList.add("open");
+}
+
+async function saveReassignModal() {
+  const checked = [...document.querySelectorAll("#reassign-tables-list input[type=checkbox]:checked")].map(el => el.value);
+  if (!checked.length) { toast("Pick at least one table", "error"); return; }
+  try {
+    await adminFetch("/.netlify/functions/admin-bookings", { method:"POST", body: JSON.stringify({ action:"reassign_tables", id: reassignBookingId, table_ids: checked }) });
+    toast("Table reassigned", "success");
+    closeModal("modal-reassign");
     loadBookingsPanel();
   } catch(e) { toast("Error: " + e.message, "error"); }
 }

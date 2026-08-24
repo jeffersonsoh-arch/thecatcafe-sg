@@ -1,5 +1,5 @@
 const { readCollection, updateCollection } = require("./lib/data-store");
-const { getSlotById, isValidDateStr } = require("./lib/availability");
+const { getSlotById, getActiveTables, isValidDateStr } = require("./lib/availability");
 const { sendBookingCancellation } = require("./lib/booking-mailer");
 const { verifyNetlifyToken } = require("./lib/auth");
 
@@ -12,11 +12,19 @@ function requireAuth(event) {
 async function listForDate(date) {
   const { items: bookings } = await readCollection("bookings");
   const { items: slots } = await readCollection("timeslots");
+  const { items: tables } = await readCollection("tables");
   const slotById = {};
   slots.forEach((s) => (slotById[s.id] = s));
+  const tableById = {};
+  tables.forEach((t) => (tableById[t.id] = t));
   return bookings
     .filter((b) => b.date === date)
-    .map((b) => ({ ...b, manage_token: undefined, slot: slotById[b.slot_id] || null }))
+    .map((b) => ({
+      ...b,
+      manage_token: undefined,
+      slot: slotById[b.slot_id] || null,
+      tables: (b.table_ids || []).map((id) => tableById[id] || { id, name: id, seats: null })
+    }))
     .sort((a, b) => {
       const aStart = a.slot ? a.slot.start_time : "";
       const bStart = b.slot ? b.slot.start_time : "";
@@ -74,6 +82,44 @@ exports.handler = async (event) => {
           try { await sendBookingCancellation(finalBooking, slot); }
           catch (e) { console.error("Failed to send cancellation email:", e.message); }
         }
+        return { statusCode: 200, headers, body: JSON.stringify({ ok: true, booking: finalBooking }) };
+      }
+
+      if (action === "reassign_tables") {
+        const table_ids = Array.isArray(body.table_ids) ? [...new Set(body.table_ids)] : null;
+        if (!table_ids || table_ids.length === 0) {
+          return { statusCode: 400, headers, body: JSON.stringify({ error: "table_ids must be a non-empty array" }) };
+        }
+        const activeTables = await getActiveTables();
+        const activeIds = new Set(activeTables.map((t) => t.id));
+        const unknown = table_ids.filter((tid) => !activeIds.has(tid));
+        if (unknown.length) {
+          return { statusCode: 400, headers, body: JSON.stringify({ error: "Unknown or inactive table(s): " + unknown.join(", ") }) };
+        }
+
+        const finalBooking = await updateCollection("bookings", (items) => {
+          const idx = items.findIndex((b) => b.id === id);
+          if (idx === -1) { const err = new Error("Booking not found"); err.statusCode = 404; throw err; }
+          const target = items[idx];
+          if (target.status !== "confirmed") {
+            const err = new Error("Only confirmed bookings can be reassigned"); err.statusCode = 400; throw err;
+          }
+
+          const conflicting = items.find((b) =>
+            b.id !== id && b.date === target.date && b.slot_id === target.slot_id && b.status === "confirmed" &&
+            (b.table_ids || []).some((tid) => table_ids.includes(tid))
+          );
+          if (conflicting) {
+            const err = new Error(`One or more of those tables is already assigned to another booking in this slot (${conflicting.guest_name})`);
+            err.statusCode = 409;
+            throw err;
+          }
+
+          const updated = { ...target, table_ids, updated_at: new Date().toISOString() };
+          const newItems = items.slice();
+          newItems[idx] = updated;
+          return { items: newItems, value: updated, message: `Booking ${id} reassigned to tables ${table_ids.join(", ")}` };
+        });
         return { statusCode: 200, headers, body: JSON.stringify({ ok: true, booking: finalBooking }) };
       }
 
