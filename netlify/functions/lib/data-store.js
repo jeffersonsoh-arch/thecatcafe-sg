@@ -109,10 +109,16 @@ async function writeCollection(name, items, sha, message) {
     return { ok: true };
   }
   if (res.status === 409 || res.status === 422) return { ok: false, conflict: true };
-  return {
-    ok: false,
-    error: (res.body && (res.body.message || JSON.stringify(res.body))) || `GitHub write failed (${res.status})`
-  };
+
+  const detail = (res.body && (res.body.message || JSON.stringify(res.body))) || `status ${res.status}`;
+  console.error(`GitHub write to content/${name}.json failed (${res.status}): ${detail}`);
+  if (res.status === 401 || res.status === 403) {
+    // Never surface GitHub's raw credential/permission error to end users - it's an
+    // infra misconfiguration (GITHUB_TOKEN missing/expired/wrong scope for this deploy
+    // context), not something a guest or admin can act on. Full detail is logged above.
+    return { ok: false, error: "Booking system is temporarily unavailable. Please try again shortly or contact us directly." };
+  }
+  return { ok: false, error: `GitHub write failed (${res.status})` };
 }
 
 // Per-collection-name in-process lock, so concurrent updateCollection() calls in the same
