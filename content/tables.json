@@ -28,5 +28,11 @@
     "name": "5",
     "seats": 4,
     "active": true
+  },
+  {
+    "id": "t1787545025701",
+    "name": "6",
+    "seats": 4,
+    "active": true
   }
 ]
