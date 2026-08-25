@@ -351,11 +351,11 @@
     </div>
     <div class="nav-mobile-cta">
       <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
-      <a class="nav-cta" id="book-link-mobile" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+      <a class="nav-cta" id="book-link-mobile" href="/booking.html">Reserve a spot</a>
     </div>
     <div class="nav-desktop-only" style="display:flex;gap:12px;align-items:center;">
       <a href="pay.html" target="_blank" class="nav-pay-link">Pay</a>
-      <a class="nav-cta" id="book-link" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+      <a class="nav-cta" id="book-link" href="/booking.html">Reserve a spot</a>
     </div>
   </div>
 </nav>
@@ -368,7 +368,7 @@
       <h1>Coffee, cats &amp;<br><em>good company</em></h1>
       <p>Singapore's original cat cafe since 2014. Meet 13 rescued cats, enjoy coffee, food and art jamming in the heart of Bugis.</p>
       <div class="hero-btns">
-        <a class="btn btn-rust" href="https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4" target="_blank">Reserve a spot</a>
+        <a class="btn btn-rust" href="/booking.html">Reserve a spot</a>
         <a class="btn btn-outline" href="#cats">Meet our cats</a>
       </div>
       <div class="hero-cats">
@@ -818,7 +818,6 @@
 
 <script>
 var GITHUB = "images/cats/";
-var BOOK_URL = "https://inline.app/booking/-MtLYdCB0cHt-kca6N0E:inline-live-2/-MtLYdltwPOgBJXln-w4";
 
 var CATS_DEFAULT = [
   {id:1,  name:"Missy",       img:GITHUB+"missy.jpg",       full:GITHUB+"missy.jpg",       tags:["senior","og"],              desc:"Our oldest resident at around 21, Missy is a gentle Siamese who loves human affection. She walks with a slight limp and is partially blind, but her sweet, calm nature makes her a firm favourite with every visitor."},
@@ -982,9 +981,6 @@ async function loadContent() {
     MENU = menu;
     if (settings.pricing) PRICING = settings.pricing;
     if (settings.hours)   HOURS   = settings.hours;
-    if (settings.info && settings.info.booking_url) {
-      document.querySelectorAll("a[href*='inline.app']").forEach(a => { a.href = settings.info.booking_url; });
-    }
   } catch(e) { console.log("Using default content:", e.message); }
   renderCatCards(CATS);
   renderHours();

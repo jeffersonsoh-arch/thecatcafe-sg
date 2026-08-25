@@ -78,7 +78,7 @@ exports.handler = async (event, context) => {
 
   try {
     const { type, data } = JSON.parse(event.body);
-    const validTypes = ["cats", "menu", "settings"];
+    const validTypes = ["cats", "menu", "settings", "tables", "timeslots", "schedule", "special-dates"];
     if (!type || !validTypes.includes(type)) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid type" }) };
     }

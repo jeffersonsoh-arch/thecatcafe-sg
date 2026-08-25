@@ -1,0 +1,14 @@
+[
+  {"id": "s0900", "start_time": "09:00", "duration_minutes": 120, "active": true},
+  {"id": "s1000", "start_time": "10:00", "duration_minutes": 120, "active": true},
+  {"id": "s1100", "start_time": "11:00", "duration_minutes": 120, "active": true},
+  {"id": "s1200", "start_time": "12:00", "duration_minutes": 120, "active": true},
+  {"id": "s1300", "start_time": "13:00", "duration_minutes": 120, "active": true},
+  {"id": "s1400", "start_time": "14:00", "duration_minutes": 120, "active": true},
+  {"id": "s1500", "start_time": "15:00", "duration_minutes": 120, "active": true},
+  {"id": "s1600", "start_time": "16:00", "duration_minutes": 120, "active": true},
+  {"id": "s1700", "start_time": "17:00", "duration_minutes": 120, "active": true},
+  {"id": "s1800", "start_time": "18:00", "duration_minutes": 120, "active": true},
+  {"id": "s1900", "start_time": "19:00", "duration_minutes": 120, "active": true},
+  {"id": "s2000", "start_time": "20:00", "duration_minutes": 120, "active": true}
+]

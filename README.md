@@ -152,3 +152,66 @@ catcafe-cms/
     ├── voucher-webhook.js            ← Receives HitPay webhook, sends email
     └── voucher-manage.js             ← Lookup/redeem/list vouchers (admin)
 ```
+
+## Booking system
+
+Guests book a table directly on the site at `/booking.html` instead of going through a third-party
+scheduler — pick a date, pick an open time slot, enter their details, done. They manage or cancel
+their own booking later via the link in their confirmation email (`/booking-manage.html`). Staff
+run the whole thing from **Admin → Bookings** / **Admin → Booking setup**: weekly hours, one-off
+special dates (holidays, private events), tables and their seat counts, time slots, booking/
+cancellation cutoffs, the day's booking list, and a weekly booking count.
+
+Capacity is seating-based: every booking is assigned to a specific table (or tables) at creation
+time, editable afterwards from **Admin → Bookings** (each row shows its assigned table and has an
+"Edit" action). All tables are treated as mergeable, so assignment prefers the smallest single free
+table that already fits the party (a party of 3 gets the smallest table seating ≥3 before anything
+is merged), and only merges multiple free tables when no single one is big enough — picking the
+combination with the fewest tables and least wasted seats. A table can only be assigned to one
+confirmed booking per slot. Online bookings are capped at 10 guests; larger groups are shown a
+WhatsApp link (8080 8719) instead of being allowed to book, so staff can arrange seating manually.
+Booking creation is safe under concurrent requests — it uses GitHub's file `sha` as an
+optimistic-concurrency token (read `bookings.json`'s current sha, write with that sha, retry from a
+fresh read if GitHub reports a conflict), so two guests racing for the same table can never both win.
+
+### Additional content files
+
+```
+content/
+├── tables.json          ← Tables and seat counts (admin-managed)
+├── timeslots.json       ← Bookable time-of-day slots (admin-managed)
+├── schedule.json        ← Weekly open/closed days + default hours (admin-managed)
+├── special-dates.json   ← Per-date overrides: custom hours or fully closed (admin-managed)
+└── bookings.json        ← All bookings (guest + admin managed, not exposed via the public CMS API)
+```
+
+`content/settings.json` also gained a `booking` block (`booking_cutoff_minutes`,
+`cancellation_cutoff_minutes`), editable from **Admin → Booking setup**.
+
+### Additional Netlify Functions
+
+```
+netlify/functions/
+├── availability.js           ← GET  /api/availability?date=       (public)
+├── bookings-create.js        ← POST /api/bookings-create          (public)
+├── bookings-detail.js        ← GET  /api/bookings-detail?id=&token=  (public, token-gated)
+├── bookings-cancel.js        ← POST /api/bookings-cancel           (public, token-gated)
+├── admin-bookings.js         ← GET/POST list, cancel, mark completed/no-show (admin)
+├── admin-booking-stats.js    ← GET weekly booking count (admin)
+└── lib/
+    ├── data-store.js         ← GitHub CAS read/write + local dev fallback + retry helper
+    ├── availability.js       ← Schedule/special-date resolution + table assignment/merge logic
+    ├── time-utils.js         ← Singapore-time-aware date/time helpers
+    └── booking-mailer.js     ← Confirmation/cancellation/admin-alert emails via Resend
+```
+
+`content-get.js` / `content-save.js` were extended to also serve `tables`, `timeslots`, `schedule`
+and `special-dates` (same admin-authenticated whole-file-save pattern already used for `cats` and
+`menu`) — `bookings` is deliberately **not** in that list since it contains guest PII and needs the
+capacity-safe write path above, not a blind overwrite.
+
+No new environment variables are required — booking emails reuse the `RESEND_API_KEY` /
+`RESEND_FROM` already set up for vouchers, and booking data reuses `GITHUB_REPO` / `GITHUB_TOKEN` /
+`GITHUB_BRANCH`. Without `GITHUB_TOKEN` configured, bookings fall back to a local `content/*.json`
+file for development — fine for testing, but only the GitHub-backed path gives real concurrency
+safety across multiple function instances in production.

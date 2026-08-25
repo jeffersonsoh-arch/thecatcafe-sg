@@ -201,6 +201,9 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
       <div class="nav-item" onclick="nav('info',this)"><span class="nav-icon">📍</span>Cafe info</div>
       <div class="nav-item" onclick="nav('images',this)"><span class="nav-icon">🖼️</span>Images</div>
       <div class="nav-item" onclick="nav('vouchers',this);loadVouchers()"><span class="nav-icon">🎁</span>Vouchers</div>
+      <div class="sidebar-section">Booking system</div>
+      <div class="nav-item" onclick="nav('bookings',this);loadBookingsPanel()"><span class="nav-icon">📅</span>Bookings</div>
+      <div class="nav-item" onclick="nav('booking-setup',this)"><span class="nav-icon">⚙️</span>Booking setup</div>
     </nav>
 
     <div class="main">
@@ -398,6 +401,76 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
         </div>
       </div>
 
+      <!-- BOOKINGS -->
+      <div class="panel" id="panel-bookings">
+        <div class="panel-header">
+          <div><div class="panel-title">Bookings</div><div class="panel-sub">View and manage guest bookings by date.</div></div>
+        </div>
+
+        <div class="stats-row" id="booking-week-stats"></div>
+
+        <div class="card">
+          <div class="card-title" style="flex-wrap:wrap;gap:10px;">
+            <span>Bookings for date</span>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="date" id="bk-date" style="width:auto;" onchange="loadBookingsPanel()">
+              <button class="btn-sm btn-secondary" onclick="loadBookingsPanel()">Refresh</button>
+            </div>
+          </div>
+          <div id="bookings-table-wrap"><div style="color:var(--text-3);font-size:13px;">Loading bookings…</div></div>
+        </div>
+      </div>
+
+      <!-- BOOKING SETUP -->
+      <div class="panel" id="panel-booking-setup">
+        <div class="panel-header">
+          <div><div class="panel-title">Booking setup</div><div class="panel-sub">Weekly hours, special dates, tables and time slots for the booking system.</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Booking cutoffs</span>
+            <button class="btn-sm btn-primary" onclick="saveBookingCutoffs()">Save</button>
+          </div>
+          <div class="fg2">
+            <div class="field"><label>Minimum notice to book (minutes)</label><input type="number" min="0" id="cutoff-booking"></div>
+            <div class="field"><label>Minimum notice to cancel (minutes)</label><input type="number" min="0" id="cutoff-cancel"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Weekly schedule</span>
+            <button class="btn-sm btn-primary" onclick="saveSchedule()">Save &amp; publish</button>
+          </div>
+          <table class="hours-table" id="schedule-table"></table>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Special dates (holidays, private events)</span>
+            <button class="btn-sm btn-secondary" onclick="openSpecialDateModal()">+ Add date</button>
+          </div>
+          <div class="item-list" id="special-dates-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Tables <span id="tables-total" style="font-weight:400;color:var(--text-3);"></span></span>
+            <button class="btn-sm btn-secondary" onclick="openTableModal()">+ Add table</button>
+          </div>
+          <div class="item-list" id="tables-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Time slots</span>
+            <button class="btn-sm btn-secondary" onclick="openSlotModal()">+ Add slot</button>
+          </div>
+          <div class="item-list" id="timeslots-list"></div>
+        </div>
+      </div>
+
     </div><!-- /main -->
   </div><!-- /layout -->
 </div><!-- /app -->
@@ -494,6 +567,75 @@ label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bo
     <div class="modal-foot">
       <button class="btn-sm btn-primary" onclick="startQRScanner()" id="btn-start-scan">Start Camera</button>
       <button class="btn-cancel" onclick="closeQRScanner()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- TABLE MODAL -->
+<div class="modal-bg" id="modal-table">
+  <div class="modal">
+    <div class="modal-title" id="modal-table-title">Add table</div>
+    <div class="fg2">
+      <div class="field"><label>Table name</label><input type="text" id="tb-name" placeholder="e.g. Table 15"></div>
+      <div class="field"><label>Seats</label><input type="number" id="tb-seats" min="1" value="2"></div>
+    </div>
+    <div class="field">
+      <label class="toggle-wrap"><label class="toggle"><input type="checkbox" id="tb-active" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label> Active (counts toward capacity)</label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modal-table')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveTableModal()">Save table</button>
+    </div>
+  </div>
+</div>
+
+<!-- TIME SLOT MODAL -->
+<div class="modal-bg" id="modal-slot">
+  <div class="modal">
+    <div class="modal-title" id="modal-slot-title">Add time slot</div>
+    <div class="fg2">
+      <div class="field"><label>Start time</label><input type="time" id="sl-start" value="10:00"></div>
+      <div class="field"><label>Duration (minutes)</label><input type="number" id="sl-duration" min="15" step="15" value="120"></div>
+    </div>
+    <div class="field">
+      <label class="toggle-wrap"><label class="toggle"><input type="checkbox" id="sl-active" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label> Active (bookable)</label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modal-slot')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveSlotModal()">Save slot</button>
+    </div>
+  </div>
+</div>
+
+<!-- SPECIAL DATE MODAL -->
+<div class="modal-bg" id="modal-special">
+  <div class="modal">
+    <div class="modal-title" id="modal-special-title">Add special date</div>
+    <div class="field"><label>Date</label><input type="date" id="sd-date"></div>
+    <div class="field">
+      <label class="toggle-wrap"><label class="toggle"><input type="checkbox" id="sd-closed" onchange="toggleSpecialClosed(this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label> Fully closed this date</label>
+    </div>
+    <div class="fg2" id="sd-hours-wrap">
+      <div class="field"><label>Opens</label><input type="time" id="sd-open" value="10:00"></div>
+      <div class="field"><label>Closes</label><input type="time" id="sd-close" value="21:00"></div>
+    </div>
+    <div class="field"><label>Note (optional)</label><input type="text" id="sd-note" placeholder="e.g. Public holiday, private event"></div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modal-special')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveSpecialModal()">Save date</button>
+    </div>
+  </div>
+</div>
+
+<!-- REASSIGN TABLE MODAL -->
+<div class="modal-bg" id="modal-reassign">
+  <div class="modal">
+    <div class="modal-title">Assign table(s)</div>
+    <div style="font-size:13px;color:var(--text-2);margin-bottom:14px;" id="reassign-summary"></div>
+    <div id="reassign-tables-list" style="max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;"></div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('modal-reassign')">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveReassignModal()">Save</button>
     </div>
   </div>
 </div>
@@ -635,29 +777,45 @@ function loginSuccess(user) {
 }
 
 /* ════════ DATA STORE ════════ */
-var DATA = { cats: [], menu: [], settings: { hours: [], pricing: [], info: {} } };
+var DATA = { cats: [], menu: [], settings: { hours: [], pricing: [], info: {}, booking: {} }, tables: [], timeslots: [], schedule: [], specialDates: [] };
 var editCatIdx = -1;
 var editMenuIdx = -1;
+var editTableIdx = -1;
+var editSlotIdx = -1;
+var editSpecialIdx = -1;
 var catTags = [];
 var uploadFileData = null;
 
 /* ════════ LOAD ALL ════════ */
 async function loadAll() {
   try {
-    const [cats, menu, settings] = await Promise.all([
+    const [cats, menu, settings, tables, timeslots, schedule, specialDates] = await Promise.all([
       fetchContent("cats"),
       fetchContent("menu"),
-      fetchContent("settings")
+      fetchContent("settings"),
+      fetchContent("tables"),
+      fetchContent("timeslots"),
+      fetchContent("schedule"),
+      fetchContent("special-dates")
     ]);
     DATA.cats = cats;
     DATA.menu = menu;
     DATA.settings = settings;
+    DATA.tables = tables;
+    DATA.timeslots = timeslots;
+    DATA.schedule = schedule;
+    DATA.specialDates = specialDates;
     renderDash();
     renderCatsList();
     renderMenuList();
     renderHours();
     renderPricing();
     renderInfo();
+    renderScheduleTable();
+    renderSpecialDatesList();
+    renderTablesList();
+    renderTimeslotsList();
+    renderBookingCutoffs();
   } catch(e) {
     toast("Failed to load content: " + e.message, "error");
   }
@@ -683,6 +841,19 @@ async function saveContent(type, data) {
   const result = await res.json();
   if (!result.ok) throw new Error(result.error || "Save failed");
   return result;
+}
+
+// Authenticated fetch for the booking-system admin functions (not the content-get/save CMS pair).
+async function adminFetch(url, opts) {
+  const authState = window.__authInternal ? window.__authInternal.getState() : { user: null, token: null };
+  if (!authState.user || !authState.token) throw new Error("Authentication required");
+  const token = await authState.user.jwt();
+  const finalOpts = Object.assign({}, opts);
+  finalOpts.headers = Object.assign({ "Content-Type": "application/json", "Authorization": "Bearer " + token }, (opts && opts.headers) || {});
+  const res = await fetch(url, finalOpts);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Request failed");
+  return data;
 }
 
 /* ════════ NAV ════════ */
@@ -960,7 +1131,6 @@ function renderInfo() {
       <div class="field"><label>Instagram URL</label><input type="url" id="inf-ig" value="${escapeHTML(info.instagram)||""}"></div>
       <div class="field"><label>Facebook URL</label><input type="url" id="inf-fb" value="${escapeHTML(info.facebook)||""}"></div>
     </div>
-    <div class="field"><label>Booking URL</label><input type="url" id="inf-booking" value="${escapeHTML(info.booking_url)||""}"></div>
     <div class="field"><label>Google Maps URL</label><input type="url" id="inf-maps" value="${escapeHTML(info.maps_url)||""}"></div>`;
 }
 
@@ -973,7 +1143,6 @@ async function saveInfo() {
     email:       document.getElementById("inf-email").value.trim(),
     instagram:   document.getElementById("inf-ig").value.trim(),
     facebook:    document.getElementById("inf-fb").value.trim(),
-    booking_url: document.getElementById("inf-booking").value.trim(),
     maps_url:    document.getElementById("inf-maps").value.trim()
   };
   try {
@@ -1074,6 +1243,391 @@ function toast(msg, type) {
   bar.appendChild(t);
   requestAnimationFrame(() => { requestAnimationFrame(() => { t.classList.add("show"); }); });
   setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+function fmtTime12(hhmm) {
+  if (!hhmm) return "";
+  const [h, m] = hhmm.split(":").map(Number);
+  const period = h >= 12 ? "pm" : "am";
+  const h12 = h % 12 || 12;
+  return m === 0 ? `${h12}${period}` : `${h12}:${String(m).padStart(2,"0")}${period}`;
+}
+
+/* ════════ BOOKING CUTOFFS ════════ */
+function renderBookingCutoffs() {
+  const b = DATA.settings.booking || {};
+  document.getElementById("cutoff-booking").value = b.booking_cutoff_minutes != null ? b.booking_cutoff_minutes : 30;
+  document.getElementById("cutoff-cancel").value = b.cancellation_cutoff_minutes != null ? b.cancellation_cutoff_minutes : 0;
+}
+
+async function saveBookingCutoffs() {
+  DATA.settings.booking = {
+    booking_cutoff_minutes: parseInt(document.getElementById("cutoff-booking").value, 10) || 0,
+    cancellation_cutoff_minutes: parseInt(document.getElementById("cutoff-cancel").value, 10) || 0
+  };
+  try {
+    await saveContent("settings", DATA.settings);
+    toast("Booking cutoffs saved!", "success");
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ WEEKLY SCHEDULE ════════ */
+function renderScheduleTable() {
+  const byDay = {};
+  (DATA.schedule || []).forEach(d => byDay[d.day_of_week] = d);
+  document.getElementById("schedule-table").innerHTML =
+    `<tr><th>Day</th><th>Opens</th><th>Closes</th><th>Closed</th></tr>` +
+    DAY_NAMES.map((name, i) => {
+      const d = byDay[i] || { is_open: false, open_time: "10:00", close_time: "21:00" };
+      const closed = !d.is_open;
+      return `<tr>
+        <td><span class="day-name">${name}</span></td>
+        <td><input type="time" id="sch-open-${i}" value="${escapeHTML(d.open_time)}" ${closed?"disabled":""}></td>
+        <td><input type="time" id="sch-close-${i}" value="${escapeHTML(d.close_time)}" ${closed?"disabled":""}></td>
+        <td>
+          <label class="toggle">
+            <input type="checkbox" id="sch-closed-${i}" ${closed?"checked":""} onchange="toggleScheduleDay(${i},this.checked)">
+            <div class="toggle-track"></div><div class="toggle-thumb"></div>
+          </label>
+        </td>
+      </tr>`;
+    }).join("");
+}
+
+function toggleScheduleDay(i, closed) {
+  document.getElementById("sch-open-"+i).disabled = closed;
+  document.getElementById("sch-close-"+i).disabled = closed;
+}
+
+async function saveSchedule() {
+  DATA.schedule = DAY_NAMES.map((name, i) => ({
+    day_of_week: i,
+    day_name: name,
+    is_open: !document.getElementById("sch-closed-"+i).checked,
+    open_time: document.getElementById("sch-open-"+i).value,
+    close_time: document.getElementById("sch-close-"+i).value
+  }));
+  try {
+    await saveContent("schedule", DATA.schedule);
+    toast("Weekly schedule saved and published!", "success");
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ SPECIAL DATES ════════ */
+function renderSpecialDatesList() {
+  const list = (DATA.specialDates || []).slice().sort((a,b) => a.date.localeCompare(b.date));
+  document.getElementById("special-dates-list").innerHTML = list.length ? list.map(sd => {
+    const idx = DATA.specialDates.indexOf(sd);
+    return `<div class="item-row">
+      <div class="item-row-body">
+        <div class="item-row-name">${escapeHTML(sd.date)}</div>
+        <div class="item-row-meta">${sd.is_closed ? "Closed all day" : fmtTime12(sd.open_time) + " – " + fmtTime12(sd.close_time)}${sd.note ? " · " + escapeHTML(sd.note) : ""}</div>
+      </div>
+      <div class="item-row-actions">
+        <button class="btn-sm btn-indigo" onclick="openSpecialDateModal(${idx})">Edit</button>
+        <button class="btn-sm btn-danger" onclick="deleteSpecialDate(${idx})">Delete</button>
+      </div>
+    </div>`;
+  }).join("") : `<div style="color:var(--text-3);font-size:13px;">No special dates yet.</div>`;
+}
+
+function toggleSpecialClosed(closed) {
+  document.getElementById("sd-hours-wrap").style.display = closed ? "none" : "grid";
+}
+
+function openSpecialDateModal(idx) {
+  editSpecialIdx = idx !== undefined ? idx : -1;
+  const sd = editSpecialIdx >= 0 ? DATA.specialDates[editSpecialIdx] : { date:"", is_closed:false, open_time:"10:00", close_time:"21:00", note:"" };
+  document.getElementById("modal-special-title").textContent = editSpecialIdx >= 0 ? "Edit special date" : "Add special date";
+  document.getElementById("sd-date").value = sd.date;
+  document.getElementById("sd-closed").checked = sd.is_closed;
+  document.getElementById("sd-open").value = sd.open_time || "10:00";
+  document.getElementById("sd-close").value = sd.close_time || "21:00";
+  document.getElementById("sd-note").value = sd.note || "";
+  toggleSpecialClosed(sd.is_closed);
+  document.getElementById("modal-special").classList.add("open");
+}
+
+function saveSpecialModal() {
+  const date = document.getElementById("sd-date").value;
+  if (!date) { toast("Date is required", "error"); return; }
+  const is_closed = document.getElementById("sd-closed").checked;
+  const entry = {
+    id: editSpecialIdx >= 0 ? DATA.specialDates[editSpecialIdx].id : "sd" + Date.now(),
+    date,
+    is_closed,
+    open_time: is_closed ? null : document.getElementById("sd-open").value,
+    close_time: is_closed ? null : document.getElementById("sd-close").value,
+    note: document.getElementById("sd-note").value.trim()
+  };
+  if (editSpecialIdx >= 0) DATA.specialDates[editSpecialIdx] = entry;
+  else DATA.specialDates.push(entry);
+  closeModal("modal-special");
+  renderSpecialDatesList();
+  saveSpecialDates();
+}
+
+function deleteSpecialDate(idx) {
+  if (!confirm("Remove special date " + DATA.specialDates[idx].date + "?")) return;
+  DATA.specialDates.splice(idx, 1);
+  renderSpecialDatesList();
+  saveSpecialDates();
+}
+
+async function saveSpecialDates() {
+  try {
+    await saveContent("special-dates", DATA.specialDates);
+    toast("Special dates saved and published!", "success");
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ TABLES ════════ */
+function renderTablesList() {
+  const total = (DATA.tables || []).filter(t => t.active).reduce((s,t) => s + Number(t.seats||0), 0);
+  document.getElementById("tables-total").textContent = `(${total} seats total)`;
+  document.getElementById("tables-list").innerHTML = (DATA.tables || []).map(t => {
+    const idx = DATA.tables.indexOf(t);
+    return `<div class="item-row">
+      <div class="item-row-body">
+        <div class="item-row-name">${escapeHTML(t.name)} ${t.active ? "" : '<span style="color:var(--text-3);font-weight:400;">(inactive)</span>'}</div>
+        <div class="item-row-meta">${t.seats} seats</div>
+      </div>
+      <div class="item-row-actions">
+        <button class="btn-sm btn-indigo" onclick="openTableModal(${idx})">Edit</button>
+        <button class="btn-sm btn-danger" onclick="deleteTable(${idx})">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function openTableModal(idx) {
+  editTableIdx = idx !== undefined ? idx : -1;
+  const t = editTableIdx >= 0 ? DATA.tables[editTableIdx] : { name:"", seats:2, active:true };
+  document.getElementById("modal-table-title").textContent = editTableIdx >= 0 ? "Edit table" : "Add table";
+  document.getElementById("tb-name").value = t.name;
+  document.getElementById("tb-seats").value = t.seats;
+  document.getElementById("tb-active").checked = t.active;
+  document.getElementById("modal-table").classList.add("open");
+}
+
+function saveTableModal() {
+  const name = document.getElementById("tb-name").value.trim();
+  const seats = parseInt(document.getElementById("tb-seats").value, 10);
+  if (!name || !seats || seats < 1) { toast("Name and a valid seat count are required", "error"); return; }
+  const table = {
+    id: editTableIdx >= 0 ? DATA.tables[editTableIdx].id : "t" + Date.now(),
+    name, seats,
+    active: document.getElementById("tb-active").checked
+  };
+  if (editTableIdx >= 0) DATA.tables[editTableIdx] = table;
+  else DATA.tables.push(table);
+  closeModal("modal-table");
+  renderTablesList();
+  saveTables();
+}
+
+function deleteTable(idx) {
+  if (!confirm("Remove " + DATA.tables[idx].name + "?")) return;
+  DATA.tables.splice(idx, 1);
+  renderTablesList();
+  saveTables();
+}
+
+async function saveTables() {
+  try {
+    await saveContent("tables", DATA.tables);
+    toast("Tables saved and published!", "success");
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ TIME SLOTS ════════ */
+function renderTimeslotsList() {
+  const list = (DATA.timeslots || []).slice().sort((a,b) => a.start_time.localeCompare(b.start_time));
+  document.getElementById("timeslots-list").innerHTML = list.map(s => {
+    const idx = DATA.timeslots.indexOf(s);
+    return `<div class="item-row">
+      <div class="item-row-body">
+        <div class="item-row-name">${fmtTime12(s.start_time)} ${s.active ? "" : '<span style="color:var(--text-3);font-weight:400;">(inactive)</span>'}</div>
+        <div class="item-row-meta">${s.duration_minutes} min</div>
+      </div>
+      <div class="item-row-actions">
+        <button class="btn-sm btn-indigo" onclick="openSlotModal(${idx})">Edit</button>
+        <button class="btn-sm btn-danger" onclick="deleteSlot(${idx})">Delete</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function openSlotModal(idx) {
+  editSlotIdx = idx !== undefined ? idx : -1;
+  const s = editSlotIdx >= 0 ? DATA.timeslots[editSlotIdx] : { start_time:"10:00", duration_minutes:120, active:true };
+  document.getElementById("modal-slot-title").textContent = editSlotIdx >= 0 ? "Edit time slot" : "Add time slot";
+  document.getElementById("sl-start").value = s.start_time;
+  document.getElementById("sl-duration").value = s.duration_minutes;
+  document.getElementById("sl-active").checked = s.active;
+  document.getElementById("modal-slot").classList.add("open");
+}
+
+function saveSlotModal() {
+  const start_time = document.getElementById("sl-start").value;
+  const duration_minutes = parseInt(document.getElementById("sl-duration").value, 10);
+  if (!start_time || !duration_minutes || duration_minutes < 1) { toast("Start time and duration are required", "error"); return; }
+  const slot = {
+    id: editSlotIdx >= 0 ? DATA.timeslots[editSlotIdx].id : "s" + Date.now(),
+    start_time, duration_minutes,
+    active: document.getElementById("sl-active").checked
+  };
+  if (editSlotIdx >= 0) DATA.timeslots[editSlotIdx] = slot;
+  else DATA.timeslots.push(slot);
+  closeModal("modal-slot");
+  renderTimeslotsList();
+  saveTimeslots();
+}
+
+function deleteSlot(idx) {
+  if (!confirm("Remove this time slot?")) return;
+  DATA.timeslots.splice(idx, 1);
+  renderTimeslotsList();
+  saveTimeslots();
+}
+
+async function saveTimeslots() {
+  try {
+    await saveContent("timeslots", DATA.timeslots);
+    toast("Time slots saved and published!", "success");
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+/* ════════ BOOKINGS (day list + weekly stats) ════════ */
+const BOOKING_STATUS_LABEL = { confirmed:"Confirmed", cancelled:"Cancelled", completed:"Completed", no_show:"No-show" };
+const BOOKING_STATUS_CLASS = { confirmed:"active", cancelled:"expired", completed:"redeemed", no_show:"expired" };
+
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+var lastBookingsList = [];
+
+async function loadBookingsPanel() {
+  const dateInput = document.getElementById("bk-date");
+  if (!dateInput.value) dateInput.value = todayStr();
+  const date = dateInput.value;
+
+  document.getElementById("bookings-table-wrap").innerHTML = `<div style="color:var(--text-3);font-size:13px;">Loading bookings…</div>`;
+  try {
+    const [bookingsRes, statsRes] = await Promise.all([
+      adminFetch("/.netlify/functions/admin-bookings?date=" + encodeURIComponent(date)),
+      adminFetch("/.netlify/functions/admin-booking-stats?week=" + encodeURIComponent(date))
+    ]);
+    lastBookingsList = bookingsRes.bookings || [];
+    renderBookingsTable(lastBookingsList);
+    renderWeeklyStats(statsRes);
+  } catch(e) {
+    document.getElementById("bookings-table-wrap").innerHTML = `<div style="color:var(--red);font-size:13px;">${escapeHTML(e.message)}</div>`;
+  }
+}
+
+function renderWeeklyStats(stats) {
+  const cards = [
+    [stats.total_bookings, "Bookings this week"],
+    [stats.total_guests, "Guests this week"]
+  ];
+  document.getElementById("booking-week-stats").innerHTML = cards.map(([n,l]) =>
+    `<div class="stat-card"><div class="stat-n">${n}</div><div class="stat-l">${l}</div></div>`
+  ).join("") + (stats.daily || []).map(d =>
+    `<div class="stat-card"><div class="stat-n" style="font-size:18px;">${d.bookings}</div><div class="stat-l">${d.day_name.slice(0,3)} ${d.date.slice(5)}</div></div>`
+  ).join("");
+}
+
+function renderBookingsTable(bookings) {
+  const wrap = document.getElementById("bookings-table-wrap");
+  if (!bookings.length) {
+    wrap.innerHTML = `<div style="color:var(--text-3);font-size:13px;">No bookings for this date.</div>`;
+    return;
+  }
+  wrap.innerHTML = `<div style="overflow-x:auto;"><table class="voucher-table"><tr>
+    <th>Time</th><th>Guest</th><th>Contact</th><th>Party</th><th>Table</th><th>Notes</th><th>Status</th><th></th>
+  </tr>` + bookings.map(b => {
+    const slotTime = b.slot ? fmtTime12(b.slot.start_time) : "?";
+    const tableLabel = (b.tables && b.tables.length) ? b.tables.map(t => escapeHTML(t.name)).join(" + ") : "&mdash;";
+    const editTableBtn = b.status === "confirmed" ? `<button class="btn-sm btn-indigo" onclick="openReassignModal('${b.id}')">Edit</button>` : "";
+    const actions = b.status === "confirmed" ? `
+      <button class="btn-sm btn-danger" onclick="adminCancelBooking('${b.id}')">Cancel</button>
+      <button class="btn-sm btn-secondary" onclick="adminSetBookingStatus('${b.id}','completed')">Completed</button>
+      <button class="btn-sm btn-secondary" onclick="adminSetBookingStatus('${b.id}','no_show')">No-show</button>
+    ` : "";
+    return `<tr>
+      <td>${slotTime}</td>
+      <td>${escapeHTML(b.guest_name)}</td>
+      <td>${escapeHTML(b.guest_email)}${b.guest_phone ? "<br>" + escapeHTML(b.guest_phone) : ""}</td>
+      <td>${b.party_size}</td>
+      <td>${tableLabel}${editTableBtn ? " " + editTableBtn : ""}</td>
+      <td>${escapeHTML(b.notes || "")}</td>
+      <td><span class="v-badge ${BOOKING_STATUS_CLASS[b.status]||""}">${BOOKING_STATUS_LABEL[b.status]||b.status}</span></td>
+      <td style="white-space:nowrap;display:flex;gap:4px;">${actions}</td>
+    </tr>`;
+  }).join("") + `</table></div>`;
+}
+
+async function adminCancelBooking(id) {
+  if (!confirm("Cancel this booking?")) return;
+  try {
+    await adminFetch("/.netlify/functions/admin-bookings", { method:"POST", body: JSON.stringify({ action:"cancel", id }) });
+    toast("Booking cancelled", "success");
+    loadBookingsPanel();
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+async function adminSetBookingStatus(id, status) {
+  try {
+    await adminFetch("/.netlify/functions/admin-bookings", { method:"POST", body: JSON.stringify({ action:"status", id, status }) });
+    toast("Booking marked " + BOOKING_STATUS_LABEL[status], "success");
+    loadBookingsPanel();
+  } catch(e) { toast("Error: " + e.message, "error"); }
+}
+
+var reassignBookingId = null;
+
+function openReassignModal(id) {
+  const booking = lastBookingsList.find(b => b.id === id);
+  if (!booking) { toast("Booking not found, try refreshing", "error"); return; }
+  reassignBookingId = id;
+
+  // Tables already taken by a *different* confirmed booking in this same date+slot can't be picked.
+  const takenElsewhere = new Set();
+  lastBookingsList.forEach(b => {
+    if (b.id !== id && b.status === "confirmed" && b.slot_id === booking.slot_id && b.date === booking.date) {
+      (b.table_ids || []).forEach(tid => takenElsewhere.add(tid));
+    }
+  });
+  const currentIds = new Set(booking.table_ids || []);
+
+  document.getElementById("reassign-summary").textContent =
+    `${escapeHTML(booking.guest_name)} · party of ${booking.party_size} · ${booking.slot ? fmtTime12(booking.slot.start_time) : ""}`;
+
+  document.getElementById("reassign-tables-list").innerHTML = (DATA.tables || []).filter(t => t.active).map(t => {
+    const disabled = takenElsewhere.has(t.id) && !currentIds.has(t.id);
+    return `<label style="display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;${disabled?"opacity:0.4;":""}">
+      <input type="checkbox" value="${escapeHTML(t.id)}" ${currentIds.has(t.id)?"checked":""} ${disabled?"disabled":""}>
+      ${escapeHTML(t.name)} (${t.seats} seats)${disabled ? " - taken by another booking" : ""}
+    </label>`;
+  }).join("");
+
+  document.getElementById("modal-reassign").classList.add("open");
+}
+
+async function saveReassignModal() {
+  const checked = [...document.querySelectorAll("#reassign-tables-list input[type=checkbox]:checked")].map(el => el.value);
+  if (!checked.length) { toast("Pick at least one table", "error"); return; }
+  try {
+    await adminFetch("/.netlify/functions/admin-bookings", { method:"POST", body: JSON.stringify({ action:"reassign_tables", id: reassignBookingId, table_ids: checked }) });
+    toast("Table reassigned", "success");
+    closeModal("modal-reassign");
+    loadBookingsPanel();
+  } catch(e) { toast("Error: " + e.message, "error"); }
 }
 
 /* ════════ VOUCHERS ════════ */

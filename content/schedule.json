@@ -1,0 +1,9 @@
+[
+  {"day_of_week": 0, "day_name": "Sunday",    "is_open": true, "open_time": "10:00", "close_time": "22:00"},
+  {"day_of_week": 1, "day_name": "Monday",    "is_open": true, "open_time": "15:00", "close_time": "21:00"},
+  {"day_of_week": 2, "day_name": "Tuesday",   "is_open": true, "open_time": "10:00", "close_time": "21:00"},
+  {"day_of_week": 3, "day_name": "Wednesday", "is_open": true, "open_time": "10:00", "close_time": "21:00"},
+  {"day_of_week": 4, "day_name": "Thursday",  "is_open": true, "open_time": "10:00", "close_time": "21:00"},
+  {"day_of_week": 5, "day_name": "Friday",    "is_open": true, "open_time": "10:00", "close_time": "21:00"},
+  {"day_of_week": 6, "day_name": "Saturday",  "is_open": true, "open_time": "10:00", "close_time": "22:00"}
+]
