@@ -50,7 +50,7 @@ async function getSha(path) {
   });
 }
 
-exports.handler = async (event) => {
+exports.handler = async (event, context) => {
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
@@ -60,23 +60,18 @@ exports.handler = async (event) => {
 
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
 
-  const authHeader = event.headers.authorization || "";
-  if (!authHeader.startsWith("Bearer ")) {
-    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized - Missing token" }) };
-  }
+  // Verify Netlify Identity auth (signature already verified by Netlify's edge)
+  const { getIdentityUser } = require("./lib/auth");
+  const authResult = getIdentityUser(context);
 
-  const token = authHeader.slice(7);
-  const { verifyNetlifyToken } = require("./lib/auth");
-  const authResult = await verifyNetlifyToken(token);
-  
   if (!authResult.valid) {
-    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized - Invalid token: " + authResult.error }) };
+    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized - " + authResult.error }) };
   }
 
   try {
     const { filename, folder, base64 } = JSON.parse(event.body);
-    // folder: "cats" | "artjam" | "events"
-    const validFolders = ["cats", "artjam", "events"];
+    // folder: "cats" | "artjam" | "events" | "location"
+    const validFolders = ["cats", "artjam", "events", "location"];
     if (!validFolders.includes(folder)) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid folder" }) };
     }
