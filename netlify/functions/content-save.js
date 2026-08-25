@@ -57,7 +57,7 @@ async function getFileSha(path) {
   });
 }
 
-exports.handler = async (event) => {
+exports.handler = async (event, context) => {
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
@@ -68,18 +68,12 @@ exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
   if (event.httpMethod !== "POST") return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
 
-  // Verify Netlify Identity JWT
-  const authHeader = event.headers.authorization || event.headers.Authorization || "";
-  if (!authHeader.startsWith("Bearer ")) {
-    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized - Missing token" }) };
-  }
+  // Verify Netlify Identity auth (signature already verified by Netlify's edge)
+  const { getIdentityUser } = require("./lib/auth");
+  const authResult = getIdentityUser(context);
 
-  const token = authHeader.slice(7);
-  const { verifyNetlifyToken } = require("./lib/auth");
-  const authResult = await verifyNetlifyToken(token);
-  
   if (!authResult.valid) {
-    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized - Invalid token: " + authResult.error }) };
+    return { statusCode: 401, headers, body: JSON.stringify({ error: "Unauthorized - " + authResult.error }) };
   }
 
   try {

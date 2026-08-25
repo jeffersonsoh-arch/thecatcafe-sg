@@ -1,37 +1,17 @@
-const jwt = require("jsonwebtoken");
-
-// Verify Netlify Identity JWT
-// Note: We skip signature verification since Netlify Identity's JWKS endpoint is no longer available.
-// Instead, we validate the token structure and expiration. In production, Netlify's edge functions
-// handle authentication before requests reach your function, providing an additional layer of security.
-async function verifyNetlifyToken(token) {
-  try {
-    // Decode without verification to inspect the token
-    const decoded = jwt.decode(token, { complete: true });
-    if (!decoded || !decoded.header || !decoded.payload) {
-      return { valid: false, error: "Invalid token format" };
-    }
-
-    // Check if token has required fields
-    const payload = decoded.payload;
-    if (!payload.sub || !payload.email) {
-      return { valid: false, error: "Token missing required fields" };
-    }
-
-    // Check expiration
-    if (payload.exp && Date.now() >= payload.exp * 1000) {
-      return { valid: false, error: "Token has expired" };
-    }
-
-    // Check not before
-    if (payload.nbf && Date.now() < payload.nbf * 1000) {
-      return { valid: false, error: "Token is not yet valid" };
-    }
-
-    return { valid: true, user: payload };
-  } catch(err) {
-    return { valid: false, error: err.message };
+// Verify Netlify Identity authentication for a function invocation.
+//
+// Netlify's platform verifies the Identity JWT's signature at the edge and,
+// only for requests it has verified, populates context.clientContext.user
+// with the decoded claims before the function ever runs. We rely on that
+// verified value rather than decoding the Authorization header ourselves —
+// a self-decoded JWT has no signature check, so anyone could forge a token
+// with an arbitrary email/sub and pass it straight through.
+function getIdentityUser(context) {
+  const user = context && context.clientContext && context.clientContext.user;
+  if (!user) {
+    return { valid: false, error: "Missing or unverified Identity token" };
   }
+  return { valid: true, user };
 }
 
-module.exports = { verifyNetlifyToken };
+module.exports = { getIdentityUser };
