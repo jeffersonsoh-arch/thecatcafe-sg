@@ -99,6 +99,13 @@
   .hour-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;}
   .hour-day{color:var(--text-2);}
   .hour-time{font-weight:500;}
+  .loc-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
+  .loc-photo-card{border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-2);border:0.5px solid var(--border-light);}
+  .loc-photo-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--cream);}
+  .loc-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.3s;}
+  .loc-photo-card:hover .loc-photo-wrap img{transform:scale(1.04);}
+  .loc-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;background:var(--cream);}
+  .loc-photo-label{font-size:12px;color:var(--text-2);padding:8px 12px;text-align:center;}
   /* PRICING */
   .pricing-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
   .price-row{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:0.5px solid var(--border-light);}
@@ -224,7 +231,7 @@
     .hero{padding:40px 24px 36px;}
     .hero h1{font-size:32px;}
     .cat-grid{grid-template-columns:repeat(2,1fr);}
-    .features,.events-grid,.art-photos{grid-template-columns:1fr;}
+    .features,.events-grid,.art-photos,.loc-photos{grid-template-columns:1fr;}
     .hours-grid{grid-template-columns:1fr;}
     .art-banner{flex-direction:column;text-align:center;}
     .footer-inner{flex-direction:column;text-align:center;}
@@ -396,6 +403,20 @@
         <a href="https://maps.google.com/?q=241B+Victoria+Street+Singapore" target="_blank"><button class="map-btn">Open in maps &#x2197;</button></a>
       </div>
       <div class="hours-grid" id="hours-display"></div>
+    </div>
+    <div class="loc-photos">
+      <div class="loc-photo-card">
+        <div class="loc-photo-wrap"><img src="images/location/direction1.jpg" alt="Street view across Victoria Street with an arrow pointing to the cat cafe's building, near Bugis Street" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=loc-photo-placeholder>&#x1F3E2;</div>'"></div>
+        <div class="loc-photo-label">Spot our building across Victoria Street</div>
+      </div>
+      <div class="loc-photo-card">
+        <div class="loc-photo-wrap"><img src="images/location/direction2.jpg" alt="This way arrow pointing into the walkway beside Mixue toward the cat cafe entrance" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=loc-photo-placeholder>&#x1F9ED;</div>'"></div>
+        <div class="loc-photo-label">Follow the arrow into the walkway beside Mixue</div>
+      </div>
+      <div class="loc-photo-card">
+        <div class="loc-photo-wrap"><img src="images/location/direction3.jpg" alt="Alley leading to the staircase up to Level 3, no lift access" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML='<div class=loc-photo-placeholder>&#x1FA9C;</div>'"></div>
+        <div class="loc-photo-label">Turn right and head up the stairs to Level 3</div>
+      </div>
     </div>
   </section>
 
