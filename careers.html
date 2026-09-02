@@ -81,11 +81,15 @@
 
   /* QUICK FACTS */
   .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px;}
+  .facts.facts-4{grid-template-columns:repeat(4,1fr);}
   .fact{background:#fff;border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:16px 10px;text-align:center;}
   .fact-icon{font-size:18px;margin-bottom:6px;}
   .fact-v{font-size:14px;font-weight:600;color:var(--rust);}
   .fact-l{font-size:11px;color:var(--text-3);margin-top:2px;}
-  @media(max-width:640px){.facts{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:640px){
+    .facts{grid-template-columns:repeat(3,1fr);}
+    .facts.facts-4{grid-template-columns:repeat(2,1fr);}
+  }
 
   /* ABOUT */
   .about-text{font-size:15px;color:var(--text-2);line-height:1.8;max-width:640px;}
@@ -220,13 +224,14 @@ var JOBS = {
   fulltime: {
     type: "Full Time",
     name: "Cafe Supervisor",
-    tabSub: "No experience needed",
+    tabSub: "1-yr commitment · 4-day week",
     badge: "We're hiring · 1 vacancy",
     heroTitle: "Cafe Supervisor",
     heroDesc: "Lead daily operations at Singapore's original cat cafe and help care for our 15 resident cats at Bugis — while delivering a warm, memorable experience for every customer.",
     facts: [
       {icon:"🕐", v:"Full Time", l:"Employment type"},
-      {icon:"🌱", v:"Entry level", l:"Position level"},
+      {icon:"📅", v:"4-day week", l:"Work schedule"},
+      {icon:"🤝", v:"1 year", l:"Min. commitment"},
       {icon:"📍", v:"Bugis", l:"Location"}
     ],
     responsibilities: [
@@ -312,7 +317,7 @@ function renderJob(key) {
       '<a class="btn btn-rust" href="mailto:jobs@thecatcafe.sg?subject=' + encodeURIComponent(j.subject) + '">Apply now &#x2192;</a>' +
       '<a class="btn btn-outline" href="#responsibilities">See the role</a>' +
     '</div>' +
-    '<div class="facts">' + j.facts.map(function(f){
+    '<div class="facts' + (j.facts.length === 4 ? ' facts-4' : '') + '">' + j.facts.map(function(f){
       return '<div class="fact"><div class="fact-icon">' + f.icon + '</div><div class="fact-v">' + f.v + '</div><div class="fact-l">' + f.l + '</div></div>';
     }).join('') + '</div>';
 
