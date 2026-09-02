@@ -96,6 +96,7 @@
   .list-item:last-child{border-bottom:none;}
   .list-icon{color:var(--rust);font-size:14px;flex-shrink:0;margin-top:2px;}
   .list-text{font-size:14px;color:var(--text-2);line-height:1.6;}
+  .bonus-tag{display:inline-block;background:var(--rust-pale);color:var(--rust-dark);font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-right:2px;}
 
   /* SKILLS */
   .skills{display:flex;flex-wrap:wrap;gap:8px;}
@@ -233,7 +234,8 @@ var JOBS = {
         "Make every customer feel welcome and put a smile on their face",
         "Brief customers on cafe rules to ensure a safe and enjoyable experience",
         "Teach customers how to mingle with and handle the cats safely",
-        "Prepare and serve food and drinks following hygiene standards"
+        "Prepare and serve food and drinks following hygiene standards",
+        "Bonus: guide art jammers through their session"
       ]},
       { icon:"🐾", title:"Taking care of the cats", items:[
         "Play with the cats and monitor their health and wellbeing",
@@ -275,7 +277,8 @@ var JOBS = {
         "Make every customer feel welcome and put a smile on their face",
         "Brief customers on cafe rules to ensure a safe and enjoyable experience",
         "Teach customers how to mingle with and handle the cats safely",
-        "Prepare and serve food and drinks following hygiene standards"
+        "Prepare and serve food and drinks following hygiene standards",
+        "Bonus: guide art jammers through their session"
       ]},
       { icon:"🐾", title:"Taking care of the cats", items:[
         "Play with the cats and monitor their health and wellbeing",
@@ -291,7 +294,7 @@ var JOBS = {
       ]}
     ],
     skillsIntro: "No prior experience or certifications required — just a genuine love for cats and people, and a friendly, reliable attitude. Training is provided on the job.",
-    skills: ["Animal Welfare","Customer Service","Food Service","Housekeeping","Approachable","Team Player","Able to Work Independently","Multitasking","Customer Satisfaction"],
+    skills: ["Animal Welfare","Customer Service","Food Service","Housekeeping","Approachable","Team Player","Able to Work Independently","Multitasking","Customer Satisfaction","Expertise in Art (a plus)"],
     subject: "Application - Part Time Service Crew",
     note: "Flexible shifts · weekday and weekend slots available"
   }
@@ -317,7 +320,8 @@ function renderJob(key) {
     return '<div class="resp-group">' +
       '<div class="resp-group-header"><span class="resp-group-icon">' + group.icon + '</span><span class="resp-group-title">' + group.title + '</span></div>' +
       '<div class="list-card">' + group.items.map(function(r){
-        return '<div class="list-item"><span class="list-icon">&#9679;</span><span class="list-text">' + r + '</span></div>';
+        var text = r.replace(/^Bonus:\s*/, '<span class="bonus-tag">Bonus</span> ');
+        return '<div class="list-item"><span class="list-icon">&#9679;</span><span class="list-text">' + text + '</span></div>';
       }).join('') + '</div>' +
     '</div>';
   }).join('');
