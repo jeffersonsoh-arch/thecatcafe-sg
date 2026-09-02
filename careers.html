@@ -101,16 +101,12 @@
   .skills{display:flex;flex-wrap:wrap;gap:8px;}
   .skill-chip{font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;border:0.5px solid var(--border);background:var(--bg-2);color:var(--text-2);}
 
-  /* KEY INFO */
-  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-  .info-row{display:flex;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:0.5px solid var(--border-light);}
-  .info-row:nth-child(odd){border-right:0.5px solid var(--border-light);}
-  .info-label{font-size:13px;color:var(--text-3);}
-  .info-val{font-size:13px;font-weight:500;color:var(--text);text-align:right;}
-  @media(max-width:640px){
-    .info-grid{grid-template-columns:1fr;}
-    .info-row:nth-child(odd){border-right:none;}
-  }
+  /* RESPONSIBILITY GROUPS */
+  .resp-group{margin-bottom:20px;}
+  .resp-group:last-child{margin-bottom:0;}
+  .resp-group-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .resp-group-icon{width:30px;height:30px;border-radius:50%;background:var(--rust-pale);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .resp-group-title{font-size:14px;font-weight:600;color:var(--text);}
 
   /* LOCATION */
   .loc-card{background:var(--cream);border-radius:var(--radius);padding:28px 32px;}
@@ -174,7 +170,7 @@
   <section id="responsibilities">
     <div class="section-eyebrow">The role</div>
     <div class="section-title">Responsibilities</div>
-    <div class="list-card" id="responsibilities-list"></div>
+    <div id="responsibilities-list"></div>
   </section>
 
   <section>
@@ -182,12 +178,6 @@
     <div class="section-title">Skills &amp; qualifications</div>
     <p class="about-text" id="skills-intro" style="margin-bottom:16px;"></p>
     <div class="skills" id="skills-list"></div>
-  </section>
-
-  <section>
-    <div class="section-eyebrow">Details</div>
-    <div class="section-title">Key information</div>
-    <div class="info-grid" id="key-info"></div>
   </section>
 
   <section>
@@ -240,28 +230,32 @@ var JOBS = {
       {icon:"📍", v:"Bugis", l:"Location"}
     ],
     responsibilities: [
-      "Lead daily cafe operations to ensure smooth functioning and customer satisfaction",
-      "Coach and train team members to uphold service and cat care standards",
-      "Manage cafe inventory to maintain adequate supplies and reduce waste",
-      "Brief customers on cafe rules to ensure a safe and enjoyable experience",
-      "Prepare and serve food and drinks to customers following hygiene standards",
-      "Engage customers by explaining cat behaviours and proper handling techniques",
-      "Groom cats regularly and monitor their health to maintain wellbeing",
-      "Clean cats' living areas, including condos, beds and litter pans, to ensure hygiene",
-      "Maintain cleanliness and presentation of cat condos and refresh litter pans daily",
-      "Prepare daily meals and water bowls for cats according to dietary needs",
-      "Perform dishwashing and laundry duties to support cafe operations",
-      "Execute any additional duties assigned to support cafe functions"
+      { icon:"😊", title:"Taking care of the customers", items:[
+        "Make every customer feel welcome and put a smile on their face",
+        "Brief customers on cafe rules to ensure a safe and enjoyable experience",
+        "Teach customers how to mingle with and handle the cats safely",
+        "Prepare and serve food and drinks following hygiene standards"
+      ]},
+      { icon:"🐾", title:"Taking care of the cats", items:[
+        "Play with the cats and monitor their health and wellbeing",
+        "Groom cats regularly to keep them clean and comfortable",
+        "Clean cats' living areas, including condos, beds and litter pans",
+        "Prepare daily meals and water bowls according to dietary needs"
+      ]},
+      { icon:"🧹", title:"Taking care of the cafe", items:[
+        "Maintain cleanliness and presentation of the cafe and cat condos",
+        "Perform dishwashing and laundry duties to support cafe operations",
+        "Execute any additional duties assigned to support cafe functions"
+      ]},
+      { icon:"📋", title:"Coaching, stocktaking &amp; reporting", items:[
+        "Lead daily cafe operations to ensure smooth functioning and customer satisfaction",
+        "Coach and train team members to uphold service and cat care standards",
+        "Manage cafe inventory and stocktaking to maintain adequate supplies and reduce waste",
+        "Track and report on stock levels, sales and incidents to management"
+      ]}
     ],
     skillsIntro: "No specific certifications are required. A diploma in Food & Beverage Management/Services is preferred, along with a genuine love for cats and people.",
     skills: ["Animal Welfare","Customer Service","Leadership","People Management","Restaurant Operation","Food Service","Housekeeping","Multitasking","Team Player","Approachable","Able to Work Independently","Administration","Customer Satisfaction","Expertise in Art (a plus)"],
-    keyInfo: [
-      ["Job title","Cafe Supervisor"], ["Employment type","Full Time"],
-      ["Position level","Fresh / entry level"], ["Min. experience","0 years"],
-      ["Monthly salary","S$1,800 – S$2,400"], ["Vacancies","1"],
-      ["Job function","Customer Service, F&B, Sales/Retail"], ["Min. qualification","Diploma"],
-      ["Field of study","F&B Management/Services"], ["Flexible work arrangement","None selected"]
-    ],
     subject: "Application - Full Time Service Crew / Cafe Supervisor",
     note: "Job post duration: 30 calendar days"
   },
@@ -279,26 +273,27 @@ var JOBS = {
       {icon:"📍", v:"Bugis", l:"Location"}
     ],
     responsibilities: [
-      "Prepare and serve food and drinks to customers following hygiene standards",
-      "Brief customers on cafe rules to ensure a safe and enjoyable experience",
-      "Engage customers by explaining cat behaviours and proper handling techniques",
-      "Groom cats regularly and monitor their health to maintain wellbeing",
-      "Clean cats' living areas, including condos, beds and litter pans, to ensure hygiene",
-      "Maintain cleanliness and presentation of cat condos and refresh litter pans daily",
-      "Prepare daily meals and water bowls for cats according to dietary needs",
-      "Assist with basic stock checks and restocking of supplies",
-      "Perform dishwashing and laundry duties to support cafe operations",
-      "Execute any additional duties assigned by the shift supervisor"
+      { icon:"😊", title:"Taking care of the customers", items:[
+        "Make every customer feel welcome and put a smile on their face",
+        "Brief customers on cafe rules to ensure a safe and enjoyable experience",
+        "Teach customers how to mingle with and handle the cats safely",
+        "Prepare and serve food and drinks following hygiene standards"
+      ]},
+      { icon:"🐾", title:"Taking care of the cats", items:[
+        "Play with the cats and monitor their health and wellbeing",
+        "Groom cats regularly to keep them clean and comfortable",
+        "Clean cats' living areas, including condos, beds and litter pans",
+        "Prepare daily meals and water bowls according to dietary needs"
+      ]},
+      { icon:"🧹", title:"Taking care of the cafe", items:[
+        "Maintain cleanliness and presentation of the cafe and cat condos",
+        "Assist with basic stock checks and restocking of supplies",
+        "Perform dishwashing and laundry duties to support cafe operations",
+        "Execute any additional duties assigned by the shift supervisor"
+      ]}
     ],
     skillsIntro: "No prior experience or certifications required — just a genuine love for cats and people, and a friendly, reliable attitude. Training is provided on the job.",
     skills: ["Animal Welfare","Customer Service","Food Service","Housekeeping","Approachable","Team Player","Able to Work Independently","Multitasking","Customer Satisfaction"],
-    keyInfo: [
-      ["Job title","Service Crew"], ["Employment type","Part Time"],
-      ["Position level","Entry level"], ["Min. experience","0 years"],
-      ["Hourly rate","S$10 – S$13"], ["Vacancies","Multiple"],
-      ["Job function","Customer Service, F&B"], ["Min. qualification","No formal qualification required"],
-      ["Field of study","Not specified"], ["Flexible work arrangement","Flexible shifts (weekday/weekend)"]
-    ],
     subject: "Application - Part Time Service Crew",
     note: "Flexible shifts · weekday and weekend slots available"
   }
@@ -320,17 +315,18 @@ function renderJob(key) {
       return '<div class="fact"><div class="fact-icon">' + f.icon + '</div><div class="fact-v">' + f.v + '</div><div class="fact-l">' + f.l + '</div></div>';
     }).join('') + '</div>';
 
-  document.getElementById("responsibilities-list").innerHTML = j.responsibilities.map(function(r){
-    return '<div class="list-item"><span class="list-icon">&#9679;</span><span class="list-text">' + r + '</span></div>';
+  document.getElementById("responsibilities-list").innerHTML = j.responsibilities.map(function(group){
+    return '<div class="resp-group">' +
+      '<div class="resp-group-header"><span class="resp-group-icon">' + group.icon + '</span><span class="resp-group-title">' + group.title + '</span></div>' +
+      '<div class="list-card">' + group.items.map(function(r){
+        return '<div class="list-item"><span class="list-icon">&#9679;</span><span class="list-text">' + r + '</span></div>';
+      }).join('') + '</div>' +
+    '</div>';
   }).join('');
 
   document.getElementById("skills-intro").textContent = j.skillsIntro;
   document.getElementById("skills-list").innerHTML = j.skills.map(function(s){
     return '<span class="skill-chip">' + s + '</span>';
-  }).join('');
-
-  document.getElementById("key-info").innerHTML = j.keyInfo.map(function(row){
-    return '<div class="info-row"><span class="info-label">' + row[0] + '</span><span class="info-val">' + row[1] + '</span></div>';
   }).join('');
 
   var applyLink = document.getElementById("apply-email");
