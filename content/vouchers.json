@@ -827,8 +827,8 @@
     "personal_message": "",
     "issued_at": "2026-09-12T05:45:11.709Z",
     "expires_at": "2027-09-12T05:45:11.709Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-09-12T06:51:43.711Z",
     "payment_id": "VC-premium-30-qty2-1789191872968"
   }
 ]
