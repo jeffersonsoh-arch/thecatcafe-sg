@@ -862,5 +862,21 @@
     "redeemed": true,
     "redeemed_at": "2026-09-15T09:00:48.966Z",
     "payment_id": "VC-premium-30-qty2-1789462748309"
+  },
+  {
+    "code": "TCC-RU8L-EPE6-AUEE",
+    "type": "ultimate-40",
+    "label": "Ultimate Entrance Ticket",
+    "amount": "1000000",
+    "buyer_name": "Gavin",
+    "buyer_email": "payments@gavintjh.me",
+    "recipient_name": "Gavin",
+    "recipient_email": "payments@gavintjh.me",
+    "personal_message": "testing only uh",
+    "issued_at": "2026-09-26T08:55:37.558Z",
+    "expires_at": "2027-09-26T08:55:37.558Z",
+    "redeemed": false,
+    "redeemed_at": null,
+    "payment_id": "CMS-MANUAL-1790412937558"
   }
 ]
