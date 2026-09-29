@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Careers: Cafe Crew &amp; Cafe Supervisor | The Cat Cafe Singapore</title>
-<meta name="description" content="The Cat Cafe Singapore (Bugis) is hiring. Choose Part Time Service Crew or Full Time Service Crew / Cafe Supervisor. Care for our 15 resident cats and our customers. Apply today.">
+<meta name="description" content="The Cat Cafe Singapore (Bugis) is hiring 3 Part Time Service Crew. Full Time Cafe Supervisor: no vacancy at the moment. Care for our 15 resident cats and our customers. Apply today.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#D85A30">
 <meta property="og:title" content="Careers at The Cat Cafe Singapore">
-<meta property="og:description" content="We're hiring Part Time Service Crew and a Full Time Cafe Supervisor at Bugis. Apply today.">
+<meta property="og:description" content="We're hiring 3 Part Time Service Crew at Bugis. Apply today.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.thecatcafe.sg/careers.html">
 <meta property="og:image" content="https://www.thecatcafe.sg/images/logo.png">
@@ -16,10 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://www.thecatcafe.sg/careers.html">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"JobPosting","title":"Full Time Service Crew/ Cafe Supervisor","description":"You will lead daily cafe operations, ensuring the wellbeing of cats and delivering excellent customer service. Manage your team to maintain a welcoming environment for both cats and customers. Responsibilities include leading daily cafe operations, coaching team members, managing inventory, briefing customers on cafe rules, preparing and serving food and drinks, explaining cat behaviour and handling, grooming cats and monitoring their health, cleaning cat condos and litter pans, preparing daily meals and water for cats, and dishwashing/laundry duties.","identifierName":"Full Time Service Crew/ Cafe Supervisor","hiringOrganization":{"@type":"Organization","name":"The Cat Cafe Singapore","sameAs":"https://www.thecatcafe.sg","logo":"https://www.thecatcafe.sg/images/logo.png"},"jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"}},"employmentType":"FULL_TIME","datePosted":"2026-09-02","validThrough":"2026-10-02","experienceRequirements":{"@type":"OccupationalExperienceRequirements","monthsOfExperience":0},"totalJobOpenings":1,"applicantLocationRequirements":{"@type":"Country","name":"Singapore"},"directApply":true}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"JobPosting","title":"Part Time Service Crew","description":"You will support daily cafe operations on a flexible schedule, ensuring the wellbeing of cats and delivering friendly customer service. Responsibilities include briefing customers on cafe rules, preparing and serving food and drinks, explaining cat behaviour and handling, grooming cats and monitoring their health, cleaning cat condos and litter pans, preparing daily meals and water for cats, assisting with basic stock checks, and dishwashing/laundry duties.","identifierName":"Part Time Service Crew","hiringOrganization":{"@type":"Organization","name":"The Cat Cafe Singapore","sameAs":"https://www.thecatcafe.sg","logo":"https://www.thecatcafe.sg/images/logo.png"},"jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"}},"employmentType":"PART_TIME","datePosted":"2026-09-02","validThrough":"2026-10-02","experienceRequirements":{"@type":"OccupationalExperienceRequirements","monthsOfExperience":0},"applicantLocationRequirements":{"@type":"Country","name":"Singapore"},"directApply":true}
+{"@context":"https://schema.org","@type":"JobPosting","title":"Part Time Service Crew","description":"You will support daily cafe operations on a flexible schedule, ensuring the wellbeing of cats and delivering friendly customer service. Responsibilities include briefing customers on cafe rules, preparing and serving food and drinks, explaining cat behaviour and handling, grooming cats and monitoring their health, cleaning cat condos and litter pans, preparing daily meals and water for cats, assisting with basic stock checks, and dishwashing/laundry duties.","identifierName":"Part Time Service Crew","hiringOrganization":{"@type":"Organization","name":"The Cat Cafe Singapore","sameAs":"https://www.thecatcafe.sg","logo":"https://www.thecatcafe.sg/images/logo.png"},"jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","streetAddress":"241B Victoria Street","addressLocality":"Singapore","postalCode":"188030","addressCountry":"SG"}},"employmentType":"PART_TIME","totalJobOpenings":3,"datePosted":"2026-09-02","validThrough":"2026-10-02","experienceRequirements":{"@type":"OccupationalExperienceRequirements","monthsOfExperience":0},"applicantLocationRequirements":{"@type":"Country","name":"Singapore"},"directApply":true}
 </script>
 <link rel="preload" as="image" href="images/logo.png" fetchpriority="high">
 <style>
@@ -225,7 +222,7 @@ var JOBS = {
     type: "Full Time",
     name: "Cafe Supervisor",
     tabSub: "1-yr commitment · 4-day week",
-    badge: "We're hiring · 1 vacancy",
+    badge: "No vacancy at the moment",
     heroTitle: "Cafe Supervisor",
     heroDesc: "Lead daily operations at Singapore's original cat cafe and help care for our 15 resident cats at Bugis — while delivering a warm, memorable experience for every customer.",
     facts: [
@@ -268,13 +265,14 @@ var JOBS = {
   parttime: {
     type: "Part Time",
     name: "Service Crew",
-    tabSub: "Flexible shifts",
-    badge: "We're hiring · flexible shifts",
+    tabSub: "3 vacancies · 4-month commitment",
+    badge: "We're hiring · 3 vacancies",
     heroTitle: "Service Crew",
     heroDesc: "Join our floor team on a flexible schedule — serve customers, care for our 15 resident cats, and help keep Singapore's original cat cafe running smoothly at Bugis.",
     facts: [
       {icon:"🕐", v:"Part Time", l:"Employment type"},
       {icon:"🌱", v:"Entry level", l:"Position level"},
+      {icon:"🤝", v:"4 months", l:"Min. commitment"},
       {icon:"📍", v:"Bugis", l:"Location"}
     ],
     responsibilities: [
@@ -353,7 +351,7 @@ document.getElementById("job-tabs").innerHTML = Object.keys(JOBS).map(function(k
 }).join('');
 
 var initial = (location.hash || '').replace('#','');
-renderJob(JOBS[initial] ? initial : 'fulltime');
+renderJob(JOBS[initial] ? initial : 'parttime');
 </script>
 
 </body>
