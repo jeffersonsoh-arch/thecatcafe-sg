@@ -747,8 +747,8 @@
     "personal_message": "",
     "issued_at": "2026-08-18T14:22:59.635Z",
     "expires_at": "2027-08-18T14:22:59.635Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-11-15T02:17:42.290Z",
     "payment_id": "VC-standard-22-qty1-1787062950923"
   },
   {
