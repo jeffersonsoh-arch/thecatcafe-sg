@@ -779,8 +779,8 @@
     "personal_message": "",
     "issued_at": "2026-08-18T14:31:11.695Z",
     "expires_at": "2027-08-18T14:31:11.695Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-11-15T02:17:49.304Z",
     "payment_id": "PAY-1787063446301"
   },
   {
