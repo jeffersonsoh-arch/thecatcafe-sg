@@ -875,8 +875,8 @@
     "personal_message": "testing only uh",
     "issued_at": "2026-09-26T08:55:37.558Z",
     "expires_at": "2027-09-26T08:55:37.558Z",
-    "redeemed": false,
-    "redeemed_at": null,
+    "redeemed": true,
+    "redeemed_at": "2026-11-18T13:14:26.792Z",
     "payment_id": "CMS-MANUAL-1790412937558"
   },
   {
